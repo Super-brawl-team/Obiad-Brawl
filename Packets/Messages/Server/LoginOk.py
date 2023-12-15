@@ -19,7 +19,7 @@ class LoginOk(Writer):
         self.writeInt(0)
         self.writeInt(1)
         
-        self.writeString("erzkw78p83t73sbm6c4ms2ww8894fynmzc3xyntf");
+        self.writeString("ObiadJestGotowy");
         self.writeString("467606826913688")
         self.writeString("G:325378671")
         
@@ -27,7 +27,7 @@ class LoginOk(Writer):
         self.writeInt(57)
         self.writeInt(2)
         
-        self.writeString("integration")
+        self.writeString("dev")
         
         self.writeInt(0)
         self.writeInt(0)
@@ -40,7 +40,7 @@ class LoginOk(Writer):
         self.writeInt(0)
         
         self.writeString()
-        self.writeString("EN")
+        self.writeString("FR")
         self.writeString()
         
         self.writeInt(1)
