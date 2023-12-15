@@ -23,9 +23,9 @@ class LoginOk(Writer):
         self.writeString("467606826913688")
         self.writeString("G:325378671")
         
-        self.writeInt(2)
-        self.writeInt(57)
-        self.writeInt(2)
+        self.writeInt(1)
+        self.writeInt(1714)
+        self.writeInt(0)
         
         self.writeString("dev")
         
