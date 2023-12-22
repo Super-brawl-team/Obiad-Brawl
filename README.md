@@ -37,4 +37,5 @@ Clients (Thanks risporce for the method!):
 
   # BONUS
   You can edit "debugMenuEnabled" to enable or disable debug menu!
+  
   Note : i dont use dev builds, so only few buttons work
