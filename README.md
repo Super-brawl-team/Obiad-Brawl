@@ -34,3 +34,7 @@ Clients (Thanks risporce for the method!):
   6: Save and compile back to ipa format.
   
   7: Install the client using your favorite app installer and enjoy.
+
+  # BONUS
+  You can edit "debugMenuEnabled" to enable or disable debug menu!
+  Note : i dont use dev builds, so only few buttons work
