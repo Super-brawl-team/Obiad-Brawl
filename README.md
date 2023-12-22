@@ -11,10 +11,10 @@ Feel free to use it but don't forget to credit :)
 Clients (Thanks risporce for the method!):
   
   
-  -Normal: [Download](https://www.mediafire.com/file/w47eclm4y8tk1ad/BrawlV1Primo.ipa/file)
+  -Normal: [Download](https://www.mediafire.com/file/c7ggzm4q710k01f/BrawlV1Primo.ipa/file)
  
  
-  -Offline battles: [Download](https://www.mediafire.com/file/qfrk9l0eevvconb/BrawlV1PrimoOfflineBattles.ipa/file)
+  -Offline battles: [Download](https://www.mediafire.com/file/zqeybmlcua3kjzz/BrawlV1PrimoOfflineBattles.ipa/file)
 
 
   # How to change ip and port
