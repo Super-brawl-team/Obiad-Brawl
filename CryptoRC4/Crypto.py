@@ -5,7 +5,8 @@ class CryptoRc4:
 
     def __init__(self):
 
-        self.key = b'fhsd6f86f67rt8fw78fw789we78r9789wer6re'
+        self.settings = json.load(open('Settings.json'))
+        self.key = self.settings["Port"].encode('UTF-8')
         self.nonce = b'nonce'
         self.RC4_Stream = RC4.new(self.key + self.nonce)
         self.RC4_Stream.encrypt(self.key + self.nonce)

@@ -11,10 +11,10 @@ Feel free to use it but don't forget to credit :)
 Clients (Thanks risporce for the method!):
   
   
-  -Normal: [Download](https://www.mediafire.com/file/c7ggzm4q710k01f/BrawlV1Primo.ipa/file)
+  -Normal: [Download](https://www.mediafire.com/file/lkdc121x2y928hy/ObiadBrawl.ipa/file)
  
  
-  -Offline battles: [Download](https://www.mediafire.com/file/zqeybmlcua3kjzz/BrawlV1PrimoOfflineBattles.ipa/file)
+  -Offline battles: [Download](https://www.mediafire.com/file/83rek6arjq5lmqq/ObiadBrawlOfflineBattles.ipa/file)
 
 
   # How to change ip and port
@@ -39,3 +39,5 @@ Clients (Thanks risporce for the method!):
   You can edit "debugMenuEnabled" to enable or disable debug menu!
   
   Note : i dont use dev builds, so only few buttons work
+
+  You can also (not mendatory xd) edit the rc4 key and get a random one, like that peoples will have a little difficulty to steal your stuff, just set changeRC4Key to true and copy the key he provided, you will have to edit settings.json and replace the key
