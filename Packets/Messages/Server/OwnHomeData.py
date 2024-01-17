@@ -2,7 +2,7 @@
 from Logic import Milestones
 from Logic.Player import Player
 from Utils.Writer import Writer
-from random import randint as r
+import random
 
 
 class OwnHomeData(Writer):
@@ -16,7 +16,8 @@ class OwnHomeData(Writer):
 	def encode(self):
 		skins = 32
 		Brawlers228 = [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56]
-		Upgrades = 60
+		cards = 60
+		ressources_ids = [1, 5, 6]
 		self.writeVInt(2017189) # Timestamp
 		self.writeVInt(10) # Create new band timer
 		
@@ -80,137 +81,69 @@ class OwnHomeData(Writer):
 		
 		# disponible events starts
 		
-		self.writeVInt(3) # disponibles event slot
+		self.writeVInt(self.player.eventCount) # disponibles event slot
+		for events in range(self.player.eventCount):
 		
 		
+		#  event slot entry start
 		
-		# first event slot
+			self.writeVInt(events) # slot index
+			self.writeVInt(events) # slot number
+			self.writeVInt(1) # comming soon timer
+			self.writeVInt(39120) # Time Left
+			self.writeVInt(8) # coins to claim
+			self.writeVInt(8) # bonuska coins
+			self.writeVInt(60) # coins to win
+			self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
+			self.writeScID(15, random.randint(0, 11)) # map
+			self.writeVInt(0) #  coins already collected
+			self.writeVInt(2) #  coins collected statut
+			self.writeString() # text for event (TID)
+
+		# event slot entry ends
 		
-		self.writeVInt(1) # slot index
-		self.writeVInt(1) # slot number
-		self.writeVInt(1) # comming soon timer
-		self.writeVInt(39120) # Time Left
-		self.writeVInt(8) # coins to claim
-		self.writeVInt(8) # bonuska coins
-		self.writeVInt(60) # coins to win
-		self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-		self.writeScID(15, 4) # map
-		self.writeVInt(0) #  coins already collected
-		self.writeVInt(2) #  coins collected statut
-		self.writeString() # text for event (TID)
-		# first event slot end
-		# second event slot
-		self.writeVInt(2) # slot index
-		self.writeVInt(2) # slot number
-		self.writeVInt(1) # comming soon timer
-		self.writeVInt(39120) # Time Left
-		self.writeVInt(8) # coins to claim
-		self.writeVInt(8) # bonuska coins
-		self.writeVInt(60) # coins to win
-		self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-		self.writeScID(15, 2) # map
-		self.writeVInt(0) #  coins already collected
-		self.writeVInt(2) #  coins collected statut
-		self.writeString() # text for event (TID)
-		# second event slot end
-		# third event slot
-		self.writeVInt(3) # slot index
-		self.writeVInt(3) # slot number
-		self.writeVInt(1) # comming soon timer
-		self.writeVInt(39120) # Time Left
-		self.writeVInt(8) # coins to claim
-		self.writeVInt(8) # bonuska coins
-		self.writeVInt(60) # coins to win
-		self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-		self.writeScID(15, 3) # map
-		self.writeVInt(0) #  coins already collected
-		self.writeVInt(2) #  coins collected statut
-		self.writeString() # text for event (TID)
-		# third event slot end
+		# ultra comming soon event starts (it doesn't work bruhh)
+		self.writeVInt(4) # disponibles event slot
+		for events in range(4):
 		
-		# ultra comming soon event starts (it doesn't work bruhh
-		self.writeVInt(4) # count
 		
-		# first comming soon event 
-		self.writeVInt(1) # slot index
-		self.writeVInt(1) # slot number
-		self.writeVInt(1) # comming soon timer
-		self.writeVInt(39120) # Time Left
-		self.writeVInt(8) # coins to claim
-		self.writeVInt(8) # bonuska coins
-		self.writeVInt(60) # coins to win
-		self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-		self.writeScID(15, 5) # map
-		self.writeVInt(0) #  coins already collected
-		self.writeVInt(0) #  coins collected statut
-		self.writeString() # text for event (TID)
-		# first comming soon event  end
+		#  event slot entry start
 		
-		# second comming soon event 
-		self.writeVInt(2) # slot index
-		self.writeVInt(2) # slot number
-		self.writeVInt(1) # comming soon timer
-		self.writeVInt(39120) # Time Left
-		self.writeVInt(8) # coins to claim
-		self.writeVInt(8) # bonuska coins
-		self.writeVInt(60) # coins to win
-		self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-		self.writeScID(15, 5) # map
-		self.writeVInt(0) #  coins already collected
-		self.writeVInt(0) #  coins collected statut
-		self.writeString() # text for event (TID)
-		# second comming soon event end
-		
-		# third comming soon event 
-		self.writeVInt(3) # slot index
-		self.writeVInt(3) # slot number
-		self.writeVInt(1) # comming soon timer
-		self.writeVInt(39120) # Time Left
-		self.writeVInt(8) # coins to claim
-		self.writeVInt(8) # bonuska coins
-		self.writeVInt(60) # coins to win
-		self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-		self.writeScID(15, 5) # map
-		self.writeVInt(0) #  coins already collected
-		self.writeVInt(0) #  coins collected statut
-		self.writeString() # text for event (TID)
-		# third comming soon event end
-		
-		# fourth comming soon event 
-		self.writeVInt(4) # slot index
-		self.writeVInt(4) # slot number
-		self.writeVInt(1) # comming soon timer
-		self.writeVInt(39120) # Time Left
-		self.writeVInt(8) # coins to claim
-		self.writeVInt(8) # bonuska coins
-		self.writeVInt(60) # coins to win
-		self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-		self.writeScID(15, 5) # map
-		self.writeVInt(0) #  coins already collected
-		self.writeVInt(0) #  coins collected statut
-		self.writeString("TID_WEEKEND_EVENT") # text for event (TID)
-		# fourth comming soon event end
-		
+			self.writeVInt(events) # slot index
+			self.writeVInt(events) # slot number
+			self.writeVInt(1) # comming soon timer
+			self.writeVInt(39120) # Time Left
+			self.writeVInt(8) # coins to claim
+			self.writeVInt(8) # bonuska coins
+			self.writeVInt(60) # coins to win
+			self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
+			self.writeScID(15, random.randint(0, 11)) # map
+			self.writeVInt(0) #  coins already collected
+			self.writeVInt(2) #  coins collected statut
+			self.writeString() # text for event (TID)
+
+		# event slot entry ends
+		# ultra comming soon event ends
 		# dudka events end
-		self.writeVInt(5) # Unknown Array
-		for x in [1, 2, 3, 4, 5]:
-			self.writeVInt(x)
+		self.writeVInt(5) # upgrades Array
+		for x in range(5):
+			self.writeVInt(x+1) # price
 		
 		self.writeVInt(Milestones.MilestonesCount)  # Milestones Count (518 standart)
 		self.writeHexa(Milestones.MilestonesHex)
 		
 		
 		self.writeInt(0)
-		self.writeInt(0)  # LongLong
+		self.writeInt(1)  # Ids
 		
 		self.writeVInt(0)
-		self.writeVInt(0)  # LogicLong
+		self.writeVInt(1)  # Ids
 		
-		self.writeVInt(0) # Notification Factory array naverno
-		
-		self.writeVInt(0)  # Empty LogicLong
 		self.writeVInt(0)
-		self.writeVInt(0)  # Empty LogicLong
+		self.writeVInt(1)  # Ids
+
+		self.writeVInt(0)
+		self.writeVInt(1)  # Ids
 		
 		self.writeString("PrimoDEVHacc")
 		self.writeBool(True) # nameSet
@@ -219,36 +152,22 @@ class OwnHomeData(Writer):
 		# motorised arrays stars 
 		self.writeVInt(5) # Commodity Array
 		
-		self.writeVInt((len(Brawlers228) + 3) + (Upgrades * 3)) # count
+		self.writeVInt(cards + len(ressources_ids)) # cards and ressources array
 		
-		for health_id in range(Upgrades):
-			self.writeScID(23, health_id) # ?
-			self.writeVInt(5) #number of upgrades
-		
-		for attack_id in range(Upgrades):
-			self.writeScID(23, attack_id) # ?
-			self.writeVInt(5) #number of upgrades
-		
-		for ulti_id in range(Upgrades):
-			self.writeScID(23, ulti_id) # ?
-			self.writeVInt(5) #number of upgrades
-		
-		self.writeVInt(5) # csv
-		self.writeVInt(1) # resource csv
-		self.writeVInt(1337) # goldenese
-		
-		self.writeVInt(5) # csv
-		self.writeVInt(5) # resource csv
-		self.writeVInt(6974) # elixears
-		
-		self.writeVInt(5) # csv
-		self.writeVInt(6) # resource csv
-		self.writeVInt(9999999) # cheaps
-		
-		for x in Brawlers228:  # Unlocks
-			self.writeVInt(23) # csvID
-			self.writeVInt(x) # brawlerID
-			self.writeVInt(1) # isUnlocked
+		for i in range(cards):
+			self.writeScId(23, i)
+			
+			if cards in Brawlers228:
+				self.writeVint(1) # brawler unclocked
+			else:
+				self.writeVint(5) # upgrades count
+        
+        # ressources
+		for res in range(len(ressources_ids)):
+			self.writeScID(5, ressources_ids[res]) # resource 
+			self.writeVInt(self.counts[res]) # count
+         
+        # cards and ressources Array End
 		
 		self.writeVInt(15) # brawlers
 		for x in range(15):  # trophis
