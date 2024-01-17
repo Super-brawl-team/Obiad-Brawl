@@ -40,7 +40,7 @@ Clients (Thanks risporce for the method!):
    # DEBUG MENU
     You can edit "debugMenuEnabled" to enable or disable debug menu!
   
-    Note : i dont use dev builds, so only few buttons work
+    Note : i dont use dev builds, so only few buttons work...
 
    # RC4 KEY
-    You can also (not mendatory xd) edit the rc4 key and get a random one. Like that; peoples will have a little difficulty to steal your stuff, just set changeRC4Key to true and copy the key he provided, you will have to edit settings.json and replace the key
+    You can also (not mendatory xd) edit the rc4 key and get a random one. Like that; peoples will have a little difficulty to steal your stuff, just set changeRC4Key to true and copy the key he provided, you will have to edit settings.json and replace the key!
