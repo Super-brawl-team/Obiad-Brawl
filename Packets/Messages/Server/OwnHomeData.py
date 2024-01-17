@@ -129,8 +129,7 @@ class OwnHomeData(Writer):
 		for x in range(5):
 			self.writeVInt(x+1) # price
 		
-		self.writeVInt(Milestones.MilestonesCount)  # Milestones Count (518 standart)
-		self.writeHexa(Milestones.MilestonesHex)
+		Milestones.MilestonesArray(self)
 		
 		
 		self.writeInt(0)
