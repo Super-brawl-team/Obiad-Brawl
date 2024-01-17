@@ -1,8 +1,8 @@
 # Obiad Brawl
  My first open source yey
-Yeah its obed brawl's upgrade, but i swear i will change core!
+ Yeah its obed brawl's upgrade, but i swear i will change core!
 
-Enjoy with many features
+ Enjoy tons of cool features!
 
 # The server will be frequently updated
 
