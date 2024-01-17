@@ -164,7 +164,7 @@ class OwnHomeData(Writer):
         # ressources
 		for res in range(len(ressources_ids)):
 			self.writeScID(5, ressources_ids[res]) # resource 
-			self.writeVInt(self.counts[res]) # count
+			self.writeVInt(999999) # count
          
         # cards and ressources Array End
 		
