@@ -19,6 +19,15 @@ class ByteStream(BufferedReader):
             else:
                 return decoded.decode('utf-8')
 
+    
+    def readDataReference(self):
+        ClassID = self.readVInt()
+        if ClassID != 0:
+            InstanceID = self.readVInt()
+        else:
+            InstanceID = -1
+        return ClassID, InstanceID
+
     def readString(self):
         length = self.ReadUint32()
         if length == pow(2, 32) - 1:

@@ -4,9 +4,10 @@ from Logic import Milestones
 
 class BattleEndSD(Writer):
 
-	def __init__(self, device, player):
+	def __init__(self, device, player, plrs):
 		self.id = 23456
 		self.device = device
+		self.plrs = plrs
 		self.player = player
 		super().__init__(self.device)
 
@@ -83,7 +84,7 @@ class BattleEndSD(Writer):
 		
 		IsMatchmakeBoolean = True
 		
-		if self.device.BattleResult in [0, 2]:
+		if self.plrs["BattleEndType"] in [0, 2]:
 			if IsMatchmakeBoolean == False:
 				IsStarPlayer = 1
 			else:
@@ -96,12 +97,12 @@ class BattleEndSD(Writer):
 		
 		self.writeVInt(5) # Battle End Game Mode (5 = Showdown. Else is 3vs3)
 		self.writeVInt(0) # Related To Coins Gained. If the Value is 1+, "All Coins collected"
-		self.writeVInt(getBattleEndCoins(self.device.rank)) # Coins Gained
+		self.writeVInt(getBattleEndCoins(self.plrs["BattleRank"])) # Coins Gained
 		self.writeBool(True) # "All Coins collected" if False
 		self.writeVInt(0) # First Win Coins Gained
 		self.writeBool(False) # "All event experience collected" if True
-		self.writeVInt(self.device.rank) # Result (Victory/Defeat/Draw/Rank Score)
-		self.writeVInt(getBattleEndTrophies(self.device.rank)) # Trophies Result
+		self.writeVInt(self.plrs["BattleRank"]) # Result (Victory/Defeat/Draw/Rank Score)
+		self.writeVInt(getBattleEndTrophies(self.plrs["BattleRank"])) # Trophies Result
 		self.writeScID(28, 0)  # Player Profile Icon
 		self.writeVInt(2) # Battle Result Type
 		self.writeVInt(0) # Coin Booster %
@@ -109,19 +110,17 @@ class BattleEndSD(Writer):
 		self.writeVInt(0) # Coin Doubler Coins Gained
 		
 		# Players Array
-		self.writeVInt(1) # Battle End Screen Players
-		self.writeString("NostalgicBrawl") # Player Name
-		self.writeVInt(IsStarPlayer) # Player Team and Star Player Type
-		self.writeScID(16, self.device.brawler) # Player Brawler
-		if self.device.skin == 0:
-			self.writeVint(0) # Player Skin
-		else:
-			self.writeScId(29, self.device.skin_id) # Player Skin
-		self.writeVInt(1) # Brawler Trophies
+		self.writeVInt(self.plrs["PlayersAmount"]) # Battle End Screen Players
+		for Players in self.plrs["Brawlers"]:
+			self.writeString(Players["Name"]) # Player Name
+			self.writeVInt(IsStarPlayer) # Player Team and Star Player Type
+			self.writeScID(Players["BrawlerID"]) # Player Brawler
+			self.writeScId(29, Players["SkinID"]) # Player Skin (does it crash with normal shelly?)
+			self.writeVInt(0) # Brawler Trophies
 		# Experience Array
 		self.writeVInt(2) # Count
 		self.writeVInt(0) # Normal Experience ID
-		self.writeVInt(getBattleEndExp(self.device.rank)) # Normal Experience Gained
+		self.writeVInt(getBattleEndExp(self.plrs["BattleRank"])) # Normal Experience Gained
 		self.writeVInt(8) # Star Player Experience ID
 		self.writeVInt(10) # Star Player Experience Gained
 
@@ -139,15 +138,15 @@ class BattleEndSD(Writer):
 		
 		# Milestones Array
 		self.writeBool(True) # Bool
-		self.writeVInt(Milestones.MilestonesCount)  # Milestones Count (518 standart)
-		self.writeHexa(Milestones.MilestonesHex)
+		Milestones.MilestonesArray(self)
 		
 		
 class BattleEndTrio(Writer):
 
-	def __init__(self, device, player):
+	def __init__(self, device, player, plrs):
 		self.id = 23456
 		self.device = device
+		self.plrs = plrs
 		self.player = player
 		super().__init__(self.device)
 
@@ -164,7 +163,7 @@ class BattleEndTrio(Writer):
 			elif rang == 1:
 				return 15
 			elif rang == 2:
-                              return 10
+				return 10
 
 		def getBattleEndExp(rang):
 			if rang == 0: # win
@@ -172,11 +171,11 @@ class BattleEndTrio(Writer):
 			elif rang == 1:
 				return 5
 			elif rang == 2:
-                              return 10
+				return 10
 		
 		IsMatchmakeBoolean = True
 		
-		if self.device.BattleResult in [0, 2]:
+		if self.plrs["BattleEndType"] in [0, 2]:
 			if IsMatchmakeBoolean == False:
 				IsStarPlayer = 1
 			else:
@@ -190,12 +189,12 @@ class BattleEndTrio(Writer):
 		
 		self.writeVInt(1) # Battle End Game Mode (5 = Showdown. Else is 3vs3)
 		self.writeVInt(0) # Related To Coins Gained. If the Value is 1+, "All Coins collected"
-		self.writeVInt(getBattleEndCoins(self.device.BattleResult)) # Coins Gained
+		self.writeVInt(getBattleEndCoins(self.plrs["BattleEndType"])) # Coins Gained
 		self.writeBool(True) # "All Coins collected" if False
 		self.writeVInt(0) # First Win Coins Gained
 		self.writeBool(False) # "All event experience collected" if True
-		self.writeVInt(self.device.BattleResult) # Result (Victory/Defeat/Draw/Rank Score)
-		self.writeVInt(getBattleEndTrophies(self.device.BattleResult)) # Trophies Result
+		self.writeVInt(self.plrs["BattleEndType"]) # Result (Victory/Defeat/Draw/Rank Score)
+		self.writeVInt(getBattleEndTrophies(self.plrs["BattleEndType"])) # Trophies Result
 		self.writeScID(28, 0)  # Player Profile Icon
 		self.writeVInt(2) # Battle Result Type
 		self.writeVInt(0) # Coin Booster %
@@ -203,44 +202,18 @@ class BattleEndTrio(Writer):
 		self.writeVInt(0) # Coin Doubler Coins Gained
 		
 		# Players Array
-		self.writeVInt(6)#self.device.BattlePlayers) # Battle End Screen Players
-		
-		## you
-		
-		self.writeString("NostalgicBrawl") # Player Name
-		self.writeVint(IsStarPlayer) # Player Team and Star Player Type
-		self.writeScID(16, self.device.brawler) # Player Brawler
-		if self.device.skin == 0:
-			self.writeVint(0) # Player Skin
-		else:
-			self.writeScId(29, self.device.skin_id) # Player Skin
-		self.writeVInt(1) # Brawler Trophies
-		
-		BotName = [self.device.Bot1Name, self.device.Bot2Name, self.device.Bot3Name, self.device.Bot4Name, self.device.Bot5Name, self.device.Bot6Name, self.device.Bot7Name, self.device.Bot8Name, self.device.Bot9Name]
-		BotTeam = [self.device.Bot1Team, self.device.Bot2Team, self.device.Bot3Team, self.device.Bot4Team, self.device.Bot5Team, self.device.Bot6Team, self.device.Bot7Team, self.device.Bot8Team, self.device.Bot9Team]
-		BotBrawler = [self.device.Bot1Brawler, self.device.Bot2Brawler, self.device.Bot3Brawler, self.device.Bot4Brawler, self.device.Bot5Brawler, self.device.Bot6Brawler, self.device.Bot7Brawler, self.device.Bot8Brawler, self.device.Bot9Brawler]
-		for PlayerIndex in range(self.device.BattlePlayers - 1): # win
-				
-				self.writeString(BotName[PlayerIndex]) # Bot Name
-				if self.device.PlayerTeam == 0: # win
-					
-					if BotTeam[PlayerIndex] == 0:
-						self.writeVint(0) # Team and Star Player Type
-					else:
-						self.writeVint(2) # Team and Star Player Type
-				else:
-					if BotTeam[PlayerIndex] == 0:
-						self.writeVint(2) # Team and Star Player Type
-					else:
-						self.writeVint(0) # Team and Star Player Type
-				self.writeScId(16, BotBrawler[PlayerIndex]) # Bot Brawler
-				self.writeVint(0) # Bot Skin
-				self.writeVint(0) # Brawler Trophies
+		self.writeVInt(self.plrs["PlayersAmount"]) # Battle End Screen Players
+		for Players in self.plrs["Brawlers"]:
+			self.writeString(Players["Name"]) # Player Name
+			self.writeVInt(IsStarPlayer) # Player Team and Star Player Type
+			self.writeScID(Players["BrawlerID"]) # Player Brawler
+			self.writeScId(29, Players["SkinID"]) # Player Skin (does it crash with normal shelly?)
+			self.writeVInt(0) # Brawler Trophies
 
 		# Experience Array
 		self.writeVInt(2) # Count
 		self.writeVInt(0) # Normal Experience ID
-		self.writeVInt(getBattleEndExp(self.device.BattleResult)) # Normal Experience Gained
+		self.writeVInt(getBattleEndExp(self.plrs["BattleEndType"])) # Normal Experience Gained
 		self.writeVInt(8) # Star Player Experience ID
 		self.writeVInt(10) # Star Player Experience Gained
 
@@ -258,5 +231,4 @@ class BattleEndTrio(Writer):
 		
 		# Milestones Array
 		self.writeBool(True) # Bool
-		self.writeVInt(Milestones.MilestonesCount)  # Milestones Count (518 standart)
-		self.writeHexa(Milestones.MilestonesHex)
+		Milestones.MilestonesArray(self)
