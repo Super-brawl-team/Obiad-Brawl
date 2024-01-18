@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
 
-
 class Writer:
     
     def __init__(self, device):
         self.buffer = b''
         
     def size(self):
-                return len(self.buffer)
-            
+        return len(self.buffer)
+    
     def getRaw(self):
-                return self.buffer
-            
+        return self.buffer
+    
     def getBuff(self):
-                return self.buffer
-            
+        return self.buffer
+    
     def writeIntEndian(self, data, length=4):
-                self.buffer += data.to_bytes(length, 'little')
-                
+        self.buffer += data.to_bytes(length, 'little')
+        
     def writeShortEndian(self, data, length=2):
-               self.buffer += data.to_bytes(length, 'little')
-               
+        self.buffer += data.to_bytes(length, 'little')
+        
     def writeInt8(self, data):
         self.writeInt(data, 1)
         
@@ -39,16 +38,16 @@ class Writer:
             self.buffer += data.to_bytes(1, 'big', signed=True)
             
     def writeLogicLong(self, data1, data2):
-               self.writeVInt(data1)
-               self.writeVInt(data2)
-               
+        self.writeVInt(data1)
+        self.writeVInt(data2)
+        
     def writeLong(self, data1, data2):
-               self.writeInt(data1)
-               self.writeInt(data2)
-               
+        self.writeInt(data1)
+        self.writeInt(data2)
+        
     def writeBytes(self, data):
-               self.buffer += data
-               
+        self.buffer += data
+        
     def writeVInt(self, data, rotate: bool = True):
         final = b''
         if data == 0:
@@ -60,7 +59,7 @@ class Writer:
             while data:
                 b = data & 0x7f
                 if data >= 0x80:
-                  b |= 0x80
+                    b |= 0x80
                 if rotate:
                     rotate = False
                     lsb = b & 0x1
@@ -73,12 +72,12 @@ class Writer:
             self.buffer += final
             
     def writeString(self, data=None):
-    	if data is not None:
-         self.writeInt(len(data))
-         self.buffer += data.encode('utf-8')
+        if data is not None:
+            self.writeInt(len(data))
+            self.buffer += data.encode('utf-8')
         else:
-         self.writeInt(2**32 - 1)
-         
+            self.writeInt(2**32 - 1)
+            
     def writeHexa(self, data):
         if data:
             if data.startswith('0x'):
@@ -107,7 +106,7 @@ class Writer:
             
     def writeArrayVInt(self, data):
         for x in data:
-            self.writeVint(x)
+            self.writeVInt(x)
             
     def Send(self):
         self.encode()
