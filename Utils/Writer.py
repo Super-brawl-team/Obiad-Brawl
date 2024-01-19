@@ -71,6 +71,7 @@ class Writer:
                 data >>= 7
             self.buffer += final   
             
+
     def writeVInt(self, data, rotate: bool = True):
         final = b''
         if data == 0:
