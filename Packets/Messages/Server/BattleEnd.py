@@ -1,5 +1,5 @@
 from Utils.Writer import Writer
-from Logic import Milestones
+from Logic.Milestones import Milestones
 
 
 class BattleEndSD(Writer):
@@ -113,9 +113,11 @@ class BattleEndSD(Writer):
 		self.writeVInt(self.plrs["PlayersAmount"]) # Battle End Screen Players
 		for Players in self.plrs["Brawlers"]:
 			self.writeString(Players["Name"]) # Player Name
-			self.writeVInt(IsStarPlayer) # Player Team and Star Player Type
-			self.writeScID(Players["BrawlerID"]) # Player Brawler
-			self.writeScId(29, Players["SkinID"]) # Player Skin (does it crash with normal shelly?)
+			self.writeBool(bool(Players["IsPlayer"])) # IsPlayer
+			self.writeBool(Players["Team"] is not self.plrs["Brawlers"][0]["Team"]) # Team
+			self.writeBool(False) # StarPlayer
+			self.writeScID(Players["CharacterID"][0], Players["CharacterID"][1]) # Player Brawler
+			self.writeScID(Players["SkinID"][0], Players["SkinID"][1]) # Player Brawler Skin!
 			self.writeVInt(0) # Brawler Trophies
 		# Experience Array
 		self.writeVInt(2) # Count
@@ -205,15 +207,16 @@ class BattleEndTrio(Writer):
 		self.writeVInt(self.plrs["PlayersAmount"]) # Battle End Screen Players
 		for Players in self.plrs["Brawlers"]:
 			self.writeString(Players["Name"]) # Player Name
-			self.writeVInt(IsStarPlayer) # Player Team and Star Player Type
-			self.writeScID(Players["BrawlerID"]) # Player Brawler
-			self.writeScId(29, Players["SkinID"]) # Player Skin (does it crash with normal shelly?)
+			self.writeBool(bool(Players["IsPlayer"])) # IsPlayer
+			self.writeBool(Players["Team"] is not self.plrs["Brawlers"][0]["Team"]) # Team
+			self.writeBool(False) # StarPlayer
+			self.writeScID(Players["CharacterID"][0], Players["CharacterID"][1]) # Player Brawler
+			self.writeScID(Players["SkinID"][0], Players["SkinID"][1]) # Player Brawler Skin!
 			self.writeVInt(0) # Brawler Trophies
-
 		# Experience Array
 		self.writeVInt(2) # Count
 		self.writeVInt(0) # Normal Experience ID
-		self.writeVInt(getBattleEndExp(self.plrs["BattleEndType"])) # Normal Experience Gained
+		self.writeVInt(getBattleEndExp(self.plrs["BattleRank"])) # Normal Experience Gained
 		self.writeVInt(8) # Star Player Experience ID
 		self.writeVInt(10) # Star Player Experience Gained
 
@@ -223,8 +226,8 @@ class BattleEndTrio(Writer):
 		# Trophies and Experience Bars Array
 		self.writeVInt(2) # Count
 		self.writeVInt(1) # Trophies Bar Milestone ID
-		self.writeVInt(1) # Brawler Trophies
-		self.writeVInt(1) # Brawler Trophies for Rank
+		self.writeVInt(0) # Brawler Trophies
+		self.writeVInt(0) # Brawler Trophies for Rank
 		self.writeVInt(5) # Experience Bar Milestone ID
 		self.writeVInt(0) # Player Experience
 		self.writeVInt(0) # Player Experience for Level
@@ -232,3 +235,4 @@ class BattleEndTrio(Writer):
 		# Milestones Array
 		self.writeBool(True) # Bool
 		Milestones.MilestonesArray(self)
+		

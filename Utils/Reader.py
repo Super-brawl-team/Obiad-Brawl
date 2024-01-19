@@ -21,12 +21,13 @@ class ByteStream(BufferedReader):
 
     
     def readDataReference(self):
-        ClassID = self.readVInt()
-        if ClassID != 0:
-            InstanceID = self.readVInt()
-        else:
-            InstanceID = -1
-        return ClassID, InstanceID
+     Data = {}
+     Data["High"] = self.readVInt()
+     if Data["High"] == 0:
+        return Data["High"], 0
+     else:
+        Data["Low"] = self.readVInt()
+        return Data["High"], Data["Low"]
 
     def readString(self):
         length = self.ReadUint32()
@@ -60,6 +61,10 @@ class ByteStream(BufferedReader):
         n = self._read_varint(True)
         return (n >> 1) ^ (-(n & 1))
     
+    def readVInt(self):
+        n = self._read_varint(True)
+        return (n >> 1) ^ (-(n & 1))
+        
     def ReadByte(self):
         return int.from_bytes(self.read(1), "big")
 

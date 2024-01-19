@@ -14,12 +14,21 @@ class AskForBattleEnd(ByteStream):
 		self.plrs = {}
 		self.plrs["BattleEndType"] = self.ReadVint() # battle result
 		self.plrs["BattleTime"] = self.ReadVint() # time played ?
+	
 		self.plrs["BattleRank"] = self.ReadVint() # rank so basically is won/lose/draw for 3v3 and the rank for sd
+		self.plrs["CsvID0"] = self.ReadVint()
 		self.plrs["Location"] = self.ReadVint() # location or the map if you prefer
 		self.plrs["PlayersAmount"] = self.read_Vint() # Battle End Players
+		self.plrs["Brawlers"] = []
 		for x in range(self.plrs["PlayersAmount"]):
-			# HeroDataEntry::encode
-			self.plrs["Brawlers"].append({"Brawlers": {"BrawlerID": self.readDataReference(), "SkinID": self.readDataReference()}, "Team": self.ReadVint(), "IsPlayer": self.ReadVint(), "Name": self.read_string()})
+		# HeroDataEntry::encode
+			self.plrs["Brawlers"].append({
+				"CharacterID": self.readDataReference(),
+				"SkinID": self.readDataReference(),
+				"Team": self.ReadVint(),
+				"IsPlayer": self.ReadVint(), # supposed to be boolean, but bytestream is uh...
+				"Name": self.read_string()
+			})
 	def process(self):
 		
 		if self.plrs["BattleRank"] != 0: # showdown

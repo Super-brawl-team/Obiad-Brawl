@@ -1,4 +1,5 @@
 from Crypto.Cipher import ARC4 as RC4
+import json
 
 
 class CryptoRc4:
@@ -6,7 +7,8 @@ class CryptoRc4:
     def __init__(self):
 
         self.settings = json.load(open('Settings.json'))
-        self.key = self.settings["Port"].encode('UTF-8')
+        self.key = bytes(self.settings["RC4Key"], 'utf-8')
+        print(self.key)
         self.nonce = b'nonce'
         self.RC4_Stream = RC4.new(self.key + self.nonce)
         self.RC4_Stream.encrypt(self.key + self.nonce)

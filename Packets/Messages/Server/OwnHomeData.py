@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Logic import Milestones
+from Logic.Milestones import Milestones
 from Logic.Player import Player
 from Utils.Writer import Writer
 import random
@@ -87,8 +87,8 @@ class OwnHomeData(Writer):
 		
 		#  event slot entry start
 		
-			self.writeVInt(events) # slot index
-			self.writeVInt(events) # slot number
+			self.writeVInt(events+1) # slot index
+			self.writeVInt(events+1) # slot number
 			self.writeVInt(1) # comming soon timer
 			self.writeVInt(39120) # Time Left
 			self.writeVInt(8) # coins to claim
@@ -109,8 +109,8 @@ class OwnHomeData(Writer):
 		
 		#  event slot entry start
 		
-			self.writeVInt(events) # slot index
-			self.writeVInt(events) # slot number
+			self.writeVInt(events+1) # slot index
+			self.writeVInt(events+1) # slot number
 			self.writeVInt(1) # comming soon timer
 			self.writeVInt(39120) # Time Left
 			self.writeVInt(8) # coins to claim
@@ -157,14 +157,14 @@ class OwnHomeData(Writer):
 			self.writeScId(23, i)
 			
 			if cards in Brawlers228:
-				self.writeVint(1) # brawler unclocked
+				self.writeVInt(1) # brawler unclocked
 			else:
-				self.writeVint(5) # upgrades count
+				self.writeVInt(5) # upgrades count
         
         # ressources
 		for res in range(len(ressources_ids)):
 			self.writeScID(5, ressources_ids[res]) # resource 
-			self.writeVInt(9999999) # count
+			self.writeVInt(99999) # count
          
         # cards and ressources Array End
 		
@@ -187,7 +187,7 @@ class OwnHomeData(Writer):
 		self.writeVInt(0) # array
 		self.writeVInt(0) # array
 		
-		self.writeVInt(696969) # gems
+		self.writeVInt(6969) # gems
 		self.writeVInt(0) # free gems (?) 
 		
 		self.writeVInt(0)
