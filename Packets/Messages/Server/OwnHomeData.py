@@ -3,6 +3,10 @@ from Logic.Milestones import Milestones
 from Logic.Player import Player
 from Utils.Writer import Writer
 import random
+from Files.CsvLogic.Cards import Cards
+from Files.CsvLogic.Characters import Characters
+from Files.CsvLogic.Skins import Skins
+from Files.CsvLogic.Locations import Locations
 
 
 class OwnHomeData(Writer):
@@ -14,9 +18,9 @@ class OwnHomeData(Writer):
 		super().__init__(self.device)
 
 	def encode(self):
-		skins = 32
-		Brawlers228 = [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56]
-		cards = 60
+		skins = Skins().getSkins()
+		Brawlers228 = Cards().getBrawlers()
+		cards = Cards().getCards()
 		ressources_ids = [1, 5, 6]
 		self.writeVInt(2017189) # Timestamp
 		self.writeVInt(10) # Create new band timer
@@ -27,25 +31,25 @@ class OwnHomeData(Writer):
 		self.writeVInt(9999)  # Experience
 		
 		self.writeScID(28, 2)  # Player Icon
-		self.writeVInt(10) # Played Game Modes Count
-		for x in range(10): 
+		self.writeVInt(7) # Played Game Modes Count
+		for x in range(7): 
 			self.writeVInt(x) # Played Game Mode
 		
 		self.writeVInt(0) # selected skin count
 		for x in range(0):
 			self.writeScID(29, x) # Selected Skin
 		
-		self.writeVInt(skins) # unlocked skin count
-		for x in range(skins):
-			self.writeScID(29, x) # unlocked Skin
+		self.writeVInt(len(skins)) # unlocked skin count
+		for x in range(len(skins)):
+			self.writeScID(29, skins[x]) # unlocked Skin
 		
 		self.writeBool(True) # is time required to create new Band
 		self.writeVInt(0) # unknown bruh
 		self.writeVInt(69) # coins got
-		self.writeVInt(2) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)
-		self.writeBool(True) # is battle hints enabled
-		self.writeVInt(0) # coins doubler coins remaining (0 = not activated)
-		self.writeVInt(0) # coin boost secs remaining (0 = not activated)
+		self.writeVInt(1) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)
+		self.writeBool(False) # is battle hints enabled
+		self.writeVInt(6974) # coins doubler coins remaining (0 = not activated)
+		self.writeVInt(777) # coin boost secs remaining (0 = not activated)
 		self.writeInt8(22) # Season End timer (????)
 		self.writeVInt(2017189)  # Shop Timestamp
 		self.writeVInt(100) # box cost (gold)
@@ -93,12 +97,12 @@ class OwnHomeData(Writer):
 			self.writeVInt(39120) # Time Left
 			self.writeVInt(8) # coins to claim
 			self.writeVInt(8) # bonuska coins
-			self.writeVInt(60) # coins to win
-			self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-			self.writeScID(15, random.randint(0, 11)) # map
-			self.writeVInt(0) #  coins already collected
+			self.writeVInt(777) # coins to win
+			self.writeVInt(3) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
+			self.writeScID(15, random.randint(0, len(Locations().GetLocations()) - 1)) # map
+			self.writeVInt(69) #  coins already collected
 			self.writeVInt(2) #  coins collected statut
-			self.writeString() # text for event (TID)
+			self.writeString("Server by primodevhacc") # text for event (TID)
 
 		# event slot entry ends
 		
@@ -111,16 +115,16 @@ class OwnHomeData(Writer):
 		
 			self.writeVInt(events+1) # slot index
 			self.writeVInt(events+1) # slot number
-			self.writeVInt(1) # comming soon timer
+			self.writeVInt(1337) # comming soon timer
 			self.writeVInt(39120) # Time Left
 			self.writeVInt(8) # coins to claim
 			self.writeVInt(8) # bonuska coins
 			self.writeVInt(60) # coins to win
-			self.writeVInt(0) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
-			self.writeScID(15, random.randint(0, 11)) # map
+			self.writeVInt(2) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
+			self.writeScID(15, random.randint(0, len(Locations().GetLocations()) - 1)) # map
 			self.writeVInt(0) #  coins already collected
 			self.writeVInt(2) #  coins collected statut
-			self.writeString() # text for event (TID)
+			self.writeString("This event is comming soon") # text for event (TID)
 
 		# event slot entry ends
 		# ultra comming soon event ends
@@ -151,9 +155,9 @@ class OwnHomeData(Writer):
 		# motorised arrays stars 
 		self.writeVInt(5) # Commodity Array
 		
-		self.writeVInt(cards + len(ressources_ids)) # cards and ressources array
+		self.writeVInt(len(cards) + len(ressources_ids)) # cards and ressources array
 		
-		for i in range(cards):
+		for i in range(len(cards)):
 			self.writeScId(23, i)
 			
 			if cards in Brawlers228:
@@ -168,14 +172,14 @@ class OwnHomeData(Writer):
          
         # cards and ressources Array End
 		
-		self.writeVInt(15) # brawlers
-		for x in range(15):  # trophis
+		self.writeVInt(len(Brawlers228)) # brawlers
+		for x in range(len(Brawlers228)):  # trophis
 			self.writeVInt(16) # csvID
 			self.writeVInt(x) # brawlerID
 			self.writeVInt(1) # trophis
 		
-		self.writeVInt(15) # brawlers
-		for x in range(15):  # trophis for rank
+		self.writeVInt(len(Brawlers228)) # brawlers
+		for x in range(len(Brawlers228)):  # trophis for rank
 			self.writeVInt(16) # csvID
 			self.writeVInt(x) # brawlerID
 			self.writeVInt(1) # trophis for rank
@@ -188,7 +192,7 @@ class OwnHomeData(Writer):
 		self.writeVInt(0) # array
 		
 		self.writeVInt(6969) # gems
-		self.writeVInt(0) # free gems (?) 
+		self.writeVInt(13) # free gems (?) 
 		
 		self.writeVInt(0)
 		self.writeVInt(0)

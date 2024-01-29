@@ -8,7 +8,7 @@ class CryptoRc4:
 
         self.settings = json.load(open('Settings.json'))
         self.key = bytes(self.settings["RC4Key"], 'utf-8')
-        print(self.key)
+        print(f"[x] connection/deconnection using {self.key} key")
         self.nonce = b'nonce'
         self.RC4_Stream = RC4.new(self.key + self.nonce)
         self.RC4_Stream.encrypt(self.key + self.nonce)

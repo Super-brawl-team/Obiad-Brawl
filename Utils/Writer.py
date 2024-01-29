@@ -71,7 +71,6 @@ class Writer:
                 data >>= 7
             self.buffer += final   
             
-
     def writeVInt(self, data, rotate: bool = True):
         final = b''
         if data == 0:
@@ -120,6 +119,14 @@ class Writer:
         if ClassID != 0:
             self.writeVInt(InstanceID)
 
+    def writeBoolean(self, *args):
+        boolean = 0
+        i = 0
+        for value in args:
+            if value:
+                boolean |= 1 << i
+            i += 1
+        self.writeByte(boolean)
             
     def writeBool(self, boolean: bool):
         if boolean:

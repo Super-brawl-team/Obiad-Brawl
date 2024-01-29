@@ -113,7 +113,13 @@ class BattleEndSD(Writer):
 		self.writeVInt(self.plrs["PlayersAmount"]) # Battle End Screen Players
 		for Players in self.plrs["Brawlers"]:
 			self.writeString(Players["Name"]) # Player Name
-			self.writeVInt(IsStarPlayer) # team
+			if Players["Name"] == self.player.name:
+				self.writeVInt(IsStarPlayer) # team
+			else:
+				if Players["Team"] == 0:
+					self.writeVInt(0)
+				else:
+					self.writeVInt(2)
 			self.writeScID(Players["CharacterID"][0], Players["CharacterID"][1]) # Player Brawler
 			self.writeScID(Players["SkinID"][0], Players["SkinID"][1]) # Player Brawler Skin!
 			self.writeVInt(0) # Brawler Trophies
@@ -185,6 +191,8 @@ class BattleEndTrio(Writer):
 				IsStarPlayer = 1
 			else:
 				IsStarPlayer = 1
+		
+		
         # Star Player State End
 		
 		self.writeVInt(1) # Battle End Game Mode (5 = Showdown. Else is 3vs3)
@@ -202,10 +210,17 @@ class BattleEndTrio(Writer):
 		self.writeVInt(0) # Coin Doubler Coins Gained
 		
 		# Players Array
+		
 		self.writeVInt(self.plrs["PlayersAmount"]) # Battle End Screen Players
 		for Players in self.plrs["Brawlers"]:
 			self.writeString(Players["Name"]) # Player Name
-			self.writeVInt(IsStarPlayer) # isStarPlayer but its only you hehe
+			if Players["Name"] == self.player.name:
+				self.writeVInt(IsStarPlayer) # team
+			else:
+				if Players["Team"] == 0:
+					self.writeVInt(0)
+				else:
+					self.writeVInt(2)
 			self.writeScID(Players["CharacterID"][0], Players["CharacterID"][1]) # Player Brawler
 			self.writeScID(Players["SkinID"][0], Players["SkinID"][1]) # Player Brawler Skin!
 			self.writeVInt(0) # Brawler Trophies

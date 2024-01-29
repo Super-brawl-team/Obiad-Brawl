@@ -1,4 +1,3 @@
-# sroyzi team presents you... supershitcode
 from Packets.Messages.Server.BattleEnd import *
 from Logic.Player import Player
 from Utils.Reader import ByteStream
@@ -9,6 +8,7 @@ class AskForBattleEnd(ByteStream):
 	def __init__(self, data, device):
 		super().__init__(data)
 		self.device = device
+		self.player = Player(device)
 
 	def decode(self):
 		self.plrs = {}
@@ -26,12 +26,12 @@ class AskForBattleEnd(ByteStream):
 				"CharacterID": self.readDataReference(),
 				"SkinID": self.readDataReference(),
 				"Team": self.ReadVint(),
-				"IsPlayer": self.ReadVint(), # supposed to be boolean, but bytestream is uh...
+				"IsPlayer": self.readBoolean(), 
 				"Name": self.read_string()
 			})
 	def process(self):
 		
 		if self.plrs["BattleRank"] != 0: # showdown
-			BattleEndSD(self.device, self.device.Player, self.plrs).Send()
+			BattleEndSD(self.device, self.player, self.plrs).Send()
 		else:
-			BattleEndTrio(self.device, self.device.Player, self.plrs).Send()
+			BattleEndTrio(self.device, self.player, self.plrs).Send()

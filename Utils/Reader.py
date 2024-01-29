@@ -7,6 +7,13 @@ class ByteStream(BufferedReader):
     def __init__(self, initial_bytes):
         super().__init__(BytesIO(initial_bytes))
 
+    def readBoolean(self):
+        result = bool.from_bytes(bytes=self.read(1), byteorder='big', signed=False)
+        if result == True:
+            return True
+        else:
+            return False
+    
     def read_string(self):
         length = self.ReadUint32()
         if length == pow(2, 32) - 1:
@@ -19,6 +26,7 @@ class ByteStream(BufferedReader):
             else:
                 return decoded.decode('utf-8')
 
+    
     
     def readDataReference(self):
      Data = {}

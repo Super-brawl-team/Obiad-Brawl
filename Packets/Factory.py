@@ -5,6 +5,7 @@ from Packets.Messages.Client import *
 availablePackets = {
 
     10101: Login,
+    10107: ClientCapabilitiesMessage,
     10108: KeepAlive,
     10212: ChangeAvatarNameMessage,
     14102: Commands,

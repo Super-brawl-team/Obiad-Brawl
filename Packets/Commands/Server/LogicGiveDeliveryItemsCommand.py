@@ -1,5 +1,6 @@
 
 import random
+from Files.CsvLogic.Cards import Cards
 
 
 class LogicGiveDeliveryItemsCommand:
@@ -28,8 +29,19 @@ class LogicGiveDeliveryItemsCommand:
                 self.writeVInt(Nombre) # amount
                 self.writeVInt(0) # item given
           else:
-                Brawler = (random.randint(0, 15) * 4)
-                self.writeVInt(1) # Box ID
+                BrawlersList = Cards().getBrawlers()
+                print(f"[x] A box has been opened, here is what ids the reader has got: {BrawlersList}")
+                Brawler = (random.choice(BrawlersList))
+                Rarity = Cards().getBrawlerRarity(Brawler)
+                if Rarity == 'common':
+                   RID = 0
+                elif Rarity == 'rare':
+                   RID = 1
+                elif Rarity == 'epic':
+                   RID = 2
+                else:
+                   RID = 3
+                self.writeVInt(RID) # Box ID
                 self.writeScID(0, 0)
                 self.writeVInt(1)
                 self.writeScID(23, Brawler)
