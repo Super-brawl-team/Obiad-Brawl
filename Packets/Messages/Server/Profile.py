@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from Utils.Writer import Writer
+from Files.CsvLogic.Cards import Cards
+from Files.CsvLogic.Characters import Characters
 
 
 class Profile(Writer):
@@ -14,20 +16,22 @@ class Profile(Writer):
         super().__init__(self.device)
 
     def encode(self):
+                Brawlers228 = Cards().getBrawlers()
+                cards = Cards().getCards()
                 self.writeVint(self.HighID) # Player HighID
                 self.writeVint(self.LowID) # Player LowID
-                self.writeString("<cee1200>P<ce85400>r<ce19700>i<cdada00>m<cdada00>o<c92e507>D<c49f00e>E<c00fc16>V<c00fc16>H<c16a862>a<c2c54ae>c<c4200fa>c</c>")
+                self.writeString(self.player.name)
                 self.writeVint(0) # Unknown Data 
                 
-                self.writeVint(15) 
+                self.writeVint(len(Brawlers228)) 
                 
                 
                 # Hero Entry Array
-                for x in range(15):
+                for x in range(len(Brawlers228)):
                     self.writeScId(16, x)
                     self.writeVint(0)
-                    self.writeVint(999)  # Trophies 
-                    self.writeVint(999)  # Trophies for rank
+                    self.writeVint(500)  # Trophies 
+                    self.writeVint(500)  # Trophies for rank
                     self.writeVint(15) # Brawler Upgrade Level
                 # Hero Entry Array End
                 
@@ -43,9 +47,9 @@ class Profile(Writer):
                 self.writeVint(4) # Stats Index
                 self.writeVint(2000) # Highest Trophies
                 self.writeVint(5) # Stats Index
-                self.writeVint(15) # Unlocked Brawlers
+                self.writeVint(len(Brawlers228)) # Unlocked Brawlers
                 self.writeVint(7) # Stats Index
-                self.writeVint(28000000 + 1) # Player Profile Icon
+                self.writeVint(28000000 + 0) # Player Profile Icon
                 self.writeVint(8) # Stats Index
                 self.writeVint(1488) # Showdown Victories
                 # Stats Entry Array End

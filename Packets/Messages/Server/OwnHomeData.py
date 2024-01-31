@@ -25,12 +25,12 @@ class OwnHomeData(Writer):
 		self.writeVInt(2017189) # Timestamp
 		self.writeVInt(10) # Create new band timer
 		
-		self.writeVInt(9299)  # Trophies
-		self.writeVInt(9292)  # Highest Trophies
+		self.writeVInt(500 * len(Brawlers228))  # Trophies
+		self.writeVInt(500 * len(Brawlers228))  # Highest Trophies
 		
-		self.writeVInt(9999)  # Experience
+		self.writeVInt(69696969)  # Experience
 		
-		self.writeScID(28, 2)  # Player Icon
+		self.writeScID(28, 0)  # Player Icon
 		self.writeVInt(7) # Played Game Modes Count
 		for x in range(7): 
 			self.writeVInt(x) # Played Game Mode
@@ -45,8 +45,8 @@ class OwnHomeData(Writer):
 		
 		self.writeBool(True) # is time required to create new Band
 		self.writeVInt(0) # unknown bruh
-		self.writeVInt(69) # coins got
-		self.writeVInt(1) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)
+		self.writeVInt(1) # coins got
+		self.writeVInt(0) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)
 		self.writeBool(False) # is battle hints enabled
 		self.writeVInt(6974) # coins doubler coins remaining (0 = not activated)
 		self.writeVInt(777) # coin boost secs remaining (0 = not activated)
@@ -148,7 +148,7 @@ class OwnHomeData(Writer):
 		self.writeVInt(0)
 		self.writeVInt(1)  # Ids
 		
-		self.writeString("PrimoDEVHacc")
+		self.writeString(self.player.name)
 		self.writeBool(True) # nameSet
 		self.writeInt(0)
 		
@@ -176,13 +176,13 @@ class OwnHomeData(Writer):
 		for x in range(len(Brawlers228)):  # trophis
 			self.writeVInt(16) # csvID
 			self.writeVInt(x) # brawlerID
-			self.writeVInt(1) # trophis
+			self.writeVInt(500) # trophis
 		
 		self.writeVInt(len(Brawlers228)) # brawlers
 		for x in range(len(Brawlers228)):  # trophis for rank
 			self.writeVInt(16) # csvID
 			self.writeVInt(x) # brawlerID
-			self.writeVInt(1) # trophis for rank
+			self.writeVInt(500) # trophis for rank
 		# motorized arrays ENDDDD
 		
 		
