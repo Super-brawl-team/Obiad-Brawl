@@ -5,6 +5,8 @@
 
  Enjoy tons of cool features!
 
+# TODO
+  db, online battles (real), teams
 # The server will be frequently updated
 
 Feel free to use it but don't forget to credit :)
