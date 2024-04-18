@@ -9,7 +9,7 @@ from Files.CsvLogic.Skins import Skins
 from Files.CsvLogic.Locations import Locations
 
 
-class OwnHomeData(Writer):
+class OwnHomeDataMessage(Writer):
 
 	def __init__(self, device):
 		self.id = 24101

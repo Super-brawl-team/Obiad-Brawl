@@ -1,9 +1,9 @@
-from Packets.Messages.Server.BattleEnd import *
+from Packets.Messages.Server.BattleEndMessage import *
 from Logic.Player import Player
 from Utils.Reader import ByteStream
 
 
-class AskForBattleEnd(ByteStream):
+class AskForBattleEndMessage(ByteStream):
 
 	def __init__(self, data, device):
 		super().__init__(data)

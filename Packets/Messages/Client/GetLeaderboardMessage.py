@@ -3,7 +3,7 @@ from random import choice
 from string import ascii_uppercase
 import json
 from Logic.Player import Player
-from Packets.Messages.Server.Leaderboards import Leaderboard
+from Packets.Messages.Server.LeaderboardMessage import LeaderboardMessage
 
 class GetLeaderboardMessage(ByteStream):
     def __init__(self, data, device):
@@ -18,5 +18,5 @@ class GetLeaderboardMessage(ByteStream):
 
     def process(self):
     
-       Leaderboard(self.device).Send()
+       LeaderboardMessage(self.device).Send()
 

@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
-from Packets.Messages.Server.OwnHomeData import OwnHomeData
+from Packets.Messages.Server.OwnHomeDataMessage import OwnHomeDataMessage
 from Utils.Reader import ByteStream
 
 
-class GoHomeFromOffline(ByteStream):
+class GoHomeFromOfflineMessage(ByteStream):
 
     def __init__(self, data, device):
         super().__init__(data)
@@ -14,4 +12,4 @@ class GoHomeFromOffline(ByteStream):
         pass
 
     def process(self):
-        OwnHomeData(self.device).Send() # 14109
+        OwnHomeDataMessage(self.device).Send() # 14109

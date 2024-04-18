@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from Packets.Messages.Server.KeepAliveOk import KeepAliveOk
+from Packets.Messages.Server.KeepAliveOkMessage import KeepAliveOkMessage
 from Utils.Reader import ByteStream
 
 
-class KeepAlive(ByteStream):
+class KeepAliveMessage(ByteStream):
 
     def __init__(self, data, device):
         super().__init__(data)
@@ -14,4 +14,4 @@ class KeepAlive(ByteStream):
         pass
 
     def process(self):
-        KeepAliveOk(self.device).Send()
+        KeepAliveOkMessage(self.device).Send()
