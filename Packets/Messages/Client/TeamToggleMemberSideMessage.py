@@ -1,10 +1,9 @@
 from Packets.Messages.Server.TeamMessage import TeamMessage
-import random
-from Logic.Player import Player
 from Utils.Reader import ByteStream
+from Logic.Player import Player
 
 
-class TeamCreateMessage(ByteStream):
+class TeamToggleMemberSideMessageMessage(ByteStream):
     def __init__(self, data, device):
         super().__init__(data)
         self.device = device
@@ -13,10 +12,9 @@ class TeamCreateMessage(ByteStream):
 
 
     def decode(self):
-        self.player.teamEventIndex = self.read_Vint()
-        self.player.teamType = self.read_Vint()
-
+        self.read_Vint() # Where player used to be
+        self.read_Vint() # New place for the player
+        
 
     def process(self):
-        self.player.teamID = random.randint(1, 2147483647)
         TeamMessage(self.device, self.player).Send()

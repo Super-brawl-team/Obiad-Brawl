@@ -17,4 +17,5 @@ class TeamLeaveMessage(ByteStream):
 
     def process(self):
         self.player.teamID = 0
+        self.player.teamStreamMessageCount = 0
         TeamLeftMessage(self.device, self.player).Send()

@@ -13,8 +13,7 @@ class TeamChangeMemberSettingsMessage(ByteStream):
 
     def decode(self):
         self.read_Vint()
-        self.read_Vint()
-        self.brawlerID = self.read_Vint()
+        self.player.selectedCard = self.readDataReference()
 
 
     def process(self):

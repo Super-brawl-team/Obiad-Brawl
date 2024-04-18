@@ -1,10 +1,10 @@
-
-from Packets.Messages.Server.Gameroom.TeamMessage import TeamMessage
+from Packets.Messages.Server.TeamMessage import TeamMessage
+import random
 from Logic.Player import Player
 from Utils.Reader import ByteStream
 
 
-class TeamSetRankedLocationMessage(ByteStream):
+class TeamJoinMessage(ByteStream):
     def __init__(self, data, device):
         super().__init__(data)
         self.device = device
@@ -13,8 +13,10 @@ class TeamSetRankedLocationMessage(ByteStream):
 
 
     def decode(self):
-        EventSlotIndex = self.read_Vint()
+        self.player.teamID = self.read_Vint()
         self.read_Vint()
-            
+        self.read_Vint()
+
+
     def process(self):
         TeamMessage(self.device, self.player).Send()

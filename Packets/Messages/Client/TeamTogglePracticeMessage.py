@@ -1,9 +1,9 @@
 from Packets.Messages.Server.TeamMessage import TeamMessage
-from Logic.Player import Player
 from Utils.Reader import ByteStream
+from Logic.Player import Player
 
 
-class TeamSetLocationMessage(ByteStream):
+class TeamTogglePracticeMessage(ByteStream):
     def __init__(self, data, device):
         super().__init__(data)
         self.device = device
@@ -12,9 +12,12 @@ class TeamSetLocationMessage(ByteStream):
 
 
     def decode(self):
-        LocationID = self.read_Vint()
-        MapID = self.read_Vint()
-            
+        pass
+        
 
     def process(self):
+        if self.player.isTeamInPracticeMode == True:
+           self.player.isTeamInPracticeMode = False
+        else:
+            self.player.isTeamInPracticeMode = True 
         TeamMessage(self.device, self.player).Send()
