@@ -22,6 +22,7 @@ class OwnHomeData(Writer):
 		Brawlers228 = Cards().getBrawlers()
 		cards = Cards().getCards()
 		ressources_ids = [1, 5, 6]
+
 		self.writeVInt(2017189) # Timestamp
 		self.writeVInt(10) # Create new band timer
 		
@@ -46,11 +47,11 @@ class OwnHomeData(Writer):
 		self.writeBool(True) # is time required to create new Band
 		self.writeVInt(0) # unknown bruh
 		self.writeVInt(1) # coins got
-		self.writeVInt(0) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)
+		self.writeVInt(0) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)]
 		self.writeBool(False) # is battle hints enabled
 		self.writeVInt(6974) # coins doubler coins remaining (0 = not activated)
 		self.writeVInt(777) # coin boost secs remaining (0 = not activated)
-		self.writeInt8(22) # Season End timer (????)
+		self.writeIntBoolean(False) # unknown
 		self.writeVInt(2017189)  # Shop Timestamp
 		self.writeVInt(100) # box cost (gold)
 		self.writeVInt(10) # box cost (gems)
@@ -67,32 +68,27 @@ class OwnHomeData(Writer):
 		self.writeVInt(10) # rare brawler cost
 		self.writeVInt(70) # epic brawler
 		self.writeVInt(600) # legendary brawler cost
-		# dudka events starts
 		
-		self.writeVInt(4) # count
-		
-		self.writeVInt(1) # event #1
-		self.writeVInt(0) # Brawlers needed for that
-		
-		self.writeVInt(2) # event #2
-		self.writeVInt(3) # Brawlers needed for that 
-		
-		self.writeVInt(3) # Event #3
-		self.writeVInt(5) # Brawlers needed for that
-		
-		self.writeVInt(4) # Event #4
-		self.writeVInt(8) # Brawlers needed for that
+		# Events array starts
+
+		# Brawlers required for events starts
+
+		self.writeVInt(self.player.eventCount) # count
+
+		requiredBrawlers = [0, 3, 5, 8]
+
+		for event in range(self.player.eventCount):
+			self.writeVInt(event + 1) # event index
+			self.writeVInt(requiredBrawlers[event]) # Brawlers needed for that
+
+		# Brawlers required for events ends
 		
 		# disponible events starts
 		
 		self.writeVInt(self.player.eventCount) # disponibles event slot
 		for events in range(self.player.eventCount):
-		
-		
-		#  event slot entry start
-		
-			self.writeVInt(events+1) # slot index
-			self.writeVInt(events+1) # slot number
+			self.writeVInt(events + 1) # slot index
+			self.writeVInt(events + 1) # slot number
 			self.writeVInt(1) # comming soon timer
 			self.writeVInt(39120) # Time Left
 			self.writeVInt(8) # coins to claim
@@ -102,17 +98,13 @@ class OwnHomeData(Writer):
 			self.writeScID(15, random.randint(0, len(Locations().GetLocations()) - 1)) # map
 			self.writeVInt(69) #  coins already collected
 			self.writeVInt(2) #  coins collected statut
-			self.writeString("Server by primodevhacc") # text for event (TID)
+			self.writeString("Server by PrimoDEVHacc") # text for event (TID)
 
-		# event slot entry ends
+		# disponible events ends
 		
-		# ultra comming soon event starts (it doesn't work bruhh)
+		# comming soon events starts
 		self.writeVInt(4) # disponibles event slot
 		for events in range(4):
-		
-		
-		#  event slot entry start
-		
 			self.writeVInt(events+1) # slot index
 			self.writeVInt(events+1) # slot number
 			self.writeVInt(1337) # comming soon timer
@@ -126,31 +118,25 @@ class OwnHomeData(Writer):
 			self.writeVInt(2) #  coins collected statut
 			self.writeString("This event is comming soon") # text for event (TID)
 
-		# event slot entry ends
-		# ultra comming soon event ends
-		# dudka events end
+		# comming soon event ends
+			
+		# Events array ends
+		
 		self.writeVInt(5) # upgrades Array
 		for x in range(5):
-			self.writeVInt(x+1) # price
+			self.writeVInt(x + 1) # price
 		
 		Milestones.MilestonesArray(self)
 		
 		
-		self.writeInt(0)
-		self.writeInt(1)  # Ids
+		self.writeLong(0, 1)  # Player id
 		
-		self.writeVInt(0)
-		self.writeVInt(1)  # Ids
-		
-		self.writeVInt(0)
-		self.writeVInt(1)  # Ids
-
-		self.writeVInt(0)
-		self.writeVInt(1)  # Ids
+		for id in range(3):
+			self.writeLogicLong(0, 1) # Player ids related to home menu
 		
 		self.writeString(self.player.name)
 		self.writeBool(True) # nameSet
-		self.writeInt(0)
+		self.writeInt(0) # Player region ?
 		
 		# motorised arrays stars 
 		self.writeVInt(5) # Commodity Array
