@@ -6,7 +6,7 @@ from Logic.Player import Player
 from Packets.LogicCommandManager import commands
 
 
-class Commands(ByteStream):
+class EndClientTurnMessage(ByteStream):
 
     def __init__(self, data, device):
         super().__init__(data)
@@ -30,4 +30,6 @@ class Commands(ByteStream):
                 command.decode()
                 command.process()
             elif self.commandID > 0:
-                print("Unhandled command: ", self.commandID)      
+                print("Unhandled command: ", self.commandID)  
+            else:
+                print("A negative length command got recieved")    

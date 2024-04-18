@@ -1,6 +1,7 @@
 from Logic.Player import Player
 from Packets.Messages.Server.TeamMessage import TeamMessage
 from Packets.Messages.Server.TeamGameStartingMessage import TeamGameStartingMessage
+from Packets.Messages.Server.MatchMakingStatusMessage import MatchMakingStatusMessage
 from Utils.Reader import ByteStream
 
 
@@ -20,4 +21,5 @@ class TeamSetMemberReadyMessage(ByteStream):
     def process(self):
         TeamMessage(self.device, self.player).Send()
         TeamGameStartingMessage(self.device, self.player).Send()
+        MatchMakingStatusMessage(self.device, self.player, True).send()
         
