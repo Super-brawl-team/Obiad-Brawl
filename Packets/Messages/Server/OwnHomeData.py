@@ -160,7 +160,7 @@ class OwnHomeData(Writer):
 		for i in range(len(cards)):
 			self.writeScId(23, i)
 			
-			if cards in Brawlers228:
+			if i in Brawlers228:
 				self.writeVInt(1) # brawler unclocked
 			else:
 				self.writeVInt(5) # upgrades count
