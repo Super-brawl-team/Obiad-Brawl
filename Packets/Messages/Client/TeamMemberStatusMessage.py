@@ -12,7 +12,7 @@ class TeamMemberStatusMessage(ByteStream):
 
 
     def decode(self):
-        self.Status = self.read_Vint()
+        self.player.teamStatus = self.read_Vint()
 
 
     def process(self):

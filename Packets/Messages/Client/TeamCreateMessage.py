@@ -18,4 +18,5 @@ class TeamCreateMessage(BSMessageReader):
 
 
     def process(self):
+        self.player.teamID = random.randint(1, 2147483647)
         TeamMessage(self.device, self.player).Send()

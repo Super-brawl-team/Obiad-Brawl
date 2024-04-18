@@ -13,8 +13,8 @@ class TeamSetMemberReadyMessage(ByteStream):
 
 
     def decode(self):
-        isReady = self.read_Vint()
-        self.read_Vint()
+        self.player.isReady = self.readboolean()
+        self.read_Vint() #idk
 
 
     def process(self):

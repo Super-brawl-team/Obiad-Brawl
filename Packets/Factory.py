@@ -16,6 +16,7 @@ availablePackets = {
     14302: AskForClan,
     14350: TeamCreateMessage,
     14353: TeamLeaveMessage,
+    14355: TeamSetMemberReady,
     14363: TeamSetLocationMessage,
     14354: TeamChangeMemberSettingsMessage,
     14361: TeamMemberStatusMessage,
