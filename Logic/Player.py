@@ -14,6 +14,7 @@ class Player:
     teamType = 0
     teamStreamMessageCount = 0
     isAdvertiseToBand = False
+    matchmakeStartTime = 0
 
     def __init__(self, device):
         self.device = device

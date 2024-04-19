@@ -15,4 +15,4 @@ class CancelMatchMakingMessage(ByteStream):
         
 
     def process(self):
-        MatchMakingStatusMessage(self.device, self.player, False).send()
+        MatchMakingStatusMessage(self.device, self.player, False).Send()

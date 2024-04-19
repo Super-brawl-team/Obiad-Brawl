@@ -1,6 +1,8 @@
 from Packets.Messages.Server.MatchMakingStatusMessage import MatchMakingStatusMessage
+from Packets.Messages.Server.StartLoadingMessage import StartLoadingMessage
 from Utils.Reader import ByteStream
 from Logic.Player import Player
+import time
 
 
 class MatchmakeRequestMessage(ByteStream):
@@ -20,4 +22,11 @@ class MatchmakeRequestMessage(ByteStream):
         
 
     def process(self):
-        MatchMakingStatusMessage(self.device, self.player, True).send()
+        self.player.matchmakeStartTime = time.time()
+        while self.player.matchmakeStartTime - time.time() != 20: 
+            for time in range(20):
+                if self.player.matchmakeStartTime - time.time() >= time and self.player.matchmakeStartTime - time.time() << time + 1:
+                    self.seconds = time
+                    time += 1
+            MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
+        StartLoadingMessage(self.device, self.player).Send()
