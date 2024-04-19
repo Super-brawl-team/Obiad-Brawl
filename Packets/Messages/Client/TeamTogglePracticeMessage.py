@@ -3,7 +3,7 @@ from Utils.Reader import ByteStream
 from Logic.Player import Player
 
 
-class TeamTogglePracticeMessage(ByteStream):
+class TeamTogglePractiseMessage(ByteStream):
     def __init__(self, data, device):
         super().__init__(data)
         self.device = device

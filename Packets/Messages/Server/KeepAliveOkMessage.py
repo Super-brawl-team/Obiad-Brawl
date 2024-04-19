@@ -2,7 +2,7 @@
 from Utils.Writer import Writer
 
 
-class KeepAliveOk(Writer):
+class KeepAliveOkMessage(Writer):
 
     def __init__(self, device):
         self.id = 20108
