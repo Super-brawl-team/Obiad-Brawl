@@ -51,7 +51,7 @@ class OwnHomeDataMessage(Writer):
 		self.writeBool(False) # is battle hints enabled
 		self.writeVInt(6974) # coins doubler coins remaining (0 = not activated)
 		self.writeVInt(777) # coin boost secs remaining (0 = not activated)
-		self.writeIntBoolean(False) # unknown
+		self.writeBool(False) # unknown
 		self.writeVInt(2017189)  # Shop Timestamp
 		self.writeVInt(100) # box cost (gold)
 		self.writeVInt(10) # box cost (gems)
