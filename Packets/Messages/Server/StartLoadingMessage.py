@@ -62,5 +62,5 @@ class StartLoadingMessage(Writer):
         self.writeVint(0) # Map Blocks
         self.writeBoolean(False) # Is spectating
 
-        self.writeScId(15, 1) # Location ID
+        self.writeScId(15, 3) # Location ID
         self.writeBoolean(False)

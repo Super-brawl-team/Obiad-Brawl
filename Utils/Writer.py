@@ -46,6 +46,7 @@ class Writer:
         self.writeInt(data2)
         
     def writeBytes(self, data):
+        self.writeInt(len(data))
         self.buffer += data
    
     def writeVint(self, data, rotate: bool = True):

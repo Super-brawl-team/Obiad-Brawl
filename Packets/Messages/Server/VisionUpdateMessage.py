@@ -1,5 +1,7 @@
 from Utils.Writer import Writer
+from Logic.Battle.LogicGameObjectManagerServer import LogicGameObjectManagerServer
 import time
+from Utils.BitStream import BitStream
 
 
 class VisionUpdate(Writer):
@@ -11,4 +13,13 @@ class VisionUpdate(Writer):
 
 
     def encode(self):
-        self.writeInt(1)
+        self.writeVInt(self.player.battleTicks) # Battle Ticks
+        self.writeVInt(self.player.wifi) # related to wifi?
+        self.writeVInt(0) # Commands Count (just dont use this lmao)
+        
+        stream = BitStream()
+        
+        LogicGameObjectManagerServer.encode(stream)
+        
+        self.writeBytes(stream.getBuff())
+        
