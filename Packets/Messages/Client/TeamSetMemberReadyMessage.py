@@ -5,7 +5,7 @@ from Packets.Messages.Server.MatchMakingStatusMessage import MatchMakingStatusMe
 from Packets.Messages.Server.StartLoadingMessage import StartLoadingMessage
 from Packets.Messages.Server.UDPConnectionInfoMessage import UDPConnectionInfoMessage
 from Utils.Reader import ByteStream
-from Logic.LogicBattle import LogicBattle
+from Logic.Battle.LogicBattle import LogicBattle
 import time
 
 

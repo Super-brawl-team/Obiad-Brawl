@@ -4,7 +4,7 @@ import time
 from Utils.BitStream import BitStream
 
 
-class VisionUpdate(Writer):
+class VisionUpdateMessage(Writer):
     def __init__(self, device, player):
         self.device = device
         self.id = 24109
