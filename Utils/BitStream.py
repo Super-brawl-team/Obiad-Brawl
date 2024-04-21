@@ -236,8 +236,7 @@ class BitStream:
 
 	def writePositiveIntMax262143(self, value):
 		self.writePositiveInt(value, 18)
-
-
+		
 	def writePositiveIntMax524287(self, value):
 		self.writePositiveInt(value, 19)
 
@@ -328,7 +327,7 @@ class BitStream:
 	def writeDataReference(self, classID, instanceID):
 		self.writePositiveIntMax31(classID)
 		if classID >= 1:
-			self.writePositiveIntMax511(instanceID)
+			self.writePositiveIntMax255(instanceID)
 		else:
 			pass
 	
