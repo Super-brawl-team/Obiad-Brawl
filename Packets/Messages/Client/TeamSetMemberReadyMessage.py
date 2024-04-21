@@ -3,7 +3,9 @@ from Packets.Messages.Server.TeamMessage import TeamMessage
 from Packets.Messages.Server.TeamGameStartingMessage import TeamGameStartingMessage
 from Packets.Messages.Server.MatchMakingStatusMessage import MatchMakingStatusMessage
 from Packets.Messages.Server.StartLoadingMessage import StartLoadingMessage
+from Packets.Messages.Server.UDPConnectionInfoMessage import UDPConnectionInfoMessage
 from Utils.Reader import ByteStream
+from Logic.LogicBattle import LogicBattle
 import time
 
 
@@ -30,5 +32,6 @@ class TeamSetMemberReadyMessage(ByteStream):
                     self.seconds = time
                     time += 1
             MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
-        StartLoadingMessage(self.device, self.player).Send()
+        UDPConnectionInfoMessage(self.device, self.player).Send()
+        LogicBattle.start(self.client, self.player)
         

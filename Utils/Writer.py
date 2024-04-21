@@ -19,6 +19,10 @@ class Writer:
         
     def writeShortEndian(self, data, length=2):
         self.buffer += data.to_bytes(length, 'little')
+
+    def writeBytes(self, data):
+        self.writeInt(len(data))
+        self.buffer += data
         
     def writeInt8(self, data):
         self.writeInt(data, 1)
@@ -45,9 +49,7 @@ class Writer:
         self.writeInt(data1)
         self.writeInt(data2)
         
-    def writeBytes(self, data):
-        self.writeInt(len(data))
-        self.buffer += data
+    
    
     def writeVint(self, data, rotate: bool = True):
         final = b''

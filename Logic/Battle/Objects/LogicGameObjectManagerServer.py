@@ -45,16 +45,16 @@ class LogicGameObjectManagerServer(BitStream):
             stream.writePositiveIntMax63(0)
             stream.writePositiveIntMax3(0)
         
-        stream.writePositiveIntMax127(9) # Game objects amount
+        stream.writePositiveIntMax127(5) # Game objects amount
 
-        for x in range(6):
+        for x in range(2):
             stream.writeDataReference(16, x) # brawlers
 
         stream.writeDataReference(16, 22) # safe 2
         stream.writeDataReference(16, 25) # tnt
         stream.writeDataReference(16, 25) # tnt
 
-        for index in range(9):
+        for index in range(5):
             stream.writeObjectRunning(2, index)
 
         stream.writePositiveIntMax8191(1950) # x
@@ -102,93 +102,7 @@ class LogicGameObjectManagerServer(BitStream):
         stream.writePositiveIntMax2047(0)
         stream.writeBoolean(False)
         stream.writePositiveIntMax4095(0)
-        # second player
         
-        stream.writePositiveInt(2550, 13) # x
-        stream.writePositiveInt(9750, 14) # y
-        stream.writePositiveInt(1, 7) # player index
-        stream.writePositiveInt(0, 12) # z
-        stream.writePositiveInt(10, 4) # visibility
-        stream.writePositiveInt(270, 9) # angle
-        stream.writePositiveInt(270, 9) # angle
-        stream.writePositiveInt(4, 3) # object state...
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(1, 1)
-        stream.writePositiveInt(63, 6) # playing anim
-        stream.writePositiveInt(0, 1) # rotation related
-        stream.writePositiveInt(0, 1) # stunned
-        stream.writePositiveInt(0, 1) # unk
-        stream.writePositiveInt(0, 1) # star power
-        stream.writePositiveInt(0, 7)
-        stream.writePositiveInt(0, 5)
-        stream.writePositiveInt(600, 11) # current health
-        stream.writePositiveInt(600, 11) # max health
-        stream.writePositiveInt(0, 6) # items count?
-        stream.writePositiveInt(0, 13)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1) # has immunity shield
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1) # is fully visible ?
-        stream.writePositiveInt(0, 9)
-        stream.writePositiveInt(1, 5) # damages count
-        for x in range(1):
-            stream.writePositiveIntMax4095(1)
-        # skills related
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(3000, 12) # ammo charge ?
-        # end
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 12)
-        # third player
-        stream.writePositiveInt(3150, 13)
-        stream.writePositiveInt(9750, 14)
-        stream.writePositiveInt(2, 7)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(10, 4)
-        stream.writePositiveInt(270, 9)
-        stream.writePositiveInt(270, 9)
-        stream.writePositiveInt(4, 3)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(1, 1)
-        stream.writePositiveInt(63, 6)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 7)
-        stream.writePositiveInt(0, 5)
-        stream.writePositiveInt(700, 11)
-        stream.writePositiveInt(700, 11)
-        stream.writePositiveInt(0, 6)
-        stream.writePositiveInt(0, 13)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 9)
-        stream.writePositiveInt(0, 5)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(3000, 12)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 12)
         # fourth player
         stream.writePositiveInt(750, 13)
         stream.writePositiveInt(150, 14)
@@ -230,47 +144,7 @@ class LogicGameObjectManagerServer(BitStream):
         stream.writePositiveInt(0, 11)
         stream.writePositiveInt(0, 1)
         stream.writePositiveInt(0, 12)
-        # fifth player
-        stream.writePositiveInt(150, 13)
-        stream.writePositiveInt(150, 14)
-        stream.writePositiveInt(20, 7)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(10, 4)
-        stream.writePositiveInt(90, 9)
-        stream.writePositiveInt(90, 9)
-        stream.writePositiveInt(4, 3)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(1, 1)
-        stream.writePositiveInt(63, 6)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 7)
-        stream.writePositiveInt(0, 5)
-        stream.writePositiveInt(700, 11)
-        stream.writePositiveInt(700, 11)
-        stream.writePositiveInt(0, 6)
-        stream.writePositiveInt(0, 13)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 9)
-        stream.writePositiveInt(0, 5)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(3000, 12)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 12)
+        
         # chest
         stream.writePositiveInt(2550, 13) # box x
         stream.writePositiveInt(1050, 14) # box y

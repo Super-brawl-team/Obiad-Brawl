@@ -2,6 +2,8 @@ from Packets.Messages.Server.MatchMakingStatusMessage import MatchMakingStatusMe
 from Packets.Messages.Server.StartLoadingMessage import StartLoadingMessage
 from Utils.Reader import ByteStream
 from Logic.Player import Player
+from Logic.LogicBattle import LogicBattle
+from Packets.Messages.Server.UDPConnectionInfoMessage import UDPConnectionInfoMessage
 import time
 
 
@@ -29,4 +31,5 @@ class MatchmakeRequestMessage(ByteStream):
                     self.seconds = time
                     time += 1
             MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
-        StartLoadingMessage(self.device, self.player).Send()
+        UDPConnectionInfoMessage(self.device, self.player).Send()
+        LogicBattle.start(self.client, self.player)
