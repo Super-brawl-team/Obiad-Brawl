@@ -8,7 +8,7 @@ class Player:
     teamID = 0
     teamStatus = 0
     isReadyState = False
-    selectedCard = (16, 0)
+    selectedCard = [16, 0]
     isTeamInPracticeMode = False
     teamEventIndex = 0
     teamType = 0
@@ -17,6 +17,7 @@ class Player:
     matchmakeStartTime = 0
     battleTicks = 0
     wifi = 0
+
 
     def __init__(self, device):
         self.device = device
