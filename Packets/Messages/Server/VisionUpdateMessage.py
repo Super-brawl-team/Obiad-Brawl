@@ -1,5 +1,5 @@
 from Utils.Writer import Writer
-from Logic.Battle.LogicGameObjectManagerServer import LogicGameObjectManagerServer
+from Logic.Battle.Objects.LogicGameObjectManagerServer import LogicGameObjectManagerServer
 import time
 from Utils.BitStream import BitStream
 
