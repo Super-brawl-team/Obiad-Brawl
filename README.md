@@ -1,6 +1,8 @@
 # Obiad Brawl
  My first open source yey
  # PLEASE READ THIS BEFORE USING IT, SERIOUSLY 😭
+# THIS IS AN OPEN SOURCE SERVER, IT IS USED FOR SELFHOSTING OR SIMPLE HOSTING
+# INSTALLING THE IPA WITHOUT DOING NOTHING WILL OF COURSE NOT WORK, FOLLOW THE TUTORIAL PLEASE
  Yeah its obed brawl's upgrade, but i swear i will change core!
 
  Enjoy tons of cool features, counting the ability to add brawlers and skins!
