@@ -2,7 +2,7 @@
 from Utils.Writer import Writer
 from Files.CsvLogic.Cards import Cards
 from Files.CsvLogic.Characters import Characters
-
+import json
 
 class Profile(Writer):
 
@@ -16,42 +16,50 @@ class Profile(Writer):
         super().__init__(self.device)
 
     def encode(self):
-                Brawlers228 = Cards().getBrawlers()
+                Brawlers228 = Characters().getBrawlers()
                 cards = Cards().getCards()
-                self.writeVint(self.HighID) # Player HighID
-                self.writeVint(self.LowID) # Player LowID
+                self.settings = json.load(open('Settings.json'))
+                self.maximumRank = self.settings["MaximumRank"]
+                self.maximumUpgradeLevel = self.settings["MaximumUpgradeLevel"]
+                self.requiredTrophiesForRank = ProgressStart = [0,10,20,30,40,60,80,100,120,140,160,180,220,260,300,340,380,420,460,500,550,600,650,700,750,800,850,900,950,1000,1050,1100,1150,1200]
+                if self.maximumRank <= 34:
+                      self.brawlersTrophies = self.requiredTrophiesForRank[self.maximumRank-1]
+                else:
+                      self.brawlersTrophies = self.brawlersTrophies = self.requiredTrophiesForRank[33] + (50* (self.maximumRank-34))
+                self.writeVInt(self.HighID) # Player HighID
+                self.writeVInt(self.LowID) # Player LowID
                 self.writeString(self.player.name)
-                self.writeVint(0) # Unknown Data 
+                self.writeVInt(0) # Unknown Data 
                 
-                self.writeVint(len(Brawlers228)) 
+                self.writeVInt(len(Brawlers228)) 
                 
                 
                 # Hero Entry Array
-                for x in range(len(Brawlers228)):
+                for x in Brawlers228:
                     self.writeScId(16, x)
-                    self.writeVint(0)
-                    self.writeVint(500)  # Trophies 
-                    self.writeVint(500)  # Trophies for rank
-                    self.writeVint(15) # Brawler Upgrade Level
+                    self.writeVInt(0)
+                    self.writeVInt(self.brawlersTrophies)  # Trophies 
+                    self.writeVInt(self.brawlersTrophies)  # Trophies for rank
+                    self.writeVInt(self.maximumUpgradeLevel*3) # Brawler Upgrade Level
                 # Hero Entry Array End
                 
                 
                 # Stats Entry Array
-                self.writeVint(7) # Stats Count
-                self.writeVint(1) # Stats Index
-                self.writeVint(666) # Total Victories
+                self.writeVInt(7) # Stats Count
+                self.writeVInt(1) # Stats Index
+                self.writeVInt(666) # Total Victories
                 self.writeVint(2) # Stats Index
                 self.writeVint(666) # Player Experience Points
                 self.writeVint(3) # Stats Index
-                self.writeVint(2000) # Player Trophies
+                self.writeVint(self.brawlersTrophies* len(Brawlers228)) # Player Trophies
                 self.writeVint(4) # Stats Index
-                self.writeVint(2000) # Highest Trophies
+                self.writeVint(self.brawlersTrophies* len(Brawlers228)) # Highest Trophies
                 self.writeVint(5) # Stats Index
                 self.writeVint(len(Brawlers228)) # Unlocked Brawlers
                 self.writeVint(7) # Stats Index
                 self.writeVint(28000000 + 0) # Player Profile Icon
                 self.writeVint(8) # Stats Index
-                self.writeVint(1488) # Showdown Victories
+                self.writeVint(6969) # Showdown Victories
                 # Stats Entry Array End
                 # Player Profile End
                 

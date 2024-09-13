@@ -1,47 +1,58 @@
 
 import random
 from Files.CsvLogic.Cards import Cards
+from Utils.Reader import ByteStream
 
-
-class LogicGiveDeliveryItemsCommand:
+class LogicGiveDeliveryItemsCommand(ByteStream):
+    def __init__(self, device, player, data):
+        super().__init__(data)
+        self.player = player
+        self.device = device
     def encode(self):
         
-          PremierTirage = random.randint(0, 1)
-          if PremierTirage == 1:
+          randomValue1 = random.randint(0, 1)
+          if randomValue1 == 1:
           
                 Elixir = random.randint(0, 3)
                 if Elixir == 0:
-                   Nombre = 1
-                   Rareté = 0
+                   Amount = 1
+                   Rarity = 0
                 elif Elixir == 1:
-                   Nombre = 2
-                   Rareté = 1
+                   Amount = 2
+                   Rarity = 1
                 elif Elixir == 2:
-                   Nombre = 5
-                   Rareté = 2
+                   Amount = 5
+                   Rarity = 2
                 elif Elixir == 3:
-                   Nombre = 10
-                   Rareté = 3
+                   Amount = 10
+                   Rarity = 3
             
            
-                self.writeVInt(Rareté) # rarity
+                self.writeVInt(Rarity) # rarity
                 self.writeScID(5, 6) # item type
-                self.writeVInt(Nombre) # amount
+                self.writeVInt(Amount) # amount
                 self.writeVInt(0) # item given
           else:
                 BrawlersList = Cards().getBrawlers()
-                print(f"[x] A box has been opened, here is what ids the reader has got: {BrawlersList}")
                 Brawler = (random.choice(BrawlersList))
                 Rarity = Cards().getBrawlerRarity(Brawler)
                 if Rarity == 'common':
-                   RID = 0
+                   RarityID = 0
                 elif Rarity == 'rare':
-                   RID = 1
+                   RarityID = 1
                 elif Rarity == 'epic':
-                   RID = 2
+                   RarityID = 2
                 else:
-                   RID = 3
-                self.writeVInt(RID) # Box ID
+                   RarityID = 3
+                self.writeVInt(RarityID) # rarity ID
                 self.writeScID(0, 0)
                 self.writeVInt(1)
                 self.writeScID(23, Brawler)
+    def decode(self):
+        logicGiveDeliveryItemsPayload = {}
+        logicGiveDeliveryItemsPayload["rarityID"] = self.readVInt()
+        logicGiveDeliveryItemsPayload["itemTypeID"] = self.readDataReference()
+        logicGiveDeliveryItemsPayload["rewardAmount"] = self.readVInt()
+        logicGiveDeliveryItemsPayload["itemClassID"] = self.readDataReference()
+    def process(self):
+        pass

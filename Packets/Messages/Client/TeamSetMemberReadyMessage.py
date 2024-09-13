@@ -10,28 +10,26 @@ import time
 
 
 class TeamSetMemberReadyMessage(ByteStream):
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
         self.data = data
-        self.player = Player(device)
+        self.player = player
+        self.seconds = 20
 
 
     def decode(self):
-        self.player.isReady = self.readboolean()
-        self.read_Vint() #idk
+        self.player.isReady = self.readBoolean()
+        self.readVInt() #idk
 
 
     def process(self):
         TeamMessage(self.device, self.player).Send()
         TeamGameStartingMessage(self.device, self.player).Send()
         self.player.matchmakeStartTime = time.time()
-        while self.player.matchmakeStartTime - time.time() != 20: 
-            for time in range(20):
-                if self.player.matchmakeStartTime - time.time() >= time and self.player.matchmakeStartTime - time.time() << time + 1:
-                    self.seconds = time
-                    time += 1
-            MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
+        self.player.isReady = False
+        MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
         UDPConnectionInfoMessage(self.device, self.player).Send()
-        LogicBattle.start(self.client, self.player)
+        battle = LogicBattle(self.device, self.player)
+        battle.start()
         

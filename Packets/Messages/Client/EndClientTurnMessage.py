@@ -8,28 +8,28 @@ from Packets.LogicCommandManager import commands
 
 class EndClientTurnMessage(ByteStream):
 
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
         self.data = data
-        self.player = Player(device)
+        self.player = player
 
     def decode(self):
-        self.read_Vint()
-        self.read_Vint()
-        self.read_Vint()
-        self.isCommand = self.read_Vint()
+        self.readVInt()
+        self.readVInt()
+        self.readVInt()
+        self.isCommand = self.readVInt()
         if self.isCommand != 0:
-            self.commandID = self.read_Vint()
+            self.commandID = self.readVInt()
 
     def process(self):
         if self.isCommand != 0:
             if self.commandID in commands:
-                print("ECT Command handled: ", self.commandID)
+                print("[*]", self.commandID, "received")
                 command = commands[self.commandID](self.device, self.player, self.data)
                 command.decode()
                 command.process()
             elif self.commandID > 0:
-                print("Unhandled command: ", self.commandID)  
+                print("[*] ", self.commandID, "not handled")  
             else:
-                print("A negative length command got recieved")    
+                print("[*] A negative length command got recieved")    

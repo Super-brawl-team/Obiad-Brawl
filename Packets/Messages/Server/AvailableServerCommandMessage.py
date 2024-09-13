@@ -14,5 +14,6 @@ class AvailableServerCommandMessage(Writer):
         if self.commandID in commands:
             self.writeVInt(self.commandID)
             commands[self.commandID].encode(self)
+            
         else:
-            print("Unable to create server command: ", self.commandID)
+            print("[*] Unable to create ", self.commandID)

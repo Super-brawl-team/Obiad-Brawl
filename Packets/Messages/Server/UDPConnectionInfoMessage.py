@@ -12,7 +12,7 @@ class UDPConnectionInfoMessage(Writer):
     def encode(self):
         self.writeVInt(9449) # Server Port
         self.writeString("127.0.0.1") # Server IP
-        self.writeBytes() # unk
+        self.writeBytes(b'') # unk
         #self.writFilteredString() # unk
 
 

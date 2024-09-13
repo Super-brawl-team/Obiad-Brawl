@@ -18,6 +18,6 @@ class MatchMakingStatusMessage(Writer):
         
         self.writeString(self.player.name)
         self.writeBoolean(self.matchmakeState)
-        self.writeInt(self.player.high_id)
-        self.writeInt(self.player.low_id)
+        self.writeInt(self.player.HighID)
+        self.writeInt(self.player.LowID)
         self.writeInt(2) # Maximum Players in Matchmake

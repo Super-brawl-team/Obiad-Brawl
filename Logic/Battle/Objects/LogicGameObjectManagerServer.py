@@ -9,22 +9,23 @@ class LogicGameObjectManagerServer(BitStream):
         stream.writePositiveIntMax32767(0)
         stream.writeBoolean(False)
         if gamemodeVariation == 6:
-             stream.writePositiveIntMax63(0)
-             stream.writePositiveIntMax127(14) # unk
-             stream.writePositiveIntMax63(13) # tilemap width (incorrect size, i'll find correct one later)
-             stream.writePositiveIntMax127(32) # tilemap height (incorrect size, i'll find correct one later)
+             stream.writePositiveIntMax63(48)
+             stream.writePositiveIntMax127(9) # unk
+             stream.writePositiveIntMax63(59) 
+             stream.writePositiveIntMax127(35) 
+             
         else:
             stream.writePositiveIntMax31(0)
-            stream.writePositiveIntMax63(14) # unk
-            stream.writePositiveIntMax31(13) # tilemap width
-            stream.writePositiveIntMax63(32) # tilemap height
+            stream.writePositiveIntMax63(0) # unk
+            stream.writePositiveIntMax31(11) # tilemap width
+            stream.writePositiveIntMax63(18) # tilemap height
 
-        for tileMap in range(13 + 14):
+        for tileMap in range(52):
             stream.writeBoolean(False)
         
         stream.writeBoolean(True)
         stream.writeBoolean(False) # has ulti
-        stream.writePositiveIntMax1023(0) # ulti related
+        stream.writePositiveIntMax1023(3000) # ulti charge
         stream.writeBoolean(True)
         stream.writeBoolean(False)
         stream.writeBoolean(True)
@@ -37,7 +38,7 @@ class LogicGameObjectManagerServer(BitStream):
         stream.writeBoolean(False)
         if gamemodeVariation == 2:
             stream.writePositiveIntMax127(0) # your side chest
-            stream.writePositiveIntMax157(100) # ennemy side chest
+            stream.writePositiveIntMax127(100) # ennemy side chest
         elif gamemodeVariation == 6:
             stream.writePositiveIntMax15(2) # players left in showdown
         
@@ -90,8 +91,8 @@ class LogicGameObjectManagerServer(BitStream):
         stream.writePositiveIntMax511(0)
         stream.writeBoolean(True)
         stream.writePositiveIntMax511(0)
-        stream.writePositiveIntMax31(1) # recieved damages count xdd
-        for x in range(1):
+        stream.writePositiveIntMax31(0) # recieved damages count xdd
+        for x in range(0):
             stream.writePositiveIntMax4095(1) # recieved damage xd
         # skills related part
         stream.writePositiveIntMax2047(0) # active ticks ig
@@ -157,8 +158,8 @@ class LogicGameObjectManagerServer(BitStream):
         stream.writePositiveInt(0, 1)
         stream.writePositiveInt(0, 1)
         stream.writePositiveInt(0, 9)
-        stream.writePositiveInt(1, 5) # box damage count
-        for x in range(1):
+        stream.writePositiveInt(0, 5) # box damage count
+        for x in range(0):
             stream.writePositiveIntMax4095(100)
         # tnt box 1
         stream.writePositiveInt(3150, 13)

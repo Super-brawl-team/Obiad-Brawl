@@ -3,11 +3,14 @@ from Packets.Messages.Client import *
 
 
 availablePackets = {
-
+    10100: ClientHelloMessage,
     10101: LoginMessage,
     10107: ClientCapabilitiesMessage,
     10108: KeepAliveMessage,
+    10177: ClientInfoMessage,
     10212: ChangeAvatarNameMessage,
+    10555: ClientInputMessage,
+    14101: GoHomeMessage,
     14102: EndClientTurnMessage,
     14103: MatchmakeRequestMessage,
     14109: GoHomeFromOfflineMessage,

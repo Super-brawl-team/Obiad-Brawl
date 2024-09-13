@@ -1,8 +1,10 @@
+import json
 class Milestones:
     def MilestonesArray(self):
     
-    
-        Goal0Index = 19
+        self.settings = json.load(open('Settings.json'))
+        self.maximumRank = self.settings["MaximumRank"]
+        Goal0Index = self.maximumRank - 1
         Goal5Index = 499
         
         self.writeVInt(Goal0Index + Goal5Index) # Milestones Rows Count
@@ -16,8 +18,14 @@ class Milestones:
                 
                 self.writeVint(1)
                 self.writeVint(MilestoneIndex)
-                self.writeVint(ProgressStart[MilestoneIndex]) # Progress Start
-                self.writeVint(Progress[MilestoneIndex]) # Progress
+                if MilestoneIndex >= 34:
+                  self.writeVInt(ProgressStart[33]+50*(MilestoneIndex - 33))
+                else:
+                  self.writeVint(ProgressStart[MilestoneIndex]) # Progress Start
+                if MilestoneIndex >= 34:
+                  self.writeVInt(50)
+                else:
+                  self.writeVint(Progress[MilestoneIndex]) # Progress
                 self.writeVint(0)
                 self.writeVint(1)
                 self.writeVint(1)

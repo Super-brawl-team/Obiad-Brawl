@@ -1,6 +1,7 @@
 import csv
 from time import perf_counter
 from Files.CsvReader import CsvReader
+from Files.CsvLogic.Characters import Characters
 
 class Cards:
 
@@ -46,7 +47,8 @@ class Cards:
                     line_count += 1
                 else:
                     if row[5] == 'unlock':
-                        BrawlersID.append(line_count - 2)
+                        if not Characters().isDisabled(row[3]):
+                          BrawlersID.append(line_count - 2)
                     line_count += 1
 
             return BrawlersID

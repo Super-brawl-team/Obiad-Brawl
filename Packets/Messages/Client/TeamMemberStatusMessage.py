@@ -4,17 +4,19 @@ from Utils.Reader import ByteStream
 
 
 class TeamMemberStatusMessage(ByteStream):
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
         self.data = data
-        self.player = Player(device)
+        self.player = player
 
 
     def decode(self):
-        self.player.teamStatus = self.read_Vint()
+        self.player.teamStatus = self.readVInt()
+        
 
 
     def process(self):
-        TeamMessage(self.device, self.player).Send()
+       TeamMessage(self.device, self.player).Send()
+       
 

@@ -3,6 +3,7 @@ class Player:
     HighID = 0
     LowID = 1
     Token = None
+    usedVersion = 1
     name = "PrimoDEVHacc"
     eventCount = 4
     teamID = 0
@@ -17,7 +18,7 @@ class Player:
     matchmakeStartTime = 0
     battleTicks = 0
     wifi = 0
-
+    region = "CAT"
 
     def __init__(self, device):
         self.device = device

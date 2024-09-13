@@ -1,5 +1,10 @@
 {
 	"Address": "0.0.0.0",
 	"Port": 9339,
-	"RC4Key": "fhsd6f86f67rt8fw78fw789we78r9789wer6re"
+	"RC4Key": "fhsd6f86f67rt8fw78fw789we78r9789wer6re",
+	"MaximumRank": 100,
+	"MaximumUpgradeLevel": 595,
+	"usedCryptography": "RC4",
+	"NACLServerPrivateKey" : "78BD03628030B86BCF17817DF13A3E9C0E8FD03F06F222A44C40CA70F3ECC748"
+       
 }

@@ -4,16 +4,16 @@ from Logic.Player import Player
 
 
 class TeamToggleMemberSideMessage(ByteStream):
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
         self.data = data
-        self.player = Player(device)
+        self.player = player
 
 
     def decode(self):
-        self.read_Vint() # Where player used to be
-        self.read_Vint() # New place for the player
+        self.readVInt() # Where player used to be
+        self.readVInt() # New place for the player
         
 
     def process(self):

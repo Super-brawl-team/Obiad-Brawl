@@ -5,55 +5,58 @@ import os
 import binascii
 import json
 import traceback
-
+from Cryptography.nacl import NaCl
 from threading import *
 from Packets.Factory import *
 from Logic.Device import Device
 
 
 class Networking(Thread):
-    def __init__(self, args):
+    def __init__(self):
         Thread.__init__(self)
 
         self.settings = json.load(open('Settings.json'))
-
+        self.usedCryptography = self.settings["usedCryptography"]
         self.address = self.settings["Address"]
         self.port = self.settings["Port"]
-        self.client = socket.socket()
-        self.args = args
+        self.server = socket.socket()
+        self.nacl = NaCl()
+        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     def run(self):
-        self.client.bind((self.address, self.port))
+        self.server.bind((self.address, self.port))
 
         print('Server is listening on {}:{}'.format(self.address, self.port))
 
         while True:
-            self.client.listen(5)
-            client, address = self.client.accept()
+            self.server.listen(5)
+            client, address = self.server.accept()
 
             print('New connection from {}'.format(address[0]))
-            clientThread = ClientThread(client, self.args.debug).start()
+            clientThread = ClientThread(client, address).start()
 
 
 class ClientThread(Thread):
-    def __init__(self, client, debug):
+    def __init__(self, client, address):
         Thread.__init__(self)
-
+        self.address = address
         self.client = client
         self.device = Device(self.client)
+        self.player = Player(self.device)
+        self.settings = json.load(open('Settings.json'))
+        self.usedCryptography = self.settings["usedCryptography"]
         self.debug  = True
 
     def recvall(self, size):
-        data = []
+        data = b''
         while size > 0:
-            self.client.settimeout(5.0)
             s = self.client.recv(size)
-            self.client.settimeout(None)
             if not s:
                 raise EOFError
-            data.append(s)
+                break
+            data += s
             size -= len(s)
-        return b''.join(data)
+        return data
 
     def run(self):
         while True:
@@ -68,10 +71,15 @@ class ClientThread(Thread):
                     print('[*] {} received'.format(packetid))
 
                     try:
-                        decrypted = self.device.decrypt(data)
+                        if self.usedCryptography == "RC4":
+                          decrypted = self.device.decrypt(data)
+                        elif self.usedCryptography == "NACL":
+                          decrypted = self.nacl.decrypt(packetid, data)
+                        else:
+                          decrypted = data
                         if packetid in availablePackets:
 
-                            Message = availablePackets[packetid](decrypted, self.device)
+                            Message = availablePackets[packetid](decrypted, self.device, self.player)
 
                             Message.decode()
                             Message.process()

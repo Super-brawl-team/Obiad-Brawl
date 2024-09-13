@@ -5,17 +5,17 @@ from Utils.Reader import ByteStream
 
 
 class TeamSpectateMessage(ByteStream):
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
         self.data = data
-        self.player = Player(device)
+        self.player = player
 
 
     def decode(self):
-        self.player.teamID = self.read_Vint()
-        self.read_Vint()
-        self.read_Vint()
+        self.player.teamID = self.readVInt()
+        self.readVInt()
+        self.readVInt()
 
 
     def process(self):

@@ -4,12 +4,11 @@ from Logic.Player import Player
 
 
 class TeamTogglePractiseMessage(ByteStream):
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
         self.data = data
-        self.player = Player(device)
-
+        self.player = player
 
     def decode(self):
         pass

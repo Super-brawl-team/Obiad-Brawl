@@ -5,29 +5,30 @@ from Utils.Reader import ByteStream
 
 class AskForBattleEndMessage(ByteStream):
 
-	def __init__(self, data, device):
+	def __init__(self, data, device, player):
 		super().__init__(data)
 		self.device = device
-		self.player = Player(device)
+		self.data = data
+		self.player = player
 
 	def decode(self):
 		self.plrs = {}
-		self.plrs["BattleEndType"] = self.ReadVint() # battle result
-		self.plrs["BattleTime"] = self.ReadVint() # time played ?
+		self.plrs["BattleEndType"] = self.readVInt() # battle result
+		self.plrs["BattleTime"] = self.readVInt() # time played ?
 	
-		self.plrs["BattleRank"] = self.ReadVint() # rank so basically is won/lose/draw for 3v3 and the rank for sd
-		self.plrs["CsvID0"] = self.ReadVint()
-		self.plrs["Location"] = self.ReadVint() # location or the map if you prefer
-		self.plrs["PlayersAmount"] = self.read_Vint() # Battle End Players
+		self.plrs["BattleRank"] = self.readVInt() # rank so basically is won/lose/draw for 3v3 and the rank for sd
+		self.plrs["CsvID0"] = self.readVInt()
+		self.plrs["Location"] = self.readVInt() # location or the map if you prefer
+		self.plrs["PlayersAmount"] = self.readVInt() # Battle End Players
 		self.plrs["Brawlers"] = []
 		for x in range(self.plrs["PlayersAmount"]):
 		# HeroDataEntry::encode
 			self.plrs["Brawlers"].append({
 				"CharacterID": self.readDataReference(),
 				"SkinID": self.readDataReference(),
-				"Team": self.ReadVint(),
+				"Team": self.readVInt(),
 				"IsPlayer": self.readBoolean(), 
-				"Name": self.read_string()
+				"Name": self.readString()
 			})
 	def process(self):
 		

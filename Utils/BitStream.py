@@ -160,19 +160,18 @@ class BitStream:
 			v4[v5] = 0
 	
 	def writeBits(self, bits, count):
-		if not self.offset:
-			self.buffer[0] = 0
-		if count >= 1:
-			for i in range(count):
-				self.buffer[self.offset] |= (bits & (1 << i)) >> i << self.length
-				v4 = self.length + 1
-				self.length = v4
-				if v4 == 8:
-					v5 = self.buffer
-					v6 = self.offset + 1
-					self.length = 0
-					self.offset = v6
-					v5[v6] = 0
+		i = 0
+		position = 0
+		while i < count:
+			value = 0
+			
+			p = 0
+			while p < 8 and i < count:
+				value = (bits[position] >> p) & 1
+				self.writeBit(value)
+				p += 1
+				i += 1
+			position += 1
 
 	def writePositiveIntMax31(self, value):
 		self.writePositiveInt(value, 5)
@@ -250,16 +249,7 @@ class BitStream:
 		self.writeInt(value, 6)
 
 	def writePositiveInt(self, value, bitsCount):
-		i = 0
-		while i != bitsCount:
-			byte_offset = self.buffer[0] + self.offset[0]
-			self.buffer[byte_offset] |= ((1 << i) & value) >> i << self.length[0]
-			self.length += 1
-			if self.length == 8:
-				self.offset[0] += 1
-				self.length = 0
-				self.buffer[self.offset[0]] = 0
-				i += 1
+		self.writeBits(value.to_bytes(4, byteorder='little'), bitsCount)
 
 	def writeIntMax3(self, value):
 		self.writeInt(value, 2)

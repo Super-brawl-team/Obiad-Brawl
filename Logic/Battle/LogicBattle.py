@@ -1,5 +1,6 @@
 from Packets.Messages.Server.VisionUpdateMessage import VisionUpdateMessage
 from Packets.Messages.Server.StartLoadingMessage import StartLoadingMessage
+from Packets.Messages.Client.ForceSendBattleEnd import ForceSendBattleEnd
 from Packets.Messages.Server.UDPConnectionInfoMessage import UDPConnectionInfoMessage
 
 import time
@@ -10,7 +11,8 @@ class LogicBattle(Thread):
         Thread.__init__(self)
         self.device = device
         self.player = player
-        self.tick = 0
+        self.player.battleTicks = 0
+        self.subTick = 0
         self.started = 0
     
     def run(self):
@@ -19,12 +21,26 @@ class LogicBattle(Thread):
     def startBattle(self):
         self.started = 1
         StartLoadingMessage(self.device, self.player).Send()
-        UDPConnectionInfoMessage(self.device, self.player).Send()
         while self.started:
-            self.tick += 1
-            self.player.battleTicks = self.tick
+           if self.player.battleTicks >= 10:
+              self.started = 0
+              ForceBattleEnd = ForceSendBattleEnd(self.device, self.player)
+              ForceBattleEnd.decode()
+              ForceBattleEnd.process()
+           else:
+            if self.subTick >= 4:
+                self.player.battleTicks += 1
+                self.subTick = 0
+                #print("Tick: ", self.tick)
             self.process()
-            time.sleep(0.045)
+            time.sleep(0.003)
+            if self.player.battleTicks >= 10:
+              self.started = 0
+              ForceBattleEnd = ForceSendBattleEnd(self.device, self.player)
+              ForceBattleEnd.decode()
+              ForceBattleEnd.process()
 
+    
     def process(self):
         VisionUpdateMessage(self.device, self.player).Send()
+        self.subTick += 1

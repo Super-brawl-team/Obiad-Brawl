@@ -8,28 +8,24 @@ import time
 
 
 class MatchmakeRequestMessage(ByteStream):
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
-        self.player = Player(device)
+        self.data = data
+        self.player = player
 
 
     def decode(self):
-        self.read_Vint()
+        self.readVInt()
         self.CardID = self.readDataReference() # Selected card
-        self.MapIndex = self.read_Vint() # Event Index
-        self.read_Vint() # Event Index
-        self.read_Vint() # Highstakes Index
-        self.read_Vint()
+        self.MapIndex = self.readVInt() # Event Index
+        self.readVInt() # Event Index
+        self.readVInt() # Highstakes Index
+        self.readVInt()
         
 
     def process(self):
-        self.player.matchmakeStartTime = time.time()
-        while self.player.matchmakeStartTime - time.time() != 20: 
-            for time in range(20):
-                if self.player.matchmakeStartTime - time.time() >= time and self.player.matchmakeStartTime - time.time() << time + 1:
-                    self.seconds = time
-                    time += 1
-            MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
+        
+        MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
         UDPConnectionInfoMessage(self.device, self.player).Send()
         LogicBattle.start(self.client, self.player)

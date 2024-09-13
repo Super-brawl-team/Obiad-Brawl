@@ -8,14 +8,14 @@ from Utils.Reader import ByteStream
 
 
 class ClientCapabilitiesMessage(ByteStream):
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
         self.data = data
-        self.player = Player(device)
+        self.player = player
 
     def decode(self):
-        self.ping = self.read_Vint()
+        self.ping = self.readVInt()
         print(f"[*] User's latency : {self.ping} ")
 
     def process(self):
