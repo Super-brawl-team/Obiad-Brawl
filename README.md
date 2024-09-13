@@ -1,15 +1,26 @@
 # Obiad Brawl
  My first open source yey
- 
+ # PLEASE READ THIS BEFORE USING IT, SERIOUSLY 😭
+# THIS IS AN OPEN SOURCE SERVER, IT IS USED FOR SELFHOSTING OR SIMPLE HOSTING
+# INSTALLING THE IPA WITHOUT DOING NOTHING WILL OF COURSE NOT WORK, FOLLOW THE TUTORIAL PLEASE
  Yeah its obed brawl's upgrade, but i swear i will change core!
 
- Enjoy tons of cool features!
+ Enjoy tons of cool features, counting the ability to add brawlers and skins!
 
-# TODO
-  db, online battles (real), teams
+# COMMING SOON
+  db(not for now), online battles (real), teams, adding more ranks and power levels,
+no need to install modules anymore and better bytestream
+
 # The server will be frequently updated
 
 Feel free to use it but don't forget to credit :)
+
+# REQUIREMENTS
+python3.9 or less
+pycryptodome
+colorama
+twisted
+
 
 Clients (Thanks risporce for the method!):
   
@@ -34,7 +45,7 @@ Clients (Thanks risporce for the method!):
   
   5: After the ip (and the port) changed is saved, in your terminal with the client location, execute this following command : python ipPatcher.py
   
-  6: Save and compile back to ipa format.
+  6: Save and change extention back to ipa.
   
   7: Install the client using your favorite app installer and enjoy.
 
