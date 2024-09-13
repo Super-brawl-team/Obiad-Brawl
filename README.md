@@ -5,11 +5,10 @@
 # INSTALLING THE IPA WITHOUT DOING NOTHING WILL OF COURSE NOT WORK, FOLLOW THE TUTORIAL PLEASE
  Yeah its obed brawl's upgrade, but i swear i will change core!
 
- Enjoy tons of cool features, counting the ability to add brawlers and skins!
+ Enjoy tons of cool features, counting the ability to add brawlers, skins, ranks and power levles!
 
 # COMMING SOON
-  db(not for now), online battles (real), teams, adding more ranks and power levels,
-no need to install modules anymore and better bytestream
+  db(not for now), online battles (real), chatting ability
 
 # The server will be frequently updated
 
@@ -17,18 +16,16 @@ Feel free to use it but don't forget to credit :)
 
 # REQUIREMENTS
 python3.9 or less
-pycryptodome
-colorama
-twisted
+a brain 😭
 
 
 Clients (Thanks risporce for the method!):
   
   
-  -Normal: [Download](https://www.mediafire.com/file/lkdc121x2y928hy/ObiadBrawl.ipa/file)
+  -Normal ipa: [Download](https://www.mediafire.com/file/lkdc121x2y928hy/ObiadBrawl.ipa/file)
  
  
-  -Offline battles: [Download](https://www.mediafire.com/file/83rek6arjq5lmqq/ObiadBrawlOfflineBattles.ipa/file)
+  - ipa with Offline battles (it doesnt mean u can log into the game like if it was offline): [Download](https://www.mediafire.com/file/83rek6arjq5lmqq/ObiadBrawlOfflineBattles.ipa/file)
 
 
   # How to change ip and port
@@ -52,9 +49,10 @@ Clients (Thanks risporce for the method!):
   # BONUS
   
    # DEBUG MENU
-    You can edit "debugMenuEnabled" to enable or disable debug menu!
-  
-    Note : i dont use dev builds, so only few buttons work...
+    You can edit "debugMenuEnabled" to enable or disable debug menu! Note : i dont use dev builds, so only few buttons work...
 
    # RC4 KEY
     You can also (not mendatory xd) edit the rc4 key and get a random one. Like that; peoples will have a little difficulty to steal your stuff, just set changeRC4Key to true and copy the key he provided, you will have to edit settings.json and replace the key!
+
+   # DIFFERENT CRYPTOGRAPHY METHODS
+    you can use nacl cryptography by putting "NACL" in settings.json but its only if you use this server as base for v7 or more server
