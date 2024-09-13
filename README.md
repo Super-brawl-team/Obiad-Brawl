@@ -16,6 +16,7 @@ Feel free to use it but don't forget to credit :)
 
 # REQUIREMENTS
 python3.9 or less
+
 a brain 😭
 
 
