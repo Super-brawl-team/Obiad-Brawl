@@ -16,13 +16,14 @@ Feel free to use it but don't forget to credit :)
 
 # REQUIREMENTS
 python3.9 or less
+
 a brain 😭
 
 
 Clients (Thanks risporce for the method!):
   
   
-  -Normal ipa: [Download](https://www.mediafire.com/file/lkdc121x2y928hy/ObiadBrawl.ipa/file)
+   -Normal ipa: [Download](https://www.mediafire.com/file/lkdc121x2y928hy/ObiadBrawl.ipa/file)
  
  
   - ipa with Offline battles (it doesnt mean u can log into the game like if it was offline): [Download](https://www.mediafire.com/file/83rek6arjq5lmqq/ObiadBrawlOfflineBattles.ipa/file)
