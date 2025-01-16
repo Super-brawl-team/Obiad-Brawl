@@ -13,7 +13,8 @@ class Locations:
                 if line_count == 0 or line_count == 1:
                     line_count += 1
                 else:
-                    LocationsID.append(line_count - 2)
+                    if row[0] != "Tutorial":
+                        LocationsID.append(line_count - 2)
                     line_count += 1
 
             return LocationsID
