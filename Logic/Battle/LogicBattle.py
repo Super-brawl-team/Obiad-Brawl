@@ -22,7 +22,7 @@ class LogicBattle(Thread):
         self.started = 1
         StartLoadingMessage(self.device, self.player).Send()
         while self.started:
-           if self.player.battleTicks >= 10:
+           if self.player.battleTicks > 100:
               self.started = 0
               ForceBattleEnd = ForceSendBattleEnd(self.device, self.player)
               ForceBattleEnd.decode()
