@@ -37,6 +37,7 @@ class ForceSendBattleEnd(Writer):
 				"IsPlayer": isPlayer, 
 				"Name": Name
 			})
+		self.plrs["isInRealGame"] = False
 	def process(self):
 		
 		if self.plrs["BattleRank"] != 0: # showdown
