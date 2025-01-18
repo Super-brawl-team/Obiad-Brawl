@@ -47,7 +47,8 @@ class Player:
     skin_id = 0
     brawler_id = 0
     team = 0
-
+    control_mode = 0
+    has_battle_hints = False
     def __init__(self, device):
         self.device = device
 

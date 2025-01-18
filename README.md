@@ -3,12 +3,12 @@
  # PLEASE READ THIS BEFORE USING IT, SERIOUSLY 😭
 # THIS IS AN OPEN SOURCE SERVER, IT IS USED FOR SELFHOSTING OR SIMPLE HOSTING
 # INSTALLING THE IPA WITHOUT DOING NOTHING WILL OF COURSE NOT WORK, FOLLOW THE TUTORIAL PLEASE
- Yeah its obed brawl's upgrade, but i swear i will change core!
+ Yeah its obed brawl's upgrade!
 
  Enjoy tons of cool features, counting the ability to add brawlers, skins, ranks and power levles!
 
 # COMMING SOON
-  online battles (real), online rooms, clubs system, some commands for pfp and control mode system and coins booster/doubler purchase
+  online battles (real), online rooms, clubs system, some commands for pfp, system and coins booster/doubler purchase
 
 # The server will be frequently updated
 

@@ -70,8 +70,8 @@ class OwnHomeDataMessage(Writer):
 		self.writeBool(True) # is time required to create new Band
 		self.writeVInt(0) # unknown bruh
 		self.writeVInt(self.player.coins_reward) # coins got
-		self.writeVInt(0) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)]
-		self.writeBool(False) # is battle hints enabled
+		self.writeVInt(self.player.control_mode) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)]
+		self.writeBool(self.player.has_battle_hints) # is battle hints enabled
 		self.writeVInt(self.player.coinsdoubler) # coins doubler coins remaining (0 = not activated)
 		self.writeVInt(self.player.coinsbooster) # coin boost secs remaining (0 = not activated)
 		self.writeBool(False) # unknown

@@ -97,7 +97,9 @@ class DataBase:
             "last_connection_time": 0,
             "player_status": 0,
             "tutorialState": 0,
-            "region": self.player.region
+            "region": self.player.region,
+            "control_mode": self.player.control_mode,
+            "has_battle_hints": False
         }
 
         self.cursor.execute("INSERT INTO Players (token, data) VALUES (?, ?)", (self.player.token, json.dumps(data)))
