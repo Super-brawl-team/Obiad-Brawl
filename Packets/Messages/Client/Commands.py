@@ -15,24 +15,7 @@ class Commands(ByteStream):
         self.player = Player(device)
 
     def decode(self):
-<<<<<<< Updated upstream:Packets/Messages/Client/Commands.py
-        self.read_Vint()
-        self.read_Vint()
-        self.read_Vint()
-        self.isCommand = self.read_Vint()
-        if self.isCommand != 0:
-            self.commandID = self.read_Vint()
 
-    def process(self):
-        if self.isCommand != 0:
-            if self.commandID in commands:
-                print("ECT Command handled: ", self.commandID)
-                command = commands[self.commandID](self.device, self.player, self.data)
-                command.decode()
-                command.process()
-            elif self.commandID > 0:
-                print("Unhandled command: ", self.commandID)      
-=======
         self.isCommand = self.readBoolean()
         self.readVInt()
         self.readVInt()
@@ -49,4 +32,3 @@ class Commands(ByteStream):
                 print("[*] ", self.commandID, "not handled")  
         else:
                 print("[*] A negative length command got recieved")    
->>>>>>> Stashed changes:Packets/Messages/Client/EndClientTurnMessage.py

@@ -34,7 +34,7 @@ class LogicGiveDeliveryItemsCommand(ByteStream):
                 self.writeVInt(Amount) # amount
                 self.writeVInt(0) # item given
           else:
-
+                chipsList = [1, 2, 10, 60]
                 BrawlersList = Cards().getBrawlers()
                 Brawler = (random.choice(BrawlersList))
                 Rarity = Cards().getBrawlerRarity(Brawler)

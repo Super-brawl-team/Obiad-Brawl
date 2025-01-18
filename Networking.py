@@ -116,7 +116,7 @@ class ClientThread(Thread):
                     break
         finally:
 
-            global connected_clients_count
+            #global connected_clients_count
 
             with client_count_lock:
                 connected_clients_count -= 1
