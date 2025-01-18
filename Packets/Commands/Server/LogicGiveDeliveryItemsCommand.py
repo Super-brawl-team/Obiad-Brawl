@@ -52,7 +52,7 @@ class LogicGiveDeliveryItemsCommand(ByteStream):
                 self.writeScID(0, 0)
                 self.writeVInt(1)
                 self.writeScID(23, Brawler)
-                if str(Brawler) not in self.player.unlocked_brawlers:
+                if str(Cards().getbrawlerID(Brawler)) not in self.player.unlocked_brawlers:
                    self.player.unlocked_brawlers[Cards().getbrawlerID(Brawler)] = {
                      'Cards': {Brawler: 1},
                      'Skins': [0],
