@@ -292,25 +292,12 @@ class BitStream:
 		self.writePositiveVInt(value, 4)
 	
 	def writePositiveVInt(self, value, count): # work in progress
-<<<<<<< Updated upstream
-		if self.clamp(value, (-1 >> bitsCount) + 1, ~(~(-1 >> bitsCount))) != value:
-			print(f"Write to BitStream out of range! (integer: {value}, bits: {bitsCount})")
-		else:
-			self.writeBits(value.to_bytes(4, byteorder='little'), bitsCount)
-=======
-<<<<<<< HEAD
+
 		if self.clamp(value, (-1 >> count) + 1, ~(~(-1 >> count))) != value:
 			print(f"Write to BitStream out of range! (integer: {value}, bits: {count})")
 		else:
 			self.writeBits(value.to_bytes(4, byteorder='little'), count)
-=======
-		if self.clamp(value, (-1 >> bitsCount) + 1, ~(~(-1 >> bitsCount))) != value:
-			print(f"Write to BitStream out of range! (integer: {value}, bits: {bitsCount})")
-		else:
-			self.writeBits(value.to_bytes(4, byteorder='little'), bitsCount)
->>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
->>>>>>> Stashed changes
-		
+
 	def writeBoolean(self, value):
 		self.writePositiveInt(value, 1)
 			
