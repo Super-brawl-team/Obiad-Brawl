@@ -20,4 +20,3 @@ class LogicChangeAvatarNameCommand(Writer):
         self.writeVInt(0)
         self.writeVInt(1)
         
-        print("[INFO] Message LogicChangeAvatarNameCommand")

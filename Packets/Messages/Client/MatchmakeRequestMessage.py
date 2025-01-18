@@ -26,14 +26,6 @@ class MatchmakeRequestMessage(ByteStream):
 
     def process(self):
         
-<<<<<<< Updated upstream
-        MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
-=======
-<<<<<<< HEAD
         MatchMakingStatusMessage(self.device, self.player, True, 20).Send()
-=======
-        MatchMakingStatusMessage(self.device, self.player, True, self.seconds).Send()
->>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
->>>>>>> Stashed changes
         UDPConnectionInfoMessage(self.device, self.player).Send()
         LogicBattle.start(self.client, self.player)

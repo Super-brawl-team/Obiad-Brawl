@@ -29,8 +29,15 @@ class Networking(Thread):
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     def run(self):
+<<<<<<< HEAD
+
+        global connected_clients_count
+        self.server.bind((self.address, self.port))
+
+=======
 <<<<<<< Updated upstream
         self.server.bind((self.address, self.port))
+>>>>>>> main
 
 =======
 <<<<<<< HEAD
@@ -80,6 +87,14 @@ class ClientThread(Thread):
         return data
 
     def run(self):
+<<<<<<< HEAD
+
+        global connected_clients_count
+        
+        try:
+            while True:
+                
+=======
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
@@ -89,16 +104,23 @@ class ClientThread(Thread):
 >>>>>>> Stashed changes
         try:
             while True:
+>>>>>>> main
                 header   = self.client.recv(7)
                 packetid = int.from_bytes(header[:2], 'big')
                 length   = int.from_bytes(header[2:5], 'big')
                 version  = int.from_bytes(header[5:], 'big')
                 data     = self.recvall(length)
+<<<<<<< HEAD
+                LobbyInfoMessage(self.device, self.player, connected_clients_count).Send()
+=======
                 LobbyInfoMessage(self.device, self.player, connected_clients_count)
+>>>>>>> main
                 if len(header) >= 7:
                     if length == len(data):
                         print('[*] {} received'.format(packetid))
 
+<<<<<<< HEAD
+=======
 =======
         try:
             while True:
@@ -113,6 +135,7 @@ class ClientThread(Thread):
                         print('[*] {} received'.format(packetid))
 
 >>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> main
                         try:
                             if self.usedCryptography == "RC4":
                                 decrypted = self.device.decrypt(data)
@@ -126,6 +149,13 @@ class ClientThread(Thread):
                                 Message.process()
                             else:
                                 if self.debug:
+<<<<<<< HEAD
+                                    TeamErrorMessage(self.device, self.player, 69).Send()
+                                    print('[*] {} not handled'.format(packetid))
+                        except:
+                            if self.debug:
+                                TeamErrorMessage(self.device, self.player, 69).Send()
+=======
 <<<<<<< Updated upstream
                                     TeamErrorMessage(self.device, self.player, 69)
                                     print('[*] {} not handled'.format(packetid))
@@ -147,6 +177,7 @@ class ClientThread(Thread):
                                 TeamErrorMessage(self.device, self.player, 69)
 >>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
 >>>>>>> Stashed changes
+>>>>>>> main
                                 print('[*] Error while decrypting / handling {}'.format(packetid))
                                 traceback.print_exc()
                     else:
@@ -157,6 +188,9 @@ class ClientThread(Thread):
                     self.client.close()
                     break
         finally:
+<<<<<<< HEAD
+            #global connected_clients_count
+=======
 <<<<<<< Updated upstream
             # Decrement the connected clients count when the client disconnects
             global connected_clients_count
@@ -168,6 +202,7 @@ class ClientThread(Thread):
             global connected_clients_count
 >>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
 >>>>>>> Stashed changes
+>>>>>>> main
             with client_count_lock:
                 connected_clients_count -= 1
                 print(f"Connected clients: {connected_clients_count}")
