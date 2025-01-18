@@ -7,14 +7,15 @@ from Database.DatabaseManager import DataBase
 
 class AskProfile(ByteStream):
 
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
-        self.player = Player(device)
+        self.data = data
+        self.player = player
 
     def decode(self):
-        self.HighID = self.read_int()
-        self.LowID = self.read_int()
+        self.HighID = self.readInt()
+        self.LowID = self.readInt()
 
     def process(self):
         db = DataBase(self.player)

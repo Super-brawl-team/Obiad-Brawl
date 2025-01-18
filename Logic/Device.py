@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import traceback
-
-from CryptoRC4.Crypto import CryptoRc4
+import json
+from Cryptography.rc4 import CryptoRc4
 from Packets.Factory import *
-
+from Cryptography.nacl import NaCl
 
 class Device:
 
@@ -58,10 +58,17 @@ class Device:
 
         self.socket = socket
         self.crypto = CryptoRc4()
+        self.nacl = NaCl()
+        self.settings = json.load(open('Settings.json'))
+        self.usedCryptography = self.settings["usedCryptography"]
 
     def SendData(self, ID, data, version=None):
-
-        encrypted = self.crypto.encrypt(data)
+        if self.usedCryptography == "RC4":
+         encrypted = self.crypto.encrypt(data)
+        elif self.usedCryptography == "NACL":
+         encrypted = self.nacl.encrypt(ID, data)
+        else:
+         encrypted = data
         packetID   = ID.to_bytes(2, 'big')
 
         if version:
@@ -75,9 +82,7 @@ class Device:
 
         else:
             self.socket.send(packetID + len(encrypted).to_bytes(3, 'big') + packetVersion + encrypted)
-
-        print('[*] {} sent'.format(ID))
-
+        
     def decrypt(self, data):
         return self.crypto.decrypt(data)
 

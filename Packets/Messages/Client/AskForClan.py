@@ -5,16 +5,17 @@ from Logic.Player import Player
 
 class AskForClan(ByteStream):
 
-    def __init__(self, data, device):
+    def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
-        self.player = Player(device)
+        self.data = data
+        self.player = player
         self.HighID = 0
         self.LowID = 0
 
     def decode(self):
-        self.HighID = self.ReadUint32()
-        self.LowID = self.ReadUint32()
+        self.HighID = self.readUint32()
+        self.LowID = self.readUint32()
 
     def process(self):
-        ClanData(self.device, self.device.Player).Send() # 14109
+        ClanData(self.device, self.player).Send() # 14109
