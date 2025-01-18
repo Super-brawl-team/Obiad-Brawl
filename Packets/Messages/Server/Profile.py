@@ -37,7 +37,7 @@ class Profile(Writer):
                     for card, amount in brawler_id["Cards"].items():
                         if not Cards().isUnlock(card):
                             powerLevel += amount
-                    self.writeVInt(powerLevel) # Brawler Upgrade Level TOO
+                    self.writeVInt(powerLevel-1) # Brawler Upgrade Level TOO
 
                 self.writeVInt(7) # Stats Count
                 self.writeVInt(1) # Stats Index

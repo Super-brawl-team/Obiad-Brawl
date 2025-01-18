@@ -8,7 +8,7 @@
  Enjoy tons of cool features, counting the ability to add brawlers, skins, ranks and power levles!
 
 # COMMING SOON
-  db(not for now), online battles (real), chatting ability
+  online battles (real), online rooms, clubs system, some commands for pfp and control mode system and coins booster/doubler purchase
 
 # The server will be frequently updated
 
