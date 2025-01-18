@@ -17,7 +17,6 @@ class Characters:
                         else:
                            return False
 
-            return BrawlersID
 
     def getBrawlers(self):
         BrawlersID = []
