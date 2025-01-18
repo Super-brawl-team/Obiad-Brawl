@@ -3,7 +3,7 @@
 from Packets.Messages.Server.Profile import Profile
 from Utils.Reader import ByteStream
 from Logic.Player import Player
-
+from Database.DatabaseManager import DataBase
 
 class AskProfile(ByteStream):
 
@@ -17,5 +17,6 @@ class AskProfile(ByteStream):
         self.LowID = self.read_int()
 
     def process(self):
-        self.players = 0
+        db = DataBase(self.player)
+        self.players = db.getAllPlayers()
         Profile(self.device, self.player, self.HighID, self.LowID, self.players).Send()

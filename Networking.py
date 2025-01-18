@@ -23,7 +23,12 @@ class Networking(Thread):
         self.args = args
 
     def run(self):
+<<<<<<< Updated upstream
         self.client.bind((self.address, self.port))
+=======
+        global connected_clients_count
+        self.server.bind((self.address, self.port))
+>>>>>>> Stashed changes
 
         print('Server is listening on {}:{}'.format(self.address, self.port))
 
@@ -56,6 +61,7 @@ class ClientThread(Thread):
         return b''.join(data)
 
     def run(self):
+<<<<<<< Updated upstream
         while True:
             header   = self.client.recv(7)
             packetid = int.from_bytes(header[:2], 'big')
@@ -90,3 +96,52 @@ class ClientThread(Thread):
                 if self.debug:
                     print('[*] Received an invalid packet from client')
                 self.client.close()
+=======
+        global connected_clients_count
+        
+        try:
+            while True:
+                
+                header   = self.client.recv(7)
+                packetid = int.from_bytes(header[:2], 'big')
+                length   = int.from_bytes(header[2:5], 'big')
+                version  = int.from_bytes(header[5:], 'big')
+                data     = self.recvall(length)
+                LobbyInfoMessage(self.device, self.player, connected_clients_count).Send()
+                if len(header) >= 7:
+                    if length == len(data):
+                        print('[*] {} received'.format(packetid))
+
+                        try:
+                            if self.usedCryptography == "RC4":
+                                decrypted = self.device.decrypt(data)
+                            elif self.usedCryptography == "NACL":
+                                decrypted = self.nacl.decrypt(packetid, data)
+                            else:
+                                decrypted = data
+                            if packetid in availablePackets:
+                                Message = availablePackets[packetid](decrypted, self.device, self.player)
+                                Message.decode()
+                                Message.process()
+                            else:
+                                if self.debug:
+                                    TeamErrorMessage(self.device, self.player, 69).Send()
+                                    print('[*] {} not handled'.format(packetid))
+                        except:
+                            if self.debug:
+                                TeamErrorMessage(self.device, self.player, 69).Send()
+                                print('[*] Error while decrypting / handling {}'.format(packetid))
+                                traceback.print_exc()
+                    else:
+                        print('[*] Incorrect Length for packet {} (header length: {}, data length: {})'.format(packetid, length, len(data)))
+                else:
+                    if self.debug:
+                        print('[*] Received an invalid packet from client')
+                    self.client.close()
+                    break
+        finally:
+            #global connected_clients_count
+            with client_count_lock:
+                connected_clients_count -= 1
+                print(f"Connected clients: {connected_clients_count}")
+>>>>>>> Stashed changes
