@@ -20,11 +20,27 @@ class StartLoadingMessage(Writer):
         self.writeInt(6) # Players Count
         for x in range(1):
              
+<<<<<<< Updated upstream
              self.writeLong(0, 1)
              self.writeString(self.player.name) # Player name
              self.writeVInt(x) # Player Team
              self.writeVInt(0) # ???
              self.writeVInt(0) # ???
+=======
+<<<<<<< HEAD
+             self.writeLong(self.player.high_id, self.player.low_id)
+             self.writeString(self.player.name) # Player name
+             self.writeVInt(x) # Player Team
+             self.writeVInt(0) # ???
+             self.writeVInt(0) # ??
+=======
+             self.writeLong(0, 1)
+             self.writeString(self.player.name) # Player name
+             self.writeVInt(x) # Player Team
+             self.writeVInt(0) # ???
+             self.writeVInt(0) # ???
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
              self.writeVInt(0) # ???
              self.writeInt(0) # unk
              self.writeScId(16, 0) # Player Brawler

@@ -8,7 +8,15 @@ from Files.CsvLogic.Characters import Characters
 from Files.CsvLogic.Skins import Skins
 from Files.CsvLogic.Locations import Locations
 import json
+<<<<<<< Updated upstream
 
+=======
+<<<<<<< HEAD
+from Database.DatabaseManager import DataBase
+=======
+
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 
 class OwnHomeDataMessage(Writer):
 
@@ -19,11 +27,26 @@ class OwnHomeDataMessage(Writer):
 		super().__init__(self.device)
 
 	def encode(self):
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+		db = DataBase(self.player)
+		db.loadAccount()
+=======
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 		skins = Skins().getSkins()
 		UnlockCards = Cards().getBrawlers()
 		Brawlers228 = Characters().getBrawlers()
 		cards = Cards().getCards()
 		ressources_ids = [1, 5, 6]
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+		ressources = [self.player.gold, self.player.chips, self.player.elexir]
+=======
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 		self.settings = json.load(open('Settings.json'))
 		self.maximumRank = self.settings["MaximumRank"]
 		self.maximumUpgradeLevel = self.settings["MaximumUpgradeLevel"]
@@ -32,6 +55,46 @@ class OwnHomeDataMessage(Writer):
 			self.brawlersTrophies = self.requiredTrophiesForRank[self.maximumRank-1]
 		else:
 			self.brawlersTrophies = self.requiredTrophiesForRank[33] + (50* (self.maximumRank-34))
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+		
+		self.player.player_status = 2
+		db.replaceValue("player_status", self.player.player_status)
+>>>>>>> Stashed changes
+		self.writeVInt(2017189) # Timestamp
+		self.writeVInt(10) # Create new band timer
+		
+		self.writeVInt(self.brawlersTrophies * len(Brawlers228))  # Trophies
+		self.writeVInt(self.brawlersTrophies * len(Brawlers228))  # Highest Trophies
+		
+		self.writeVInt(69696969)  # Experience
+		
+		self.writeScID(28, 0)  # Player Icon
+		self.writeVInt(7) # Played Game Modes Count
+		for x in range(7): 
+			self.writeVInt(x) # Played Game Mode
+		
+		self.writeVInt(0) # selected skin count
+		for x in range(0):
+			self.writeScID(29, x) # Selected Skin
+		
+		self.writeVInt(len(skins)) # unlocked skin count
+		for x in range(len(skins)):
+			self.writeScID(29, skins[x]) # unlocked Skin
+		
+		self.writeBool(True) # is time required to create new Band
+		self.writeVInt(0) # unknown bruh
+		self.writeVInt(69) # coins got
+		self.writeVInt(0) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)]
+		self.writeBool(False) # is battle hints enabled
+<<<<<<< Updated upstream
+		self.writeVInt(6974) # coins doubler coins remaining (0 = not activated)
+		self.writeVInt(777) # coin boost secs remaining (0 = not activated)
+=======
+		self.writeVInt(self.player.coinsdoubler) # coins doubler coins remaining (0 = not activated)
+		self.writeVInt(self.player.coinsbooster) # coin boost secs remaining (0 = not activated)
+=======
 		self.writeVInt(2017189) # Timestamp
 		self.writeVInt(10) # Create new band timer
 		
@@ -60,6 +123,8 @@ class OwnHomeDataMessage(Writer):
 		self.writeBool(False) # is battle hints enabled
 		self.writeVInt(6974) # coins doubler coins remaining (0 = not activated)
 		self.writeVInt(777) # coin boost secs remaining (0 = not activated)
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 		self.writeBool(False) # unknown
 		self.writeVInt(2017189)  # Shop Timestamp
 		self.writeVInt(100) # box cost (gold)
@@ -69,10 +134,23 @@ class OwnHomeDataMessage(Writer):
 		self.writeVInt(50) # Coin Doubler cost
 		self.writeVInt(1000) # Coin Doubled
 		self.writeVInt(14) # Coin Boost Days
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+		self.writeVInt(1) # default brawler chips
+		self.writeVInt(2) # rare brawler chips
+		self.writeVInt(10) # epic brawler chips
+		self.writeVInt(60) # legendary brawler chips
+=======
+>>>>>>> Stashed changes
 		self.writeVInt(1) # unknown bruh
 		self.writeVInt(2) # unknown bruh
 		self.writeVInt(10) # unknown bruh
 		self.writeVInt(60) # unknown bruh
+<<<<<<< Updated upstream
+=======
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 		self.writeVInt(3) # default brawler cost
 		self.writeVInt(10) # rare brawler cost
 		self.writeVInt(70) # epic brawler
@@ -102,12 +180,28 @@ class OwnHomeDataMessage(Writer):
 			self.writeVInt(39120) # Time Left
 			self.writeVInt(8) # coins to claim
 			self.writeVInt(8) # bonuska coins
+<<<<<<< Updated upstream
 			self.writeVInt(777) # coins to win
+=======
+<<<<<<< HEAD
+			self.writeVInt(9999999999) # coins to win
+=======
+			self.writeVInt(777) # coins to win
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 			#self.writeVInt(3) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp why did this even worked
 			self.writeBoolean(False) # double coins
 			self.writeBoolean(event == 4) # double exp
 			self.writeScID(15, random.randint(0, len(Locations().GetLocations()) - 1)) # map
+<<<<<<< Updated upstream
 			self.writeVInt(69) #  coins already collected
+=======
+<<<<<<< HEAD
+			self.writeVInt(0) #  coins already collected
+=======
+			self.writeVInt(69) #  coins already collected
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 			self.writeVInt(2) #  coins collected statut
 			self.writeString("Server by PrimoDEVHacc") # text for event (TID) please keep it for credits
 			if self.player.usedVersion >= 2:
@@ -124,12 +218,28 @@ class OwnHomeDataMessage(Writer):
 			self.writeVInt(39120) # Time Left
 			self.writeVInt(8) # coins to claim
 			self.writeVInt(8) # bonuska coins
+<<<<<<< Updated upstream
 			self.writeVInt(60) # coins to win
+=======
+<<<<<<< HEAD
+			self.writeVInt(9999999999) # coins to win
+=======
+			self.writeVInt(60) # coins to win
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 			#self.writeVInt(2) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
 			self.writeBoolean(False) # double coins
 			self.writeBoolean(event == 4) # double exp
 			self.writeScID(15, random.randint(0, len(Locations().GetLocations()) - 1)) # map
+<<<<<<< Updated upstream
 			self.writeVInt(69) #  coins already collected
+=======
+<<<<<<< HEAD
+			self.writeVInt(0) #  coins already collected
+=======
+			self.writeVInt(69) #  coins already collected
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 			self.writeVInt(2) #  coins collected statut
 			self.writeString("Server by PrimoDEVHacc") # text for event (TID) please keep it for credits
 			if self.player.usedVersion >= 2:
@@ -145,6 +255,22 @@ class OwnHomeDataMessage(Writer):
 		Milestones.MilestonesArray(self)
 		
 		
+<<<<<<< Updated upstream
+		self.writeLong(self.player.HighID, self.player.LowID)  # Player id
+=======
+<<<<<<< HEAD
+		self.writeLong(self.player.high_id, self.player.low_id)  # Player id
+>>>>>>> Stashed changes
+		
+		for id in range(3):
+			self.writeLogicLong(self.player.HighID, self.player.LowID) # Player ids related to home menu
+		
+		self.writeString(self.player.name)
+<<<<<<< Updated upstream
+		self.writeBool(True) # nameSet
+=======
+		self.writeBool(self.player.name != "Brawler") # nameSet
+=======
 		self.writeLong(self.player.HighID, self.player.LowID)  # Player id
 		
 		for id in range(3):
@@ -152,12 +278,29 @@ class OwnHomeDataMessage(Writer):
 		
 		self.writeString(self.player.name)
 		self.writeBool(True) # nameSet
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 		self.writeInt(1) # Player region ?
 		
 		# motorised arrays stars 
 		self.writeVInt(5) # Commodity Array
+<<<<<<< Updated upstream
 		
 		self.writeVInt(len(cards) + len(ressources_ids)) # cards and ressources array
+=======
+<<<<<<< HEAD
+		cards = {}
+		for key, brawler in self.player.unlocked_brawlers.items():
+			for card, amount in brawler["Cards"].items():
+				cards[card] = amount
+		self.writeVInt(len(cards) + len(ressources_ids)) # cards and ressources array
+		for key, amount in cards.items():
+			self.writeScId(23, int(key))
+			self.writeVInt(amount) # upgrades count
+=======
+		
+		self.writeVInt(len(cards) + len(ressources_ids)) # cards and ressources array
+>>>>>>> Stashed changes
 		
 		for i in range(len(cards)):
 			self.writeScId(23, i)
@@ -166,14 +309,41 @@ class OwnHomeDataMessage(Writer):
 				self.writeVInt(1) # brawler unclocked
 			else:
 				self.writeVInt(self.maximumUpgradeLevel) # upgrades count
+<<<<<<< Updated upstream
+=======
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
         
         # ressources
 		for res in range(len(ressources_ids)):
 			self.writeScID(5, ressources_ids[res]) # resource 
+<<<<<<< Updated upstream
 			self.writeVInt(99999) # count
          
         # cards and ressources Array End
 		
+=======
+<<<<<<< HEAD
+			self.writeVInt(ressources[res]) # count
+         
+        # cards and ressources Array End
+		
+		self.writeVInt(len(self.player.unlocked_brawlers))  # brawlers count
+		for key, brawler_id in self.player.unlocked_brawlers.items():
+			self.writeDataReference(16, int(key))
+			self.writeVInt(brawler_id["Trophies"])
+
+		# Brawlers Trophies for Rank array
+		self.writeVInt(len(self.player.unlocked_brawlers))  # brawlers count
+		for key, brawler_id in self.player.unlocked_brawlers.items():
+			self.writeDataReference(16, int(key))
+			self.writeVInt(brawler_id["HighestTrophies"])
+=======
+			self.writeVInt(99999) # count
+         
+        # cards and ressources Array End
+		
+>>>>>>> Stashed changes
 		self.writeVInt(len(Brawlers228)) # brawlers
 		for x in Brawlers228:  # trophis
 			self.writeVInt(16) # csvID
@@ -185,11 +355,23 @@ class OwnHomeDataMessage(Writer):
 			self.writeVInt(16) # csvID
 			self.writeVInt(x) # brawlerID
 			self.writeVInt(self.brawlersTrophies) # trophis for rank	
+<<<<<<< Updated upstream
+=======
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 		
 		self.writeVInt(0) # array
 		self.writeVInt(0) # array
 		
+<<<<<<< Updated upstream
 		self.writeVInt(6969) # gems
+=======
+<<<<<<< HEAD
+		self.writeVInt(self.player.gems) # gems
+=======
+		self.writeVInt(6969) # gems
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
 		self.writeVInt(13) # free gems (?) 
 		
 		self.writeVInt(0)
@@ -202,4 +384,14 @@ class OwnHomeDataMessage(Writer):
 		self.writeVInt(0)
 		
 		self.writeVInt(2) # tutorial state
+<<<<<<< Updated upstream
 		self.writeVInt(2017189) # dudka timestamps from hell
+=======
+<<<<<<< HEAD
+		self.writeVInt(2017189) # dudka timestamps from hell
+		self.player.coins_reward = 0
+		db.replaceValue("coins_reward", self.player.coins_reward)
+=======
+		self.writeVInt(2017189) # dudka timestamps from hell
+>>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
+>>>>>>> Stashed changes
