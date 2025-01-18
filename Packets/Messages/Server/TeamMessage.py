@@ -39,7 +39,7 @@ class TeamMessage(Writer):
             for player in range(self.playerCount):
                 
                 if player == 0:
-                    self.writeLong(0, 1) # Player ID
+                    self.writeLong(0, self.player.low_id) # Player ID
                 else:
                     self.writeLong(1, player)
                 self.writeString(self.names[player]) # Player Name
@@ -51,6 +51,6 @@ class TeamMessage(Writer):
                 self.writeVInt(self.maximumUpgradeLevel*3) # Brawler Upgrade Level
                 self.writeVInt(self.player.teamStatus) # Player Status
                 self.writeVInt(0) # unk
-                self.writeBoolean(self.player.isReadyState) # Ready State
+                self.writeBoolean(self.player.isReady) # Ready State
                 self.writeVInt(player) # Player Team
             # Players Array End

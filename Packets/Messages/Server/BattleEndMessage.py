@@ -169,6 +169,16 @@ class BattleEndTrio(Writer):
 		self.device = device
 		self.plrs = plrs
 		self.player = player
+		Brawlers228 = Characters().getBrawlers()
+		cards = Cards().getCards()
+		self.settings = json.load(open('Settings.json'))
+		self.maximumRank = self.settings["MaximumRank"]
+		self.maximumUpgradeLevel = self.settings["MaximumUpgradeLevel"]
+		self.requiredTrophiesForRank = ProgressStart = [0,10,20,30,40,60,80,100,120,140,160,180,220,260,300,340,380,420,460,500,550,600,650,700,750,800,850,900,950,1000,1050,1100,1150,1200]
+		if self.maximumRank <= 34:
+				self.brawlersTrophies = self.requiredTrophiesForRank[self.maximumRank-1]
+		else:
+				self.brawlersTrophies = self.requiredTrophiesForRank[33] + (50* (self.maximumRank-34))
 		super().__init__(self.device)
 
 	def encode(self):
