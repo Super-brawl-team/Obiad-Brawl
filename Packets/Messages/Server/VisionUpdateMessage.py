@@ -9,15 +9,7 @@ class VisionUpdateMessage(Writer):
         self.device = device
         self.id = 24109
         self.player = player
-<<<<<<< Updated upstream
-        self.version = 1
-=======
-<<<<<<< HEAD
         #self.version = 1
-=======
-        self.version = 1
->>>>>>> 54c5ae3525afb6f57f42905c8081514084a01e2b
->>>>>>> Stashed changes
         super().__init__(self.device)
 
 
