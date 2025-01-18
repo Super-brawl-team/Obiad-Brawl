@@ -44,6 +44,7 @@ class LoginMessage(ByteStream):
          self.player.low_id = self.loginPayload["lowID"]
          self.player.token = self.loginPayload["token"]
          self.player.region = self.loginPayload["region"]
+         db.replaceValue("region", self.player.region)
          LoginOkMessage(self.device, self.player, self.loginPayload).Send()
          ClanStream(self.device, self.player).Send() # 14109
          OwnHomeDataMessage(self.device, self.player).Send()
