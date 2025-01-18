@@ -5,11 +5,14 @@ class Player:
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     HighID = 0
     LowID = 0
     Token = None
     name = "PrimoDEVHacc"
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     high_id = 0
@@ -56,6 +59,9 @@ class Player:
     brawler_id = 0
     team = 0
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
