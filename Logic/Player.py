@@ -4,11 +4,14 @@
 class Player:
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     HighID = 0
     LowID = 0
     Token = None
     name = "PrimoDEVHacc"
 =======
+=======
+>>>>>>> Stashed changes
     high_id = 0
     low_id = 1
     token = None
@@ -52,6 +55,9 @@ class Player:
     skin_id = 0
     brawler_id = 0
     team = 0
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     def __init__(self, device):

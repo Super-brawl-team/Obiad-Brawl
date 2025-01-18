@@ -12,5 +12,8 @@ commands = {
     203: LogicGiveDeliveryItemsCommand,
     500: LogicGatchaCommand,
     502: LogicBuyCardCommand
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

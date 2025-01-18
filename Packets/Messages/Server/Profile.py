@@ -8,6 +8,9 @@ from Files.CsvLogic.Cards import Cards
 from Files.CsvLogic.Characters import Characters
 import json
 from Database.DatabaseManager import DataBase
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 class Profile(Writer):
 
@@ -21,6 +24,7 @@ class Profile(Writer):
         super().__init__(self.device)
 
     def encode(self):
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                 self.writeVint(self.HighID) # Player HighID
                 self.writeVint(self.LowID) # Player LowID
@@ -50,6 +54,20 @@ class Profile(Writer):
                 
                 
                 # Hero Entry Array
+=======
+        db = DataBase(self.player)
+        for player in self.players:
+            if self.LowID == player["low_id"]:
+                self.writeVInt(self.HighID) # Player HighID
+                self.writeVInt(self.LowID) # Player LowID
+                self.writeString(player["name"])
+                self.writeVInt(0) # Unknown Data 
+                
+                self.writeVInt(len(player["unlocked_brawlers"])) 
+                
+                
+                # Hero Entry Array
+>>>>>>> Stashed changes
                 for key, brawler_id in player["unlocked_brawlers"].items():
                     self.writeScId(16, int(key))
                     self.writeVInt(0)
@@ -60,6 +78,9 @@ class Profile(Writer):
                         if not Cards().isUnlock(card):
                             powerLevel += amount
                     self.writeVInt(powerLevel) # Brawler Upgrade Level TOO
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 # Hero Entry Array End
                 
@@ -73,6 +94,7 @@ class Profile(Writer):
                 self.writeVInt(7) # Stats Count
                 self.writeVInt(1) # Stats Index
                 self.writeVInt(player["three_vs_three_wins"]) # Total Victories
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
                 self.writeVint(2) # Stats Index
                 self.writeVint(player["player_experience"]) # Player Experience Points
@@ -88,6 +110,20 @@ class Profile(Writer):
                 self.writeVint(8) # Stats Index
                 self.writeVint(1488) # Showdown Victories
 =======
+                self.writeVint(player["trophies"]) # Player Trophies
+                self.writeVint(4) # Stats Index
+                self.writeVint(player["highest_trophies"]) # Highest Trophies
+                self.writeVint(5) # Stats Index
+                self.writeVint(len(player["unlocked_brawlers"])) # Unlocked Brawlers
+                self.writeVint(7) # Stats Index
+                self.writeVint(28000000 + player["profile_icon"]) # Player Profile Icon
+                self.writeVint(8) # Stats Index
+                self.writeVint(player["solo_wins"]) # Showdown Victories
+>>>>>>> Stashed changes
+=======
+                self.writeVint(2) # Stats Index
+                self.writeVint(player["player_experience"]) # Player Experience Points
+                self.writeVint(3) # Stats Index
                 self.writeVint(player["trophies"]) # Player Trophies
                 self.writeVint(4) # Stats Index
                 self.writeVint(player["highest_trophies"]) # Highest Trophies

@@ -24,8 +24,11 @@ class Networking(Thread):
 
     def run(self):
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         self.client.bind((self.address, self.port))
 =======
+=======
+>>>>>>> Stashed changes
         global connected_clients_count
         self.server.bind((self.address, self.port))
 >>>>>>> Stashed changes
@@ -62,6 +65,7 @@ class ClientThread(Thread):
 
     def run(self):
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         while True:
             header   = self.client.recv(7)
             packetid = int.from_bytes(header[:2], 'big')
@@ -97,6 +101,8 @@ class ClientThread(Thread):
                     print('[*] Received an invalid packet from client')
                 self.client.close()
 =======
+=======
+>>>>>>> Stashed changes
         global connected_clients_count
         
         try:
