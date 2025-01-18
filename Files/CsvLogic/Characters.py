@@ -16,8 +16,16 @@ class Characters:
                           return True
                         else:
                            return False
-
-
+    def getCharacterByName(self, name):
+        
+        brawler = None
+        with open('GameAssets/csv_logic/characters.csv') as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            next(csv_reader) 
+            next(csv_reader)
+            for count, row in enumerate(csv_reader, start=0):
+                if row[0] == name:
+                    return count
     def getBrawlers(self):
         BrawlersID = []
         with open('GameAssets/csv_logic/characters.csv') as csv_file:

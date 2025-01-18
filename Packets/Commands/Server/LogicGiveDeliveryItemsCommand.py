@@ -33,6 +33,8 @@ class LogicGiveDeliveryItemsCommand(ByteStream):
                 self.writeScID(5, 6) # item type
                 self.writeVInt(Amount) # amount
                 self.writeVInt(0) # item given
+                self.player.elexir += Amount
+                db.replaceValue("elexir", self.player.elexir)
           else:
                 chipsList = [1, 2, 10, 60]
                 BrawlersList = Cards().getBrawlers()

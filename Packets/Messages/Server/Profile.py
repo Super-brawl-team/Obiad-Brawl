@@ -34,7 +34,7 @@ class Profile(Writer):
                     self.writeVInt(brawler_id["Trophies"])  # Trophies 
                     self.writeVInt(brawler_id["HighestTrophies"])  # Trophies for rank
                     powerLevel = 0
-                    for card, amount in brawler_id["Cards"]:
+                    for card, amount in brawler_id["Cards"].items():
                         if not Cards().isUnlock(card):
                             powerLevel += amount
                     self.writeVInt(powerLevel) # Brawler Upgrade Level TOO

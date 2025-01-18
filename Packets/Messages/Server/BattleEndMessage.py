@@ -8,10 +8,11 @@ from Files.CsvLogic.Characters import Characters
 import json
 class BattleEndSD(Writer):
 
-	def __init__(self, device, player):
+	def __init__(self, device, player, plrs):
 		self.id = 23456
 		self.device = device
 		self.player = player
+		self.plrs = plrs
 		Brawlers228 = Characters().getBrawlers()
 		cards = Cards().getCards()
 		self.settings = json.load(open('Settings.json'))
@@ -163,9 +164,10 @@ class BattleEndSD(Writer):
 		
 class BattleEndTrio(Writer):
 
-	def __init__(self, device, player):
+	def __init__(self, device, player, plrs):
 		self.id = 23456
 		self.device = device
+		self.plrs = plrs
 		self.player = player
 		super().__init__(self.device)
 

@@ -369,58 +369,6 @@ class Writer:
 
         else:
             self.device.SendData(self.id, self.buffer)
-        if self.id == 24111:
-           print('[*] {} sent'.format(self.commandID))
-        else:
-           print('[*] {} sent'.format(self.id))
-
-
-    def sendToAll(self):
-        if self.player.ClubID != 0:
-            self.encode()
-            packet = encrypt(self.buffer)
-            self.buffer = self.id.to_bytes(2, 'big', signed=True)
-            #self.writeInt(len(packet), 3)
-            if hasattr(self, 'version'):
-                self.writeInt16(self.version)
-            else:
-                self.writeInt16(0)
-            self.buffer += packet
-            for Client in range(self.player.ClientDict["ClientCounts"]):
-                for client_id, value in self.player.ClientDict["Clients"].items():
-                    DataBase.loadOtherAccount(self, int(client_id))
-                    if self.ClubID == self.player.ClubID:
-                        self.player.ClientDict["Clients"][str(client_id)]["SocketInfo"].send(self.buffer)
-                break
-            
-    def sendToOthers(self):
-        if self.player.ClubID != 0:
-            self.encode()
-            packet = encrypt(self.buffer)
-            
-            if hasattr(self, 'version'):
-                self.device.SendData(self.id, self.buffer, self.version)
-            else:
-                self.device.SendData(self.id, self.buffer)
-            #self.buffer += packet + b'\xff\xff\x00\x00\x00\x00\x00'
-            for Client in range(self.player.ClientDict["ClientCounts"]):
-                for client_id, value in self.player.ClientDict["Clients"].items():
-                    DataBase.loadOtherAccount(self, int(client_id))
-                    if client_id != self.player.LowID and self.ClubID == self.player.ClubID:
-                        self.player.ClientDict["Clients"][str(client_id)]["SocketInfo"].send(self.buffer)
-                break
-
-    def sendWithLowID(self, low_id):
-        #try:
-            self.encode()
-            #packet = encrypt(self.buffer)
-            #self.buffer = self.id.to_bytes(2, 'big', signed=True)
-            #self.writeInt(len(packet), 3)
-            if hasattr(self, 'version'):
-               for PlayerSocket in range(self.player.ClientDict["ClientCounts"]):
-                self.device.SendDataToSomeoneElse(self.id, self.buffer, self.player.ClientDict["Clients"][str(low_id)]["SocketInfo"], self.version)
-            else:
-                for PlayerSocket in range(self.player.ClientDict["ClientCounts"]):
-                    self.device.SendDataToSomeoneElse(self.id, self.buffer, self.player.ClientDict["Clients"][str(low_id)]["SocketInfo"])
-            
         
+        print('[*] {} sent'.format(self.id))
+

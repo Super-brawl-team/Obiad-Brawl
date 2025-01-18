@@ -5,8 +5,8 @@ from Packets.Messages.Server.OwnHomeDataMessage import OwnHomeDataMessage
 from Packets.Messages.Server.ClanData import ClanData
 from Packets.Messages.Server.ClanStream import ClanStream
 from Logic.Player import Player
-
-
+from Database.DatabaseManager import DataBase
+from Utils.Helpers import Helpers
 class LoginMessage(ByteStream):
 
     def __init__(self, data, device, player):
@@ -33,14 +33,16 @@ class LoginMessage(ByteStream):
         self.player.usedVersion = self.loginPayload["majorVersion"]
 
     def process(self):
+        db = DataBase(self.player)
         
         if self.player.usedVersion == 1 or self.player.usedVersion == 2:
-         if self.loginPayload["lowID"] == 0:
-            self.loginPayload["lowID"] = 1
-            self.loginPayload["token"] = "this is a token"
-         self.player.HighID = self.loginPayload["highID"]
-         self.player.LowID = self.loginPayload["lowID"]
-         self.player.Token = self.loginPayload["token"]
+         if not db.is_token_in_table(self.loginPayload["token"]):
+            db.getPlayerId()
+            db.createAccount()
+            self.loginPayload["token"] = self.player.token = Helpers.randomStringDigits(self)
+         self.player.high_d = self.loginPayload["highID"]
+         self.player.low_id = self.loginPayload["lowID"]
+         self.player.token = self.loginPayload["token"]
          self.player.region = self.loginPayload["region"]
          LoginOkMessage(self.device, self.player, self.loginPayload).Send()
          ClanStream(self.device, self.player).Send() # 14109

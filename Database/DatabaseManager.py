@@ -11,7 +11,6 @@ class DataBase:
         self.player = player
         self.connection = sqlite3.connect('Database/database.db')
         self.cursor = self.connection.cursor()
-        self._initialize_tables()
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Players (
                 token TEXT PRIMARY KEY,

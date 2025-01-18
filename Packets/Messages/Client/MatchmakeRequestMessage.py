@@ -28,4 +28,4 @@ class MatchmakeRequestMessage(ByteStream):
         
         MatchMakingStatusMessage(self.device, self.player, True, 20).Send()
         UDPConnectionInfoMessage(self.device, self.player).Send()
-        LogicBattle.start(self.client, self.player)
+        LogicBattle.start(self.device, self.player)

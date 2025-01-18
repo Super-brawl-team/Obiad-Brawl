@@ -26,6 +26,10 @@ class ByteStream(BufferedReader):
     def readUint32(self, length=4):
         return int.from_bytes(self.read(length), "big")
     
+    def readCommandHeader(self):
+        for x in range(9):
+            self.readVInt()
+    
     def readVInt(self):
         n = self.readVariableInt(True)
         return (n >> 1) ^ (-(n & 1))
