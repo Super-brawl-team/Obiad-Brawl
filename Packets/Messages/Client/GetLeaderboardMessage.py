@@ -4,7 +4,7 @@ from string import ascii_uppercase
 import json
 from Logic.Player import Player
 from Packets.Messages.Server.LeaderboardMessage import LeaderboardMessage
-
+from Database.DatabaseManager import DataBase
 class GetLeaderboardMessage(ByteStream):
     def __init__(self, data, device, player):
         super().__init__(data)
@@ -13,12 +13,46 @@ class GetLeaderboardMessage(ByteStream):
         self.player = player
 
     def decode(self):
-        self.device.LeaderboardType = self.readVInt()
-        self.device.LeaderboardInfo = self.readVInt()
-        self.target = self.readDataReference()
+        self.fields = {}
+        self.fields["isLocal"] = self.readVInt()
+        self.fields["leaderboardType"] = self.readVInt()
+        self.fields["targetBrawler"] = self.readDataReference()
 
 
     def process(self):
-    
-       LeaderboardMessage(self.device, self.player, self.target).Send()
+       db = DataBase(self.player)
+       if self.fields["leaderboardType"] == 0:
+
+            def by_brawler_trophy(plr):
+                try:
+                    brawlerTrophies = plr['unlocked_brawlers'][str(self.fields["targetBrawler"][1])]["Trophies"]
+                    return brawlerTrophies
+                except:
+                    return 0
+            self.fields["entries"] = [
+    player for player in db.getAllPlayers()
+    if str(self.fields["targetBrawler"][1]) in player.get("unlocked_brawlers", {}) and
+        player['unlocked_brawlers'][str(self.fields["targetBrawler"][1])]["Trophies"] > 0]
+            self.fields["entries"].sort(key=by_brawler_trophy, reverse=True)
+            if self.fields["isLocal"]:
+                self.fields["entries"] = [
+        player for player in self.fields["entries"]
+        if player.get("region") == self.player.region
+    ]
+
+       elif self.fields["leaderboardType"] == 1:
+
+            def by_trophy(plr):
+                return plr['trophies']
+            self.fields["entries"] = db.getAllPlayers()
+            self.fields["entries"].sort(key = by_trophy, reverse=True)
+
+            if self.fields["isLocal"]:
+                for player in self.fields["entries"]:
+                    if player["region"] != self.player.region:
+                        self.fields["entries"].remove(player)
+
+       elif self.fields["leaderboardType"] == 2:
+           self.fields["entries"] = []
+       LeaderboardMessage(self.device, self.player, self.fields).Send()
 

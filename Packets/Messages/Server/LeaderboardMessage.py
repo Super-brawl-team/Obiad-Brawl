@@ -1,73 +1,54 @@
 from Utils.Writer import Writer
 from Files.CsvLogic.Cards import Cards
 import json
+from Database.DatabaseManager import DataBase
 
 class LeaderboardMessage(Writer):
-	def __init__(self, device, player, target):
+	def __init__(self, device, player, fields):
 		super().__init__(device)
 		self.device = device
 		self.player = player
-		self.target = target
+		self.fields = fields
 		self.id = 24403
 
 	def encode(self):
-		Brawlers228 = Cards().getBrawlers()
-		self.settings = json.load(open('Settings.json'))
-		self.maximumRank = self.settings["MaximumRank"]
-		self.requiredTrophiesForRank = ProgressStart = [0,10,20,30,40,60,80,100,120,140,160,180,220,260,300,340,380,420,460,500,550,600,650,700,750,800,850,900,950,1000,1050,1100,1150,1200]
-		if self.maximumRank <= 34:
-			self.brawlersTrophies = self.requiredTrophiesForRank[self.maximumRank-1] 
-		else:
-			self.brawlersTrophies = self.requiredTrophiesForRank[33] + (50* (self.maximumRank-34))
-	
-		self.writeVInt(self.device.LeaderboardInfo)
-		if self.device.LeaderboardInfo == 1: 
-			self.writeVInt(0)
-		else: 
-			self.writeDataReference(int(self.target[0]), int(self.target[1]))
-		if self.device.LeaderboardType == 0:
-			self.writeString()
-		else:
-			self.writeString(self.player.region)
-
-		if self.device.LeaderboardInfo == 1: # Players LeaderBoard case ?
-			self.writeVInt(1) # Players Count
-			self.writeLogicLong(0, 1) # ID
-			self.writeVInt(1)
-			self.writeVInt(self.brawlersTrophies * len(Brawlers228)) # Player Trophies
-			self.writeVInt(1)
-			self.writeString(self.player.name)  # Player Name
-			self.writeString("Primo Team") # Club Name
-			self.writeVInt(500) # Player Level
-			self.writeScID(28, 0) # Player Icon
-			self.writeVInt(0)
-
-		elif self.device.LeaderboardInfo == 0: #Brawlers LeaderBoard case?
-			self.writeVInt(1) # Players Count
-			self.writeLogicLong(0, 1) # ID
-			self.writeVInt(1)
-			self.writeVInt(self.brawlersTrophies) # Player Trophies
-			self.writeVInt(1)
-			self.writeString(self.player.name)  # Player Name
-			self.writeString("Primo Team") # Club Name
-			self.writeVInt(500) # Player Level
-			self.writeScID(28, 0) # Player Icon
-			self.writeVInt(0)
-
-		elif self.device.LeaderboardInfo == 2: #Club leaderboard case
-			self.writeVInt(1) # Clubs Count
-			self.writeLogicLong(0, 1) # ID
-			self.writeVInt(1)
-			self.writeVInt(self.brawlersTrophies  * len(Brawlers228)) # Club Trophies
-			self.writeVInt(2)
-			self.writeString("Primo Team") # Club Name
-			self.writeVInt(1) # Club Members Count
-			self.writeVInt(8) # Club Badge
-			self.writeVInt(19) # Club Name Color
+		db = DataBase(self.player)
 		
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeString(self.player.region) #Region
+		self.indexOfPlayer = 1
+		self.writeVInt(self.fields["leaderboardType"])
+		if self.fields["leaderboardType"] == 0:
+			self.writeDataReference(16, self.fields["targetBrawler"][1]) # SCID
+		else:
+			self.writeVInt(0)
+		self.writeString(self.player.region if self.fields["isLocal"] else None)
 
+		self.writeVInt(len(self.fields["entries"])) # Players Count
+
+		for entry in self.fields["entries"]:
+			self.writeVInt(0) # High ID
+			self.writeVInt(entry["clubID"] if self.fields["leaderboardType"] == 2 else entry["low_id"]) # Low ID
+			self.writeVInt(1)
+			self.writeVInt(entry['trophies'] if self.fields["leaderboardType"] != 0 else entry['unlocked_brawlers'][str(self.fields["targetBrawler"][1])]["Trophies"]) # Player Trophies
+			isPlayer = self.fields["leaderboardType"] != 2
+			self.writeBoolean(isPlayer)
+			if isPlayer:
+				club = db.loadClub(entry["club_id"])
+				if ["low_id"] == self.player.low_id:
+					self.indexOfPlayer = self.fields["entries"].index(entry) + 1
+				self.writeString(entry['name'])
+				self.writeString(club["info"]["name"] if entry["club_id"] != 0 else "")
+				self.writeVInt(entry['player_experience'])
+				self.writeDataReference(28, entry['profile_icon'])
+			isClub = not isPlayer
+			self.writeBoolean(isClub)
+			if isClub:
+				self.writeString(entry["name"]) # Club Name
+				self.writeVInt(len(entry["memberCount"])) # Club Members Count
+				self.writeDataReference(8, entry["clubBadge"]) # Club Badge
+
+
+		self.writeVint(0)
+		self.writeVint(self.indexOfPlayer)
+		self.writeVint(0)
+		self.writeVint(0) # Leaderboard Region
+		self.writeString(self.player.region)
