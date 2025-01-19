@@ -101,8 +101,8 @@ class BattleEndSD(Writer):
 			exp = 0
 		else:
 			trophies = getBattleEndTrophies(self.plrs["BattleRank"], self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"])
-			coins = getBattleEndCoins(self.plrs["BattleEndType"])
-			exp = getBattleEndExp(self.device.BattleResult)
+			coins = getBattleEndCoins(self.plrs["BattleRank"])
+			exp = getBattleEndExp(self.plrs["BattleRank"])
 		if self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] + trophies > self.brawlersTrophies:
 			trophies = self.brawlersTrophies - self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] 
 		self.writeVInt(5) # Battle End Game Mode (5 = Showdown. Else is 3vs3)
@@ -232,8 +232,8 @@ class BattleEndTrio(Writer):
 			exp = 0
 		else:
 			trophies = getBattleEndTrophies(self.plrs["BattleRank"], self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"])
-			coins = getBattleEndCoins(self.plrs["BattleEndType"])
-			exp = getBattleEndExp(self.device.BattleResult)
+			coins = getBattleEndCoins(self.plrs["BattleRank"])
+			exp = getBattleEndExp(self.plrs["BattleRank"])
 		if self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] + trophies > self.brawlersTrophies:
 			trophies = self.brawlersTrophies - self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] 
 			
