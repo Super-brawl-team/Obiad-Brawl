@@ -30,7 +30,7 @@ class AskForBattleEndMessage(ByteStream):
 				"IsPlayer": self.readBoolean(), 
 				"Name": self.readString()
 			})
-		self.plrs["isInRealGame"] = False
+		self.plrs["isInRealGame"] = True
 	def process(self):
 		
 		if self.plrs["BattleRank"] != 0: # showdown
