@@ -36,11 +36,11 @@ class LoginMessage(ByteStream):
         db = DataBase(self.player)
         
         if self.player.usedVersion == 1 or self.player.usedVersion == 2:
-         if not db.is_token_in_table(self.loginPayload["token"]) and self.loginPayload["token"] is not None:
+         if not db.is_token_in_table(self.loginPayload["token"]) and self.loginPayload["token"] is None:
             db.getPlayerId()
             db.createAccount()
             self.loginPayload["token"] = self.player.token = Helpers.randomStringDigits(self)
-         elif self.loginPayload["token"] is None:
+         elif self.loginPayload["token"] is not None:
              LoginFailedMessage(self.device, self.player, self.loginPayload, "Press Clear Keychain button in debug menu please", 1)
         
          self.player.high_d = self.loginPayload["highID"]
