@@ -85,7 +85,7 @@ class DataBase:
             "elexir": self.player.elexir,
             "chips": self.player.chips,
             "coins_reward": 0,
-            "coins_doubler": self.player.coinssdoubler,
+            "coins_doubler": self.player.coinsdoubler,
             "coins_booster": self.player.coinsbooster,
             "trophies": self.player.trophies,
             "highest_trophies": self.player.trophies,
