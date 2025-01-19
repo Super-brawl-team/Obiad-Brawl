@@ -34,23 +34,30 @@ class LoginMessage(ByteStream):
 
     def process(self):
         db = DataBase(self.player)
-        
-        if self.player.usedVersion == 1 or self.player.usedVersion == 2:
-         if not db.is_token_in_table(self.loginPayload["token"]) and self.loginPayload["token"] is None:
-            db.getPlayerId()
-            db.createAccount()
-            self.loginPayload["token"] = self.player.token = Helpers.randomStringDigits(self)
-         elif self.loginPayload["token"] is not None:
-             LoginFailedMessage(self.device, self.player, self.loginPayload, "Press Clear Keychain button in debug menu please", 1)
-        
-         self.player.high_d = self.loginPayload["highID"]
-         self.player.low_id = self.loginPayload["lowID"]
-         self.player.token = self.loginPayload["token"]
-         self.player.region = self.loginPayload["region"]
-         db.replaceValue("region", self.player.region)
-         LoginOkMessage(self.device, self.player, self.loginPayload).Send()
-         ClanStream(self.device, self.player).Send() # 14109
-         OwnHomeDataMessage(self.device, self.player).Send()
-         ClanData(self.device, self.player).Send() # 14109
+
+        if self.player.usedVersion in (1, 2):
+            if not db.is_token_in_table(self.loginPayload["token"]) and self.loginPayload["token"] is None:
+                db.getPlayerId()
+                db.createAccount()
+                self.loginPayload["token"] = self.player.token = Helpers.randomStringDigits(self)
+            elif self.loginPayload["token"] is not None:
+                LoginFailedMessage(
+                    self.device, self.player, self.loginPayload,
+                    "Press Clear Keychain button in debug menu please", 1
+                ).Send()
+                return "a"
+
+            # Process login information
+            self.player.high_d = self.loginPayload["highID"]
+            self.player.low_id = self.loginPayload["lowID"]
+            self.player.token = self.loginPayload["token"]
+            self.player.region = self.loginPayload["region"]
+            db.replaceValue("region", self.player.region)
+
+            # Send success messages
+            LoginOkMessage(self.device, self.player, self.loginPayload).Send()
+            ClanStream(self.device, self.player).Send()  # 14109
+            OwnHomeDataMessage(self.device, self.player).Send()
+            ClanData(self.device, self.player).Send()  # 14109
         else:
-           LoginFailedMessage(self.device, self.player, self.loginPayload, " ", 16)
+            LoginFailedMessage(self.device, self.player, self.loginPayload, " ", 16)
