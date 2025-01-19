@@ -7,6 +7,7 @@ from Packets.Messages.Server.ClanStream import ClanStream
 from Logic.Player import Player
 from Database.DatabaseManager import DataBase
 from Utils.Helpers import Helpers
+import time
 class LoginMessage(ByteStream):
 
     def __init__(self, data, device, player):
@@ -34,23 +35,28 @@ class LoginMessage(ByteStream):
 
     def process(self):
         db = DataBase(self.player)
-
+        print(self.loginPayload["token"])
         if self.player.usedVersion in (1, 2):
-            if not db.is_token_in_table(self.loginPayload["token"]) and self.loginPayload["token"] is None:
+            if not db.is_token_in_table(self.loginPayload["token"]):
+                self.loginPayload["token"] = self.player.token = Helpers.randomStringDigits(self)
                 db.getPlayerId()
                 db.createAccount()
-                self.loginPayload["token"] = self.player.token = Helpers.randomStringDigits(self)
+                
+                print(self.loginPayload["token"])
+            
+                '''
             elif self.loginPayload["token"] is not None:
                 LoginFailedMessage(
                     self.device, self.player, self.loginPayload,
-                    "Press Clear Keychain button in debug menu please", 1
+                    "Please clear app datas", 1
                 ).Send()
                 return "a"
+                '''
 
             # Process login information
             self.player.high_d = self.loginPayload["highID"]
             self.player.low_id = self.loginPayload["lowID"]
-            self.player.token = self.loginPayload["token"]
+            self.player.token = str(self.loginPayload["token"])
             self.player.region = self.loginPayload["region"]
             db.replaceValue("region", self.player.region)
 

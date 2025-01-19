@@ -3,7 +3,7 @@
 from Utils.Reader import ByteStream
 from Packets.Commands.Server.LogicChangeAvatarNameCommand import LogicChangeAvatarNameCommand
 from Logic.Player import Player
-
+from Database.DatabaseManager import DataBase
 
 class ChangeAvatarNameMessage(ByteStream):
 
@@ -17,4 +17,6 @@ class ChangeAvatarNameMessage(ByteStream):
         self.player.name = self.readString()
 
     def process(self):
+        db = DataBase(self.player)
+        db.replaceValue("name", self.player.name)
         LogicChangeAvatarNameCommand(self.device, self.player).Send()
