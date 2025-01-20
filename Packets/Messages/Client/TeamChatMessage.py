@@ -17,4 +17,4 @@ class TeamChatMessage(ByteStream):
 
 
     def process(self):
-        TeamStreamMessage(self.device, self.player, self.messageContent).Send()
+        TeamStreamMessage(self.device, self.player).Send()
