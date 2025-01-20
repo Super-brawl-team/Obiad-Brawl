@@ -38,20 +38,14 @@ class LoginMessage(ByteStream):
         print(self.loginPayload["token"])
         if self.player.usedVersion in (1, 2):
             if not db.is_token_in_table(self.loginPayload["token"]):
-                self.loginPayload["token"] = self.player.token = Helpers.randomStringDigits(self)
+                if self.loginPayload["token"] is None:
+                    self.loginPayload["token"] = self.player.token = Helpers.randomStringDigits(self)
+                else:
+                    self.player.token = self.loginPayload["token"]
                 db.getPlayerId()
                 db.createAccount()
                 
-                print(self.loginPayload["token"])
-            
-                '''
-            elif self.loginPayload["token"] is not None:
-                LoginFailedMessage(
-                    self.device, self.player, self.loginPayload,
-                    "Please clear app datas", 1
-                ).Send()
-                return "a"
-                '''
+
 
             # Process login information
             self.player.high_d = self.loginPayload["highID"]

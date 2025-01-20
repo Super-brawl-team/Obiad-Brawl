@@ -28,9 +28,9 @@ class LogicBattle(Thread):
               ForceBattleEnd.decode()
               ForceBattleEnd.process()
            else:
-            if self.subTick >= 4:
-                self.player.battleTicks += 1
-                self.subTick = 0
+            
+            self.player.battleTicks += 1
+            self.subTick = 0
                 #print("Tick: ", self.tick)
             self.process()
             time.sleep(0.003)

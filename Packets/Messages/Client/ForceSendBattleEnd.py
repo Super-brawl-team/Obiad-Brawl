@@ -31,8 +31,8 @@ class ForceSendBattleEnd(Writer):
 				isPlayer = True
 				Name = self.player.name
 			self.plrs["Brawlers"].append({
-				"CharacterID": [16, 1],
-				"SkinID": [29, 1],
+				"CharacterID": [16, 0],
+				"SkinID": [29, 0],
 				"Team": team,
 				"IsPlayer": isPlayer, 
 				"Name": Name

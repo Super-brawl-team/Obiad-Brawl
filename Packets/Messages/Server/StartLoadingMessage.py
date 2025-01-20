@@ -59,8 +59,8 @@ class StartLoadingMessage(Writer):
         self.writeInt(0) # Array
         self.writeVInt(1) # unknown
         self.writeVint(1) # drawmap
-        self.writeVint(0) # Map Blocks
+        self.writeVint(2) # control mode
         self.writeBoolean(False) # Is spectating
 
-        self.writeScId(15, 3) # Location ID
+        self.writeScId(15, 8) # Location ID
         self.writeBoolean(False)

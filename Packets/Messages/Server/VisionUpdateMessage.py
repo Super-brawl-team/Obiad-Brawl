@@ -20,7 +20,7 @@ class VisionUpdateMessage(Writer):
         
         stream = BitStream()
         
-        LogicGameObjectManagerServer.encode(stream, 2000000, 2, 1, 2)
+        LogicGameObjectManagerServer.encode(stream, 2000000, 2, 1, 2, self.player)
         self.writeInt(stream.getLength())
         self.buffer += stream.getByteArray()
         #self.writeBytes(stream.getByteArray(), stream.getLength())

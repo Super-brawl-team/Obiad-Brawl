@@ -20,9 +20,12 @@ class ClientInputMessage(ByteStream):
           x = self.readVInt()
           y = self.readVInt()
           if type == 100:
-            print(f"Player moved to {x}, {y}")
+            self.player.x = x
+            self.player.y = y
+            print(f"Player moved to {self.player.x}, {self.player.y}")
           elif type == 0:
             print(f"Player attacked and given coordinates are {x}, {y}")
 
     def process(self):
+        self.player.battleTicks += 1
         VisionUpdateMessage(self.device, self.player).Send()

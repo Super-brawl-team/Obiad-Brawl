@@ -95,7 +95,7 @@ class BattleEndSD(Writer):
 				return 15
 
 		db = DataBase(self.player)
-		if self.plrs["isInRealGame"]:
+		if not self.plrs["isInRealGame"]:
 			trophies = 0
 			coins = 0
 			exp = 0

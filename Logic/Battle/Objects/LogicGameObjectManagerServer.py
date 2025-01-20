@@ -4,186 +4,432 @@ from Utils.BitStream import BitStream
 class LogicGameObjectManagerServer(BitStream):
 
     
-    def encode(stream, ownObjectGlobalId, playerIndex, teamIndex, gamemodeVariation):
-        stream.writePositiveIntMax2097151(ownObjectGlobalId) # Own object global id
-        stream.writePositiveIntMax32767(0)
-        stream.writeBoolean(False)
-        if gamemodeVariation == 6:
-             stream.writePositiveIntMax63(48)
-             stream.writePositiveIntMax127(9) # unk
-             stream.writePositiveIntMax63(59) 
-             stream.writePositiveIntMax127(35) 
-             
-        else:
-            stream.writePositiveIntMax31(0)
-            stream.writePositiveIntMax63(0) # unk
-            stream.writePositiveIntMax31(11) # tilemap width
-            stream.writePositiveIntMax63(18) # tilemap height
-
-        for tileMap in range(52):
-            stream.writeBoolean(False)
-        
-        stream.writeBoolean(True)
-        stream.writeBoolean(False) # has ulti
-        stream.writePositiveIntMax1023(3000) # ulti charge
-        stream.writeBoolean(True)
-        stream.writeBoolean(False)
-        stream.writeBoolean(True)
-        stream.writeBoolean(False)
-        stream.writeBoolean(True)
-        stream.writeBoolean(False)
-        stream.writeBoolean(True)
-        stream.writeBoolean(False)
-        stream.writeBoolean(True)
-        stream.writeBoolean(False)
-        if gamemodeVariation == 2:
-            stream.writePositiveIntMax127(0) # your side chest
-            stream.writePositiveIntMax127(100) # ennemy side chest
-        elif gamemodeVariation == 6:
-            stream.writePositiveIntMax15(2) # players left in showdown
-        
-        for x in range(6):
-            stream.writePositiveIntMax63(0)
-            stream.writePositiveIntMax3(0)
-        
-        stream.writePositiveIntMax127(5) # Game objects amount
-
-        for x in range(2):
-            stream.writeDataReference(16, x) # brawlers
-
-        stream.writeDataReference(16, 22) # safe 2
-        stream.writeDataReference(16, 25) # tnt
-        stream.writeDataReference(16, 25) # tnt
-
-        for index in range(5):
-            stream.writeObjectRunning(2, index)
-
-        stream.writePositiveIntMax8191(1950) # x
-        stream.writePositiveIntMax16383(9750) # y
-        stream.writePositiveIntMax127(0) # index of player
-        stream.writePositiveIntMax4095(0) # z? wtf is this lmao
-        stream.writePositiveIntMax15(10) # visibility
-        stream.writeBoolean(False) # boolean only if you play this object else its angles
-        stream.writePositiveIntMax8(4) # state? hmm
-        stream.writeBoolean(False)
-        stream.writeBoolean(False)
-        stream.writeBoolean(True)
-        stream.writePositiveIntMax63(63) # playing anim ????????? what?
-        stream.writeBoolean(False) # i heard its related to rotation
-        stream.writeBoolean(False) # is stunned
-        stream.writeBoolean(False) # idk
-        stream.writeBoolean(False) # has star power (yes it exists since v1)
-        stream.writePositiveIntMax127(0)
-        stream.writePositiveIntMax31(0)
-        stream.writePositiveIntMax2047(1500) # current health
-        stream.writePositiveIntMax2047(1500) # max heealth
-        stream.writePositiveIntMax63(0) # items count ?
-        stream.writePositiveIntMax8191(0)
-        stream.writePositiveIntMax2047(0)
-        stream.writeBoolean(False)
-        stream.writeBoolean(False) # is immune
-        stream.writeBoolean(False)
-        stream.writeBoolean(False)
-        stream.writeBoolean(False)
-        stream.writeBoolean(False)
-        stream.writeBoolean(False)
-        stream.writeBoolean(False) # not fully visible?
-        stream.writePositiveIntMax511(0)
-        stream.writeBoolean(True)
-        stream.writePositiveIntMax511(0)
-        stream.writePositiveIntMax31(0) # recieved damages count xdd
+    def encode(self, ownObjectGlobalId, playerIndex, teamIndex, gamemodeVariation, player):
+        # every self.writePositiveInt(0, 1) are booleans, the first arg is the bool (0 : false, 1: true) and secon arg is bitcount
+        self.writePositiveInt(2000000, 21) # global id stuffs
+        self.writePositiveInt(0, 15) # fade counter
+        self.writePositiveInt(1 if player.battleTicks > 900 else 0, 1) # is game finished?
+        self.writePositiveInt(0, 5) # map size related
+        self.writePositiveInt(14, 6) # map size related
+        self.writePositiveInt(13, 5) # map size related
+        self.writePositiveInt(32, 6) # map size related
+        # is wall destroyed array from the pits of hell
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1) # i try to break a wall
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        # ulti related array
+        self.writePositiveInt(1, 1) # unk
+        self.writePositiveInt(1, 1) # has ulti
+        self.writePositiveInt(1000, 10) # ulti charge (only for your player) 1000 is full ulti
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(0, 1)
+        # ulti array end
+        self.writePositiveInt(1, 3) # ig collected bounty stars
+        self.writePositiveInt(1, 3) # collected bounty stars for ennemies
+        # kills related array
+        self.writePositiveInt(1, 6) # your bounty stars
+        self.writePositiveInt(0, 2) # kills array thing
+        self.writePositiveInt(5, 6) # bot 1 bounty stars
+        self.writePositiveInt(0, 2)
+        self.writePositiveInt(0, 6) 
+        self.writePositiveInt(0, 2)
+        self.writePositiveInt(0, 6)
+        self.writePositiveInt(0, 2)
+        self.writePositiveInt(0, 6)
+        self.writePositiveInt(0, 2)
+        self.writePositiveInt(20, 6)
+        self.writePositiveInt(0, 2)
+        # kills related array ends
+        self.writePositiveInt(7, 7) # game objects count
+        #  game objects ids array
+        self.writePositiveInt(16, 5) # csv global id 16 is characters.csv
+        self.writePositiveInt(0, 8)  # csv line (so the selected character)
+        self.writePositiveInt(16, 5)
+        self.writePositiveInt(3, 8)
+        self.writePositiveInt(16, 5)
+        self.writePositiveInt(10, 8)
+        self.writePositiveInt(16, 5)
+        self.writePositiveInt(10, 8)
+        self.writePositiveInt(16, 5)
+        self.writePositiveInt(1, 8)
+        self.writePositiveInt(16, 5)
+        self.writePositiveInt(7, 8)
+        self.writePositiveInt(18, 5) # 18 is items.csv
+        self.writePositiveInt(10, 8)
+        # game objects ids array end
+        # game objects index array
+        self.writePositiveInt(2, 5)
+        self.writePositiveInt(0, 14)
+        self.writePositiveInt(2, 5)
+        self.writePositiveInt(1, 14)
+        self.writePositiveInt(2, 5)
+        self.writePositiveInt(2, 14)
+        self.writePositiveInt(2, 5)
+        self.writePositiveInt(3, 14)
+        self.writePositiveInt(2, 5)
+        self.writePositiveInt(4, 14)
+        self.writePositiveInt(2, 5)
+        self.writePositiveInt(5, 14)
+        self.writePositiveInt(4, 5)
+        self.writePositiveInt(0, 14)
+        # game objects index array ends
+        # game objects array 
+        # your player
+        self.writePositiveInt(player.x, 13) # x
+        self.writePositiveInt(player.y, 14) # y
+        self.writePositiveInt(0, 7) # player index
+        self.writePositiveInt(100, 12) # z
+        self.writePositiveInt(10, 4) # visibility
+        self.writePositiveInt(0, 1) # you have that instead of rotation ting bots  has
+        self.writePositiveInt(4, 3) # state
+        self.writePositiveInt(0, 1) # weird state, its like boosted with the drink
+        self.writePositiveInt(1, 1) # idk
+        self.writePositiveInt(1, 1) # playing anim related
+        self.writePositiveInt(63, 6) # played anim lol keep it 63 please
+        self.writePositiveInt(0, 1) # rotation related
+        self.writePositiveInt(0, 1) # stunned
+        self.writePositiveInt(0, 1) # unk
+        self.writePositiveInt(0, 1) # is poisonned
+        self.writePositiveInt(0, 7) # idk
+        self.writePositiveInt(0, 5) # idk
+        self.writePositiveInt(800, 11) # current hp
+        self.writePositiveInt(5000, 11) # max hp
+        self.writePositiveInt(1, 7) # items amount (here its bounty stars)
+        self.writePositiveInt(0, 13) #idk
+        self.writePositiveInt(0, 11) # idk
+        self.writePositiveInt(0, 1) # idk
+        self.writePositiveInt(0, 1) # is immune
+        self.writePositiveInt(0, 1) # rotate related
+        self.writePositiveInt(0, 1) # dev rage activated
+        self.writePositiveInt(0, 1)# aiming with ulti
+        self.writePositiveInt(0, 1) # ulti activated
+        self.writePositiveInt(0, 1) # invisible
+        self.writePositiveInt(0, 1)  # not fully visible
+        self.writePositiveInt(0, 9) # idk
+        self.writePositiveInt(1, 1) # idk but its only for your player
+        self.writePositiveInt(0, 9) # same
+        self.writePositiveInt(0, 5) # damages count
         for x in range(0):
-            stream.writePositiveIntMax4095(1) # recieved damage xd
-        # skills related part
-        stream.writePositiveIntMax2047(0) # active ticks ig
-        stream.writeBoolean(False)
-        stream.writePositiveIntMax4095(0)
-        stream.writePositiveIntMax4095(3000) # definitivly ammo charge
-        # no more skills related
-        stream.writePositiveIntMax2047(0)
-        stream.writeBoolean(False)
-        stream.writePositiveIntMax4095(0)
-        
-        # fourth player
-        stream.writePositiveInt(750, 13)
-        stream.writePositiveInt(150, 14)
-        stream.writePositiveInt(19, 7)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(10, 4)
-        stream.writePositiveInt(90, 9)
-        stream.writePositiveInt(90, 9)
-        stream.writePositiveInt(4, 3)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(1, 1)
-        stream.writePositiveInt(63, 6)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 7)
-        stream.writePositiveInt(0, 5)
-        stream.writePositiveInt(1300, 11)
-        stream.writePositiveInt(1300, 11)
-        stream.writePositiveInt(0, 6)
-        stream.writePositiveInt(0, 13)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 9)
-        stream.writePositiveInt(0, 5)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(3000, 12)
-        stream.writePositiveInt(0, 11)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 12)
-        
-        # chest
-        stream.writePositiveInt(2550, 13) # box x
-        stream.writePositiveInt(1050, 14) # box y
-        stream.writePositiveInt(22, 7) # item index... why is it so hight
-        stream.writePositiveInt(0, 12) # box z
-        stream.writePositiveInt(10, 4) # box visibility
-        stream.writePositiveInt(4, 3) # box state
-        stream.writePositiveInt(5400, 13) # box current hp
-        stream.writePositiveInt(5500, 13) # box max hp
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 9)
-        stream.writePositiveInt(0, 5) # box damage count
-        for x in range(0):
-            stream.writePositiveIntMax4095(100)
-        # tnt box 1
-        stream.writePositiveInt(3150, 13)
-        stream.writePositiveInt(1950, 14)
-        stream.writePositiveInt(22, 7)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(10, 4)
-        stream.writePositiveInt(4, 3)
-        stream.writePositiveInt(3000, 13)
-        stream.writePositiveInt(3000, 13)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 9)
-        stream.writePositiveInt(0, 5)
-        # tnt box 2
-        stream.writePositiveInt(1950, 13)
-        stream.writePositiveInt(1950, 14)
-        stream.writePositiveInt(22, 7)
-        stream.writePositiveInt(0, 12)
-        stream.writePositiveInt(10, 4)
-        stream.writePositiveInt(4, 3)
-        stream.writePositiveInt(3000, 13)
-        stream.writePositiveInt(3000, 13)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 1)
-        stream.writePositiveInt(0, 9)
-        stream.writePositiveInt(0, 5)
+            self.writePositiveInt(1, 1) # why not.....
+            self.writePositiveInt(1, 12) # damages dealt
+        # skills array
+        # attack
+        self.writePositiveInt(0, 11) # active ticks
+        self.writePositiveInt(0, 1) # keep it false
+        self.writePositiveInt(0, 12) # unk
+        self.writePositiveInt(1000, 12) # your ammos 1000 = 1 full ammo (only if max charge is higher then 0)
+        # attack end
+        # ulti
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        # ulti end
+        # not your player anymore
+        # bot 1
+        self.writePositiveInt(2550, 13)
+        self.writePositiveInt(9750, 14)
+        self.writePositiveInt(1, 7)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(10, 4)
+        self.writePositiveInt(270, 9)
+        self.writePositiveInt(270, 9)
+        self.writePositiveInt(4, 3)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(63, 6)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 7)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(600, 11)
+        self.writePositiveInt(600, 11)
+        self.writePositiveInt(1, 7)
+        self.writePositiveInt(0, 13)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 9)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(3000, 12)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        # not bot 1 anymore
+        # bot 2
+        self.writePositiveInt(3150, 13)
+        self.writePositiveInt(9750, 14)
+        self.writePositiveInt(2, 7)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(10, 4)
+        self.writePositiveInt(270, 9) # rotation thing only bots has
+        self.writePositiveInt(270, 9) # rotation thing only bots has
+        self.writePositiveInt(4, 3)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(63, 6)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 7)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(1300, 11)
+        self.writePositiveInt(1300, 11)
+        self.writePositiveInt(1, 7)
+        self.writePositiveInt(0, 13)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 9)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(3000, 12)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        # not bot 2 anymore
+        # bot 3
+        self.writePositiveInt(1950, 13)
+        self.writePositiveInt(150, 14)
+        self.writePositiveInt(19, 7)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(10, 4)
+        self.writePositiveInt(90, 9)
+        self.writePositiveInt(90, 9)
+        self.writePositiveInt(4, 3)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(63, 6)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 7)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(1300, 11)
+        self.writePositiveInt(1300, 11)
+        self.writePositiveInt(1, 7)
+        self.writePositiveInt(0, 13)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 9)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(3000, 12)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        # not bot 3 anymore
+        # bot 4
+        self.writePositiveInt(2550, 13)
+        self.writePositiveInt(150, 14)
+        self.writePositiveInt(20, 7)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(10, 4)
+        self.writePositiveInt(90, 9)
+        self.writePositiveInt(90, 9)
+        self.writePositiveInt(4, 3)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(63, 6)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 7)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(600, 11)
+        self.writePositiveInt(600, 11)
+        self.writePositiveInt(1, 7)
+        self.writePositiveInt(0, 13)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 9)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(3000, 12)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        # not bot 4 anymore
+        # bot 5
+        self.writePositiveInt(3150, 13)
+        self.writePositiveInt(150, 14)
+        self.writePositiveInt(21, 7)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(10, 4)
+        self.writePositiveInt(90, 9)
+        self.writePositiveInt(90, 9)
+        self.writePositiveInt(4, 3)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(1, 1)
+        self.writePositiveInt(63, 6)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 7)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(700, 11)
+        self.writePositiveInt(700, 11)
+        self.writePositiveInt(1, 7)
+        self.writePositiveInt(0, 13)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 9)
+        self.writePositiveInt(0, 5)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(3000, 12)
+        self.writePositiveInt(0, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 12)
+        # not bot 5 anymore
+        # bounty star in the middle of the map
+        self.writePositiveInt(2550, 13)
+        self.writePositiveInt(4950, 14)
+        self.writePositiveInt(102, 7)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(10, 4)
+        # not bounty star in the middle of the map anymore
