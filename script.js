@@ -15,7 +15,7 @@ Interceptor.attach(base.add(0x9F7D0), {
 });
 }
 
-Interceptor.attach(base.add(0xDEB74), {
+Interceptor.attach(base.add(0x39830), {
   onEnter: function(args) {
         startGrab()
     },

@@ -1,6 +1,6 @@
 import time
 from Utils.BitStream import BitStream
-
+from Logic.Battle.Objects.TileMap import TileMap as tileMap
 class LogicGameObjectManagerServer(BitStream):
 
     
@@ -11,9 +11,16 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(1 if player.battleTicks > 900 else 0, 1) # is game finished?
         self.writePositiveInt(0, 5) # map size related
         self.writePositiveInt(14, 6) # map size related
-        self.writePositiveInt(13, 5) # map size related
-        self.writePositiveInt(32, 6) # map size related
+        self.writePositiveInt(tileMap.width - 1, 5) # map size related
+        self.writePositiveInt(tileMap.height - 1, 6) # map size related
         # is wall destroyed array from the pits of hell
+        '''
+        for i in range(tileMap.width):
+            for j in range(tileMap.weight):
+                tile = tileMap.GetTile(i, j, True)
+                if tile.Data.RespawnSeconds > 0 or tile.Data.IsDestructible:       THATS FOR SOON
+                    self.writePositiveInt(0, 1)
+        '''
         self.writePositiveInt(0, 1)
         self.writePositiveInt(0, 1)
         self.writePositiveInt(0, 1)
@@ -131,7 +138,7 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(20, 6)
         self.writePositiveInt(0, 2)
         # kills related array ends
-        self.writePositiveInt(9, 7) # game objects count
+        self.writePositiveInt(10, 7) # game objects count
         #  game objects ids array
         self.writePositiveInt(16, 5) # csv global id 16 is characters.csv
         self.writePositiveInt(0, 8)  # csv line (so the selected character)
@@ -151,9 +158,12 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(10, 8)
         self.writePositiveInt(17, 5) # 17 is area_effects.csv
         self.writePositiveInt(0, 8)
+        self.writePositiveInt(16, 5)
+        self.writePositiveInt(29, 8) # ball id, edit it if u changed stuffs in characters.csv
        
         # game objects ids array end
         # game objects index array
+        # 1= projectile, 2 = characters, 3= area effects, 4 = items
         self.writePositiveInt(2, 5)
         self.writePositiveInt(0, 14)
         self.writePositiveInt(2, 5)
@@ -172,6 +182,8 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(0, 14)
         self.writePositiveInt(3, 5)
         self.writePositiveInt(0, 14)
+        self.writePositiveInt(2, 5)
+        self.writePositiveInt(6, 14)
         
         # game objects index array ends
         # game objects array 
@@ -437,8 +449,8 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(0, 12)
         # not bot 5 anymore
         # shelly ulti projectile start
-        self.writePositiveInt(player.x - 300, 13)
-        self.writePositiveInt(player.y, 14)
+        self.writePositiveInt(abs(player.x - 300), 13)
+        self.writePositiveInt(player.y + 300, 14)
         self.writePositiveInt(0, 7)
         self.writePositiveInt(350, 12)
         self.writePositiveInt(0, 3) # state
@@ -453,10 +465,22 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(10, 4)
         # not bounty star in the middle of the map anymore
         # area effect test
-        self.writePositiveInt(2550, 13)
-        self.writePositiveInt(4950, 14)
+        self.writePositiveInt(abs(player.x - 600), 13)
+        self.writePositiveInt(player.y + 600, 14)
         self.writePositiveInt(102, 7)
         self.writePositiveInt(0, 12)
         self.writePositiveInt(10, 4)
         # area effect test end
-        
+        # brawl ball xddd
+        self.writePositiveInt(2550, 13)
+        self.writePositiveInt(150, 14)
+        self.writePositiveInt(102, 7)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(10, 4)
+        self.writePositiveInt(0, 3)
+        self.writePositiveInt(1, 11)
+        self.writePositiveInt(1, 11)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 1)
+        self.writePositiveInt(0, 9)
+        self.writePositiveInt(0, 5)
