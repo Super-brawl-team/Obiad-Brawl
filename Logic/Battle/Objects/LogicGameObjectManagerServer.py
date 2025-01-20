@@ -131,7 +131,7 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(20, 6)
         self.writePositiveInt(0, 2)
         # kills related array ends
-        self.writePositiveInt(7, 7) # game objects count
+        self.writePositiveInt(9, 7) # game objects count
         #  game objects ids array
         self.writePositiveInt(16, 5) # csv global id 16 is characters.csv
         self.writePositiveInt(0, 8)  # csv line (so the selected character)
@@ -145,8 +145,13 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(1, 8)
         self.writePositiveInt(16, 5)
         self.writePositiveInt(7, 8)
+        self.writePositiveInt(6, 5) # 6 is projectiles.csv
+        self.writePositiveInt(1, 8)
         self.writePositiveInt(18, 5) # 18 is items.csv
         self.writePositiveInt(10, 8)
+        self.writePositiveInt(17, 5) # 17 is area_effects.csv
+        self.writePositiveInt(0, 8)
+       
         # game objects ids array end
         # game objects index array
         self.writePositiveInt(2, 5)
@@ -161,8 +166,13 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(4, 14)
         self.writePositiveInt(2, 5)
         self.writePositiveInt(5, 14)
+        self.writePositiveInt(1, 5)
+        self.writePositiveInt(0, 14)
         self.writePositiveInt(4, 5)
         self.writePositiveInt(0, 14)
+        self.writePositiveInt(3, 5)
+        self.writePositiveInt(0, 14)
+        
         # game objects index array ends
         # game objects array 
         # your player
@@ -172,8 +182,8 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(100, 12) # z
         self.writePositiveInt(10, 4) # visibility
         self.writePositiveInt(0, 1) # you have that instead of rotation ting bots  has
-        self.writePositiveInt(4, 3) # state
-        self.writePositiveInt(0, 1) # weird state, its like boosted with the drink
+        self.writePositiveInt(0, 3) # state(1: idk exactly, 2:has attacked, 3: has used ulti, 4: normal)
+        self.writePositiveInt(1, 1) # weird state, its like boosted with the drink
         self.writePositiveInt(1, 1) # idk
         self.writePositiveInt(1, 1) # playing anim related
         self.writePositiveInt(63, 6) # played anim lol keep it 63 please
@@ -199,8 +209,8 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(0, 9) # idk
         self.writePositiveInt(1, 1) # idk but its only for your player
         self.writePositiveInt(0, 9) # same
-        self.writePositiveInt(0, 5) # damages count
-        for x in range(0):
+        self.writePositiveInt(1, 5) # damages count
+        for x in range(1):
             self.writePositiveInt(1, 1) # why not.....
             self.writePositiveInt(1, 12) # damages dealt
         # skills array
@@ -426,6 +436,15 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(0, 1)
         self.writePositiveInt(0, 12)
         # not bot 5 anymore
+        # shelly ulti projectile start
+        self.writePositiveInt(player.x - 300, 13)
+        self.writePositiveInt(player.y, 14)
+        self.writePositiveInt(0, 7)
+        self.writePositiveInt(350, 12)
+        self.writePositiveInt(0, 3) # state
+        self.writePositiveInt(992, 10) # path related
+        self.writePositiveInt(0, 1) # idk tbh
+        # shelly ulti projectile end
         # bounty star in the middle of the map
         self.writePositiveInt(2550, 13)
         self.writePositiveInt(4950, 14)
@@ -433,3 +452,11 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(0, 12)
         self.writePositiveInt(10, 4)
         # not bounty star in the middle of the map anymore
+        # area effect test
+        self.writePositiveInt(2550, 13)
+        self.writePositiveInt(4950, 14)
+        self.writePositiveInt(102, 7)
+        self.writePositiveInt(0, 12)
+        self.writePositiveInt(10, 4)
+        # area effect test end
+        

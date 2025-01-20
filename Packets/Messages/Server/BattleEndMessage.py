@@ -99,10 +99,12 @@ class BattleEndSD(Writer):
 			trophies = 0
 			coins = 0
 			exp = 0
+			star_player_exp = 0
 		else:
 			trophies = getBattleEndTrophies(self.plrs["BattleRank"], self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"])
 			coins = getBattleEndCoins(self.plrs["BattleRank"])
 			exp = getBattleEndExp(self.plrs["BattleRank"])
+			star_player_exp = 10
 		if self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] + trophies > self.brawlersTrophies:
 			trophies = self.brawlersTrophies - self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] 
 		self.writeVInt(5) # Battle End Game Mode (5 = Showdown. Else is 3vs3)
@@ -116,7 +118,7 @@ class BattleEndSD(Writer):
 		self.writeVInt(trophies) # Trophies Result
 		self.writeScID(28, self.player.profile_icon)  # Player Profile Icon
 		self.writeBoolean(False) # is tutorial game
-		self.writeBoolean(True) # is in real game
+		self.writeBoolean(self.plrs["isInRealGame"]) # is in real game
 		self.writeVInt(0) # Coin Booster %
 		self.writeVInt(0) # Coin Booster Coins Gained
 		self.writeVInt(0) # Coin Doubler Coins Gained
@@ -137,7 +139,7 @@ class BattleEndSD(Writer):
 		self.writeVInt(0) # Normal Experience ID
 		self.writeVInt(exp) # Normal Experience Gained
 		self.writeVInt(8) # Star Player Experience ID
-		self.writeVInt(10) # Star Player Experience Gained
+		self.writeVInt(star_player_exp) # Star Player Experience Gained
 
 		# Rank Up and Level Up Bonus Array
 		self.writeVInt(0) # Count
@@ -161,7 +163,7 @@ class BattleEndSD(Writer):
 		if self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] > self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["HighestTrophies"]:
 			self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["HighestTrophies"] = self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"]
 		db.replaceValue("unlocked_brawlers", self.player.unlocked_brawlers)
-		self.player.player_experience += exp + 10
+		self.player.player_experience += exp + star_player_exp
 		db.replaceValue("player_experience", self.player.player_experience)
 		self.player.gold += coins
 		db.replaceValue("gold", self.player.gold)
@@ -230,10 +232,12 @@ class BattleEndTrio(Writer):
 			trophies = 0
 			coins = 0
 			exp = 0
+			star_player_exp = 0
 		else:
 			trophies = getBattleEndTrophies(self.plrs["BattleRank"], self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"])
 			coins = getBattleEndCoins(self.plrs["BattleRank"])
 			exp = getBattleEndExp(self.plrs["BattleRank"])
+			star_player_exp = 10
 		if self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] + trophies > self.brawlersTrophies:
 			trophies = self.brawlersTrophies - self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] 
 			
@@ -250,7 +254,7 @@ class BattleEndTrio(Writer):
 		self.writeVInt(trophies) # Trophies Result
 		self.writeScID(28, self.player.profile_icon)  # Player Profile Icon
 		self.writeBoolean(False) # is tutorial game
-		self.writeBoolean(True) # is in real game
+		self.writeBoolean(self.plrs["isInRealGame"]) # is in real game
 		self.writeVInt(0) # Coin Booster %
 		self.writeVInt(0) # Coin Booster Coins Gained
 		self.writeVInt(0) # Coin Doubler Coins Gained
@@ -271,7 +275,7 @@ class BattleEndTrio(Writer):
 		self.writeVInt(0) # Normal Experience ID
 		self.writeVInt(exp) # Normal Experience Gained
 		self.writeVInt(8) # Star Player Experience ID
-		self.writeVInt(10) # Star Player Experience Gained
+		self.writeVInt(star_player_exp) # Star Player Experience Gained
 
 		# Rank Up and Level Up Bonus Array
 		self.writeVInt(0) # Count
@@ -291,7 +295,7 @@ class BattleEndTrio(Writer):
 		if self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] > self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["HighestTrophies"]:
 			self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["HighestTrophies"] = self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"]
 		db.replaceValue("unlocked_brawlers", self.player.unlocked_brawlers)
-		self.player.player_experience += exp + 10
+		self.player.player_experience += exp + star_player_exp
 		db.replaceValue("player_experience", self.player.player_experience)
 		self.player.gold += coins
 		db.replaceValue("gold", self.player.gold)

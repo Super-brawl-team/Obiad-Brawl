@@ -32,9 +32,9 @@ class Networking(Thread):
 
         global connected_clients_count
         self.server.bind((self.address, self.port))
-
+        
         print('Server is listening on {}:{}'.format(self.address, self.port))
-
+        #self.server.bind(("192.168.1.184", 5555))
         while True:
             self.server.listen(5)
             client, address = self.server.accept()

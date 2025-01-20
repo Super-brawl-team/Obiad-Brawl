@@ -11,8 +11,8 @@ class UDPConnectionInfoMessage(Writer):
 
     def encode(self):
         self.writeVInt(9449) # Server Port
-        self.writeString("127.0.0.1") # Server IP
-        self.writeBytes(b'') # unk
-        #self.writFilteredString() # unk
+        self.writeString("192.168.1.184") # Server IP
+        self.writeBytes(b"0123456789") # session token
+        self.writeStringReference("nonce") # the string explains it
 
 

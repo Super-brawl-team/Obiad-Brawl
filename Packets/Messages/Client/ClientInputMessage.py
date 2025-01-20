@@ -27,5 +27,5 @@ class ClientInputMessage(ByteStream):
             print(f"Player attacked and given coordinates are {x}, {y}")
 
     def process(self):
-        self.player.battleTicks += 1
+        #self.player.battleTicks += 1
         VisionUpdateMessage(self.device, self.player).Send()

@@ -22,7 +22,7 @@ class LogicBattle(Thread):
         self.started = 1
         StartLoadingMessage(self.device, self.player).Send()
         while self.started:
-           if self.player.battleTicks > 1000:
+           if self.player.battleTicks > 1000000:
               self.started = 0
               ForceBattleEnd = ForceSendBattleEnd(self.device, self.player)
               ForceBattleEnd.decode()
@@ -33,7 +33,7 @@ class LogicBattle(Thread):
             self.subTick = 0
                 #print("Tick: ", self.tick)
             self.process()
-            time.sleep(0.003)
+            time.sleep(0.05)
 
     
     def process(self):
