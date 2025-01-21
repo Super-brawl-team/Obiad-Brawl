@@ -1,5 +1,5 @@
 from Logic.Battle.Objects.GlobalId import GlobalId
-from Logic.Battle.Objects.DataTables import DataTables
+#from Logic.Battle.Objects.DataTables import DataTables
 class LogicData:
     def __init__(self, row, data_table):
         """

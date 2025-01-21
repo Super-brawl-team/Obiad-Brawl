@@ -1,6 +1,6 @@
 import time
 from Utils.BitStream import BitStream
-from Logic.Battle.Objects.TileMap import TileMap as tileMap
+#from Logic.Battle.Objects.TileMap import TileMap as tileMap
 class LogicGameObjectManagerServer(BitStream):
 
     
@@ -11,8 +11,8 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(1 if player.battleTicks > 900 else 0, 1) # is game finished?
         self.writePositiveInt(0, 5) # map size related
         self.writePositiveInt(14, 6) # map size related
-        self.writePositiveInt(tileMap.width - 1, 5) # map size related
-        self.writePositiveInt(tileMap.height - 1, 6) # map size related
+        self.writePositiveInt(13, 5) # map size related
+        self.writePositiveInt(32, 6) # map size related
         # is wall destroyed array from the pits of hell
         '''
         for i in range(tileMap.width):

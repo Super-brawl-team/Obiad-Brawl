@@ -1,4 +1,4 @@
-from Logic.Battle.Objects.DataTables import DataTables  
+#from Logic.Battle.Objects.DataTables import DataTables  
 from Logic.Battle.Objects.GlobalId import GlobalId
 class DataTable:
     def __init__(self, table=None, index=None):

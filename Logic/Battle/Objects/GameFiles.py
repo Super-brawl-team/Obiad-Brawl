@@ -1,4 +1,4 @@
-from Logic.Battle.Objects.DataTables import DataTables 
+#from Logic.Battle.Objects.DataTables import DataTables 
 from Logic.Battle.Objects.DataTable import DataTable
 from Logic.Battle.Objects.DataType import DataType
 class Gamefiles:
