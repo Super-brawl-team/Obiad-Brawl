@@ -158,8 +158,6 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(10, 8)
         self.writePositiveInt(17, 5) # 17 is area_effects.csv
         self.writePositiveInt(0, 8)
-        self.writePositiveInt(16, 5)
-        self.writePositiveInt(29, 8) # ball id, edit it if u changed stuffs in characters.csv
        
         # game objects ids array end
         # game objects index array
@@ -182,8 +180,6 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(0, 14)
         self.writePositiveInt(3, 5)
         self.writePositiveInt(0, 14)
-        self.writePositiveInt(2, 5)
-        self.writePositiveInt(6, 14)
         
         # game objects index array ends
         # game objects array 
