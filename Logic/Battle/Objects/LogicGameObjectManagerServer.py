@@ -138,7 +138,7 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(20, 6)
         self.writePositiveInt(0, 2)
         # kills related array ends
-        self.writePositiveInt(10, 7) # game objects count
+        self.writePositiveInt(9, 7) # game objects count
         #  game objects ids array
         self.writePositiveInt(16, 5) # csv global id 16 is characters.csv
         self.writePositiveInt(0, 8)  # csv line (so the selected character)
@@ -472,6 +472,7 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(10, 4)
         # area effect test end
         # brawl ball xddd
+        """
         self.writePositiveInt(2550, 13)
         self.writePositiveInt(150, 14)
         self.writePositiveInt(102, 7)
@@ -484,3 +485,4 @@ class LogicGameObjectManagerServer(BitStream):
         self.writePositiveInt(0, 1)
         self.writePositiveInt(0, 9)
         self.writePositiveInt(0, 5)
+        """
