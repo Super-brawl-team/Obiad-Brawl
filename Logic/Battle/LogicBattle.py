@@ -12,7 +12,6 @@ class LogicBattle(Thread):
         self.device = device
         self.player = player
         self.player.battleTicks = 0
-        self.subTick = 0
         self.started = 0
     
     def run(self):
