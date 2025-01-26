@@ -9,7 +9,7 @@ from Files.CsvLogic.Skins import Skins
 from Files.CsvLogic.Locations import Locations
 import json
 from Database.DatabaseManager import DataBase
-
+from datetime import datetime
 class OwnHomeDataMessage(Writer):
 
 	def __init__(self, device, player):
@@ -73,7 +73,7 @@ class OwnHomeDataMessage(Writer):
 		self.writeVInt(self.player.control_mode) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)]
 		self.writeBool(self.player.has_battle_hints) # is battle hints enabled
 		self.writeVInt(self.player.coinsdoubler) # coins doubler coins remaining (0 = not activated)
-		self.writeVInt(self.player.coinsbooster) # coin boost secs remaining (0 = not activated)
+		self.writeVInt(self.player.coinsbooster  - int(datetime.timestamp(datetime.now()))) # coin boost secs remaining (0 = not activated)
 		self.writeBool(False) # unknown
 		self.writeVInt(2017189)  # Shop Timestamp
 		self.writeVInt(100) # box cost (gold)
@@ -82,7 +82,7 @@ class OwnHomeDataMessage(Writer):
 		self.writeVInt(50) # Coin Boost %
 		self.writeVInt(50) # Coin Doubler cost
 		self.writeVInt(1000) # Coin Doubled
-		self.writeVInt(14) # Coin Boost Days
+		self.writeVInt(7*24) # Coin Boost Hours
 		self.writeVInt(1) # default brawler chips
 		self.writeVInt(2) # rare brawler chips
 		self.writeVInt(10) # epic brawler chips
