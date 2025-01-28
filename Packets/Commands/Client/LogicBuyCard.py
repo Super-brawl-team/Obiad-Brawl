@@ -40,7 +40,7 @@ class LogicBuyCardCommand(ByteStream):
             db.replaceValue("elexir", self.player.elexir)
         else:
             brawler = Cards().getbrawlerID(unlock_card)
-            Rarity = brawler
+            Rarity = Cards().getBrawlerRarity(unlock_card)
             
             if Characters.isDisabled(brawler):
                 return "no cheating"

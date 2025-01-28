@@ -202,20 +202,24 @@ class OwnHomeDataMessage(Writer):
 			self.writeDataReference(16, int(key))
 			self.writeVInt(brawler_id["HighestTrophies"])
 		
-		self.writeVInt(0) # array
-		self.writeVInt(0) # array
+		self.writeVInt(0) # highest ressources array (smart supercell)
+		# brawler seen state array
+		self.writeVInt(len(self.player.unlocked_brawlers))  # brawlers count
+		for key, brawler_id in self.player.unlocked_brawlers.items():
+			self.writeDataReference(16, int(key))
+			self.writeVInt(2)
 		
 		self.writeVInt(self.player.gems) # gems
 		self.writeVInt(13) # free gems (?) 
 		
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeVInt(0)
-		self.writeVInt(0)
+		self.writeVInt(0) # experience level (unused)
+		self.writeVInt(0) # cumulative purchased gems
+		self.writeVInt(0) # battles couns
+		self.writeVInt(0) # win count
+		self.writeVInt(0) # lose count
+		self.writeVInt(0) # win/loose streak (in v1 yeah)
+		self.writeVInt(0) # npc win count
+		self.writeVInt(0) # npc lose count
 		
 		self.writeVInt(2) # tutorial state
 		self.writeVInt(2017189) # dudka timestamps from hell
