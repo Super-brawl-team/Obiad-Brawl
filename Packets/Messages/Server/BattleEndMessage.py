@@ -232,11 +232,11 @@ class BattleEndTrio(Writer):
 
 		def getBattleEndExp(rang):
 			if rang == 0: # win
-				return 0
+				return 10
 			elif rang == 1:
 				return 5
 			elif rang == 2:
-				return 10
+				return 0
 
 		db = DataBase(self.player)
 		if not self.plrs["isInRealGame"]:
