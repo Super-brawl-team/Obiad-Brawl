@@ -17,8 +17,8 @@ class AskForBattleEndMessage(ByteStream):
 		self.plrs["BattleTime"] = self.readVInt() # time played ?
 	
 		self.plrs["BattleRank"] = self.readVInt() # rank so basically is won/lose/draw for 3v3 and the rank for sd
-		self.plrs["CsvID0"] = self.readVInt()
-		self.plrs["Location"] = self.readVInt() # location or the map if you prefer
+		self.plrs["CsvID0"] = self.readVInt() # secndary event index
+		self.plrs["Location"] = self.readVInt() # actually its index of event
 		self.plrs["PlayersAmount"] = self.readVInt() # Battle End Players
 		self.plrs["Brawlers"] = []
 		for x in range(self.plrs["PlayersAmount"]):

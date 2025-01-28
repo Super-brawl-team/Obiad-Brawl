@@ -14,8 +14,6 @@ class BattleEndSD(Writer):
 		self.device = device
 		self.player = player
 		self.plrs = plrs
-		Brawlers228 = Characters().getBrawlers()
-		cards = Cards().getCards()
 		self.settings = json.load(open('Settings.json'))
 		self.maximumRank = self.settings["MaximumRank"]
 		self.maximumUpgradeLevel = self.settings["MaximumUpgradeLevel"]
@@ -189,8 +187,6 @@ class BattleEndTrio(Writer):
 		self.device = device
 		self.plrs = plrs
 		self.player = player
-		Brawlers228 = Characters().getBrawlers()
-		cards = Cards().getCards()
 		self.settings = json.load(open('Settings.json'))
 		self.maximumRank = self.settings["MaximumRank"]
 		self.maximumUpgradeLevel = self.settings["MaximumUpgradeLevel"]
