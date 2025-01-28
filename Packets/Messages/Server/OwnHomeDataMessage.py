@@ -73,7 +73,12 @@ class OwnHomeDataMessage(Writer):
 		self.writeVInt(self.player.control_mode) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)]
 		self.writeBool(self.player.has_battle_hints) # is battle hints enabled
 		self.writeVInt(self.player.coinsdoubler) # coins doubler coins remaining (0 = not activated)
-		self.writeVInt(self.player.coinsbooster  - int(datetime.timestamp(datetime.now()))) # coin boost secs remaining (0 = not activated)
+		if self.player.coinsbooster - int(datetime.timestamp(datetime.now())) > 0:
+			self.writeVInt(self.player.coinsbooster - int(datetime.timestamp(datetime.now()))) # coin boost secs remaining (0 = not activated)
+		else:
+			self.writeVInt(0)
+			self.player.coinsbooster = int(datetime.timestamp(datetime.now()))
+			db.replaceValue("coinsbooster", self.player.coinsbooster)
 		self.writeBool(False) # unknown
 		self.writeVInt(2017189)  # Shop Timestamp
 		self.writeVInt(100) # box cost (gold)
