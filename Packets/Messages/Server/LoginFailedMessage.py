@@ -19,14 +19,14 @@ class LoginFailedMessage(Writer):
 
         self.writeString(self.loginPayload["fingerprintSHA"])
 
-        self.writeString("game.brawlstarsgame.com:9339") # Server Host
+        self.writeString("0.0.0.0:9339") # Server Host
 
         self.writeString("https://game-assets.brawlstarsgame.com")
         self.writeString("https://github.com/Super-brawl-team/Obiad-Brawl")
         self.writeString(self.msg)
 
         self.writeInt(0) # maintenance time
-        self.writeBoolean(True) # Show support page
+        self.writeBoolean(False) # Show support page
 
         self.writeString()
         self.writeString()

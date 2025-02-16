@@ -61,4 +61,4 @@ class LoginMessage(ByteStream):
             ClanStream(self.device, self.player).Send()
             MyAlliance(self.device, self.player).Send()  # 14109
         else:
-            LoginFailedMessage(self.device, self.player, self.loginPayload, " ", 16)
+            LoginFailedMessage(self.device, self.player, self.loginPayload, " ", 8).Send()
