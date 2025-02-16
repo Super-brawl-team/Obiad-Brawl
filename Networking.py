@@ -17,6 +17,7 @@ connected_clients_count = 0
 client_count_lock = Lock()
 
 class Networking(Thread):
+    Clients = {"ClientCounts": 0, "Clients": {}}
     def __init__(self):
         Thread.__init__(self)
 
@@ -75,6 +76,7 @@ class ClientThread(Thread):
 
         try:
             while True:
+                global connected_clients_count
                 header   = self.client.recv(7)
                 packetid = int.from_bytes(header[:2], 'big')
                 length   = int.from_bytes(header[2:5], 'big')
@@ -96,6 +98,10 @@ class ClientThread(Thread):
                                 Message = availablePackets[packetid](decrypted, self.device, self.player)
                                 Message.decode()
                                 Message.process()
+                                if packetid == 10101:
+                                    Networking.Clients["Clients"][str(self.player.low_id)] = {"SocketInfo": self.client}
+                                    Networking.Clients["ClientCounts"] = connected_clients_count
+                                    self.device.ClientDict = Networking.Clients
                             else:
                                 if self.debug:
 
@@ -120,4 +126,10 @@ class ClientThread(Thread):
 
             with client_count_lock:
                 connected_clients_count -= 1
+                try:
+                    del Networking.Clients["Clients"][str(self.player.low_id)]
+                except:
+                    pass
+                Networking.Clients["ClientCounts"] = connected_clients_count
+                self.device.ClientDict = Networking.Clients
                 print(f"Connected clients: {connected_clients_count}")

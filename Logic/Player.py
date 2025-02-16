@@ -22,6 +22,7 @@ class Player:
     isAdvertiseToBand = False
     matchmakeStartTime = 0
     battleTicks = 0
+    club_id = 0
     wifi = 0
     region = "CAT"
     player_status = 3

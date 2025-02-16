@@ -16,8 +16,12 @@ availablePackets = {
     14109: GoHomeFromOfflineMessage,
     14110: AskForBattleEndMessage,
     14113: AskProfile,
-    14301: AskForClan,
+    14301: AllianceCreate,
     14302: AskForClan,
+    14305: AllianceJoin,
+    14308: AllianceLeave,
+    14315: AllianceChat,
+    14316: AllianceEditSettings,
     14350: TeamCreateMessage,
     14351: TeamJoinMessage,
     #14352: TeamKickMessage, i forgor

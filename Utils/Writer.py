@@ -371,4 +371,11 @@ class Writer:
             self.device.SendData(self.id, self.buffer)
         
         print('[*] {} sent'.format(self.id))
+    def SendTo(self, target):
+        self.encode()
+        if hasattr(self, 'version'):
+            self.device.SendDataTo(self.id, self.buffer, target, self.version)
+
+        else:
+            self.device.SendDataTo(self.id, self.buffer, target)
 

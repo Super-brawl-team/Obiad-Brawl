@@ -53,6 +53,16 @@ class GetLeaderboardMessage(ByteStream):
                         self.fields["entries"].remove(player)
 
        elif self.fields["leaderboardType"] == 2:
-           self.fields["entries"] = []
+            clubs = db.countClubs(1, 100, 2, 200)
+            self.fields["entries"] = []
+            for club in clubs[1]:
+                self.fields["entries"].append(club["info"])
+            def by_trophy(club):
+                return club["trophies"]
+            self.fields["entries"].sort(key=by_trophy, reverse=True)
+            if self.fields["isLocal"]:
+                self.fields["entries"] = [
+        club for club in self.fields["entries"] if club["region"] == self.player.region
+    ]
        LeaderboardMessage(self.device, self.player, self.fields).Send()
 

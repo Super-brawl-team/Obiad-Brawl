@@ -28,6 +28,8 @@ Clients (Thanks risporce for the method!):
  
   - ipa with Offline battles (it doesnt mean u can log into the game like if it was offline): [Download](https://www.mediafire.com/file/83rek6arjq5lmqq/ObiadBrawlOfflineBattles.ipa/file)
 
+  - ipa for v2 (piper update, compatible with this server):  [Download](https://www.mediafire.com/file/tq844mudjym6yog/v2+Obiad.ipa/file)
+
 
   # How to change ip and port
   

@@ -168,6 +168,8 @@ class BattleEndSD(Writer):
 		Milestones.MilestonesArray(self)
 		self.player.trophies += trophies
 		db.replaceValue("trophies", self.player.trophies)
+		if self.player.club_id != 0:
+			db.incrementClubTrophies(trophies)
 		self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] += trophies
 		if self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] > self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["HighestTrophies"]:
 			self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["HighestTrophies"] = self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"]
@@ -308,6 +310,8 @@ class BattleEndTrio(Writer):
 		self.writeVInt(self.player.player_experience) # Player Experience for Level
 		self.player.trophies += trophies
 		db.replaceValue("trophies", self.player.trophies)
+		if self.player.club_id != 0:
+			db.incrementClubTrophies(trophies)
 		self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] += trophies
 		if self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] > self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["HighestTrophies"]:
 			self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["HighestTrophies"] = self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"]

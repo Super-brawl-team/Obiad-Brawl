@@ -2,7 +2,7 @@ from Utils.Reader import ByteStream
 from Packets.Messages.Server.LoginOkMessage import LoginOkMessage
 from Packets.Messages.Server.LoginFailedMessage import LoginFailedMessage
 from Packets.Messages.Server.OwnHomeDataMessage import OwnHomeDataMessage
-from Packets.Messages.Server.ClanData import ClanData
+from Packets.Messages.Server.MyAlliance import MyAlliance
 from Packets.Messages.Server.ClanStream import ClanStream
 from Logic.Player import Player
 from Database.DatabaseManager import DataBase
@@ -56,8 +56,9 @@ class LoginMessage(ByteStream):
 
             # Send success messages
             LoginOkMessage(self.device, self.player, self.loginPayload).Send()
-            ClanStream(self.device, self.player).Send()  # 14109
+            # 14109
             OwnHomeDataMessage(self.device, self.player).Send()
-            ClanData(self.device, self.player).Send()  # 14109
+            ClanStream(self.device, self.player).Send()
+            MyAlliance(self.device, self.player).Send()  # 14109
         else:
             LoginFailedMessage(self.device, self.player, self.loginPayload, " ", 16)

@@ -66,7 +66,10 @@ class ByteStream(BufferedReader):
 
 
     def readLong(self):
-        return self.readUint32(8)
+        result = []
+        result.append(self.readInt())
+        result.append(self.readInt())
+        return result
     
     def readString(self):
         length = self.readInt()

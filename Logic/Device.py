@@ -53,7 +53,8 @@ class Device:
     bot8_n = None
     bot9 = 0
     bot9_n = None
-
+    ClientDict = {}
+    
     def __init__(self, socket=None):
 
         self.socket = socket
@@ -82,7 +83,31 @@ class Device:
 
         else:
             self.socket.send(packetID + len(encrypted).to_bytes(3, 'big') + packetVersion + encrypted)
+    def SendDataTo(self, ID, data, target, version=None):
+        if self.usedCryptography == "RC4":
+            encrypted = self.crypto.encrypt(data)
+        elif self.usedCryptography == "NACL":
+            encrypted = self.nacl.encrypt(ID, data)
+        else:
+            encrypted = data
+
+        packetID = ID.to_bytes(2, 'big')
+        packetVersion = (version if version else 0).to_bytes(2, 'big')
+
+        # Debug: Check if target exists
+        if str(target) not in self.ClientDict["Clients"]:
+            print(f"[ERROR] Target {target} not found in Clients!")
+            return
         
+        # Get the player's socket
+        PlayerSocket = self.ClientDict["Clients"][str(target)]["SocketInfo"]
+        
+        try:
+            # Send the data
+            PlayerSocket.send(packetID + len(encrypted).to_bytes(3, 'big') + packetVersion + encrypted)
+        except Exception as e:
+            print(f"[ERROR] Failed to send data to {target}: {e}")
+
     def decrypt(self, data):
         return self.crypto.decrypt(data)
 
