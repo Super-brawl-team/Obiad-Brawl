@@ -37,7 +37,8 @@ The server will be updated regularly! Feel free to use it, but **please don't fo
 ## 📥 Clients  
 (Thanks to **risporce** for the method!)  
 
-- **Client Download:** [Click Here](https://www.mediafire.com/file/m68wefmv6zw7pxw/v4+Obiad.ipa/file)  
+- **Client Download (v1):** [Click Here](https://www.mediafire.com/file/lkdc121x2y928hy/ObiadBrawl.ipa/file)  
+- **Client Download (v2):** [Click Here](https://www.mediafire.com/file/tq844mudjym6yog/v2+Obiad.ipa/file)  
 
 ---
 
