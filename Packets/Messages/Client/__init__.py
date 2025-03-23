@@ -11,7 +11,8 @@ Little script that load every messages in the directory:
 
 '''
 for loader, name, is_pkg in pkgutil.walk_packages(__path__):
-    module = loader.find_module(name).load_module(name)
+    import importlib
+    module = importlib.import_module(f'Packets.Messages.Client.{name}')
 
     for name, value in inspect.getmembers(module):
         if name.startswith('__'):

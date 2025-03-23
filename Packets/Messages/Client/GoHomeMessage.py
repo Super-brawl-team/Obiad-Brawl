@@ -1,6 +1,7 @@
 from Packets.Messages.Server.OwnHomeDataMessage import OwnHomeDataMessage
 from Utils.Reader import ByteStream
-
+from Packets.Messages.Server.MyAlliance import MyAlliance
+from Packets.Messages.Server.ClanStream import ClanStream
 
 class GoHomeMessage(ByteStream):
 
@@ -15,3 +16,5 @@ class GoHomeMessage(ByteStream):
 
     def process(self):
         OwnHomeDataMessage(self.device, self.player).Send() # 14109
+        MyAlliance(self.device, self.player).Send()  # 14109
+        ClanStream(self.device, self.player).Send()

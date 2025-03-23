@@ -15,8 +15,8 @@ class ChangeAvatarNameMessage(ByteStream):
 
     def decode(self):
         self.player.name = self.readString()
-
+        self.state = self.readVInt()
     def process(self):
         db = DataBase(self.player)
         db.replaceValue("name", self.player.name)
-        LogicChangeAvatarNameCommand(self.device, self.player).Send()
+        LogicChangeAvatarNameCommand(self.device, self.player, self.state).Send()

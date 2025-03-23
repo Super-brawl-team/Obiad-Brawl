@@ -83,6 +83,28 @@ class Device:
 
         else:
             self.socket.send(packetID + len(encrypted).to_bytes(3, 'big') + packetVersion + encrypted)
+    def SendDataUdp(self, ID, data, target, client_address, version=None):
+        if self.usedCryptography == "RC4":
+            encrypted = self.crypto.encrypt(data)
+        elif self.usedCryptography == "NACL":
+            encrypted = self.nacl.encrypt(ID, data)
+        else:
+            encrypted = data
+
+        packetID = ID.to_bytes(2, 'big')
+        packetVersion = (version if version else 0).to_bytes(2, 'big')
+
+        # Debug: Check if target exists
+
+        # Get the player's socket
+        PlayerSocket = target
+        
+        try:
+            # Send the data
+            PlayerSocket.sendto(packetID + len(encrypted).to_bytes(3, 'big') + packetVersion + encrypted, client_address)
+        except Exception as e:
+            print(f"[ERROR] Failed to send data to {target}: {e}")
+
     def SendDataTo(self, ID, data, target, version=None):
         if self.usedCryptography == "RC4":
             encrypted = self.crypto.encrypt(data)

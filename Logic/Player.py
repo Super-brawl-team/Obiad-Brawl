@@ -24,6 +24,7 @@ class Player:
     battleTicks = 0
     club_id = 0
     wifi = 0
+    battleID = 0
     region = "CAT"
     player_status = 3
     last_connection_time = 0

@@ -1,61 +1,99 @@
-# Obiad Brawl
- My first open source yey
- # PLEASE READ THIS BEFORE USING IT, SERIOUSLY 😭
-# THIS IS AN OPEN SOURCE SERVER, IT IS USED FOR SELFHOSTING OR SIMPLE HOSTING
-# INSTALLING THE IPA WITHOUT DOING NOTHING WILL OF COURSE NOT WORK, FOLLOW THE TUTORIAL PLEASE
- Yeah its obed brawl's upgrade!
+# Obiad Brawl  
+🎉 My first open-source project! 🎉  
+ This server supports v1/2
+---
 
- Enjoy tons of cool features, counting the ability to add brawlers, skins, ranks and power levles!
+## ⚠️ PLEASE READ THIS BEFORE USING! ⚠️  
+### 🚨 This is an open-source server for self-hosting or simple hosting.  
+### 📌 Installing the IPA without following the tutorial **will not work!**  
 
-# COMMING SOON
-  online battles (real), online rooms, clubs system
+---
 
-# The server will be frequently updated
+## 🔥 Features  
+Enjoy tons of cool features, including:  
+- The ability to **add brawlers, skins, ranks, and power levels**  
+- Customization options for cryptography methods  
+- Debug menu toggle  
 
-Feel free to use it but don't forget to credit :)
+---
 
-# REQUIREMENTS
-python3.9 or less
+## 🚀 Coming Soon  
+- Online battle logic  
+- Online rooms
 
-a brain 😭
+---
 
+## 🔄 Frequent Updates  
+The server will be updated regularly! Feel free to use it, but **please don't forget to credit**. 😊  
 
-Clients (Thanks risporce for the method!):
-  
-  
-   -Normal ipa: [Download](https://www.mediafire.com/file/lkdc121x2y928hy/ObiadBrawl.ipa/file)
- 
- 
-  - ipa with Offline battles (it doesnt mean u can log into the game like if it was offline): [Download](https://www.mediafire.com/file/83rek6arjq5lmqq/ObiadBrawlOfflineBattles.ipa/file)
+---
 
-  - ipa for v2 (piper update, compatible with this server):  [Download](https://www.mediafire.com/file/tq844mudjym6yog/v2+Obiad.ipa/file)
+## 🛠️ Requirements  
+- **Python 3**  
+- **A brain** 😭  
 
+---
 
-  # How to change ip and port
-  
-  Thanks to risporce for this amazing script, here is his method :
+## 📥 Clients  
+(Thanks to **risporce** for the method!)  
 
-  1: Download the client and extract it.
-  
-  2: go to Payload/Brawl Stars.app/ in your file manager and start a new tab and go to this location in your terminal.
-  
-  3: In your file manager, you will see ipPatcher.py, open it in any text editor and locate in the first line of the script the patched_ip and patched_port variable with a string.
-  
-  4: Change the string to be your ipv4 address of your device you execute the server from and  the port you want if needed (default is 9339).
-  
-  5: After the ip (and the port) changed is saved, in your terminal with the client location, execute this following command : python ipPatcher.py
-  
-  6: Save and change extention back to ipa.
-  
-  7: Install the client using your favorite app installer and enjoy.
+- **Client Download:** [Click Here](https://www.mediafire.com/file/m68wefmv6zw7pxw/v4+Obiad.ipa/file)  
 
-  # BONUS
-  
-   # DEBUG MENU
-    You can edit "debugMenuEnabled" to enable or disable debug menu! Note : i dont use dev builds, so only few buttons work...
+---
 
-   # RC4 KEY
-    You can also (not mendatory xd) edit the rc4 key and get a random one. Like that; peoples will have a little difficulty to steal your stuff, just set changeRC4Key to true and copy the key he provided, you will have to edit settings.json and replace the key!
+## 🌍 How to Change IP and Port  
+(Thanks to **risporce** for this amazing script!)  
 
-   # DIFFERENT CRYPTOGRAPHY METHODS
-    you can use nacl cryptography by putting "NACL" in settings.json but its only if you use this server as base for v7 or more server
+### Steps:  
+1. Download the client and extract it.  
+
+2. Open your file manager and navigate to:  
+   **`Payload/Brawl Stars.app/`**  
+
+3. Open a terminal and navigate to the same directory.  
+
+4. Locate **`ipPatcher.py`** in your file manager and open it in a text editor.  
+
+5. Find the first line containing `patched_ip` and `patched_port`, then update the values:  
+   - **Set `patched_ip`** to your device's **IPv4 address** (the one running the server).  
+   - **Set `patched_port`** if needed (default: `9339`).  
+
+6. Save the file and execute the following command in the terminal:  
+   ```sh
+   python ipPatcher.py
+   ```  
+
+7. Save your changes and **convert the file back to `.ipa`** format.  
+
+8. Install the client using your favorite app installer. Enjoy! 🎉  
+
+---
+
+## 🎁 Bonus Features  
+
+### ⚡ UDP Server  
+- You can enable `"UseUDPServer"` for battles if you have another free port.  
+- **Note:** It's currently broken, so it may not work properly.  
+
+### 🔧 Debug Menu  
+- Toggle `"debugMenuEnabled"` to enable/disable the debug menu.  
+- **Note:** I don’t use dev builds, so only a few buttons work.  
+
+### 🔐 RC4 Key  
+- You **can** (optional) edit the **RC4 key** to a random one for better security.  
+- Set `"changeRC4Key": true` and copy the key provided.  
+- Update **`settings.json`** with your new key.  
+
+### 🔑 Different Cryptography Methods  
+- You can use **NaCl cryptography** by setting `"NACL"` in `settings.json`.  
+- **Note:** Only useful if you're using this server as a base for **v7 or higher**.  
+
+---
+
+### 📝 Notes  
+- **Do not use the RC4 key change feature**—it is currently broken.  
+- If you encounter issues, double-check the tutorial and ensure everything is configured properly.  
+
+---
+
+**Enjoy hosting your own Obiad Brawl server! 🎮🔥**  

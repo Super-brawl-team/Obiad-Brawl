@@ -13,6 +13,7 @@ availablePackets = {
     14101: GoHomeMessage,
     14102: EndClientTurnMessage,
     14103: MatchmakeRequestMessage,
+    14106: CancelMatchMakingMessage,
     14109: GoHomeFromOfflineMessage,
     14110: AskForBattleEndMessage,
     14113: AskProfile,

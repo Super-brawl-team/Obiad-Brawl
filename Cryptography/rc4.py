@@ -5,7 +5,6 @@ class CryptoRc4:
     def __init__(self):
         self.settings = json.load(open('Settings.json'))
         self.key = bytes(self.settings["RC4Key"], 'utf-8')
-        print(f"[x] connection/deconnection using {self.key} key")
         self.nonce = b'nonce'
         self.RC4_Stream = RC4(self.key + self.nonce)
         self.RC4_Stream.update(self.key + self.nonce)

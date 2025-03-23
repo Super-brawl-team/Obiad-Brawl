@@ -4,16 +4,21 @@ from Packets.Messages.Server.LoginFailedMessage import LoginFailedMessage
 from Packets.Messages.Server.OwnHomeDataMessage import OwnHomeDataMessage
 from Packets.Messages.Server.MyAlliance import MyAlliance
 from Packets.Messages.Server.ClanStream import ClanStream
+from Packets.Messages.Server.StartLoadingMessage import StartLoadingMessage
 from Logic.Player import Player
+from Logic.Battle.LogicBattle import LogicBattle
+from Packets.Messages.Server.UDPConnectionInfoMessage import UDPConnectionInfoMessage
 from Database.DatabaseManager import DataBase
 from Utils.Helpers import Helpers
 import time
+import json
 class LoginMessage(ByteStream):
 
     def __init__(self, data, device, player):
         super().__init__(data)
         self.device = device
         self.data = data
+        self.settings = json.load(open('Settings.json'))
         self.player = player
 
     def decode(self):
@@ -57,8 +62,20 @@ class LoginMessage(ByteStream):
             # Send success messages
             LoginOkMessage(self.device, self.player, self.loginPayload).Send()
             # 14109
-            OwnHomeDataMessage(self.device, self.player).Send()
-            ClanStream(self.device, self.player).Send()
-            MyAlliance(self.device, self.player).Send()  # 14109
+            db.loadAccount()
+            if self.player.battleID == 0:
+                OwnHomeDataMessage(self.device, self.player).Send()
+                ClanStream(self.device, self.player).Send()
+                MyAlliance(self.device, self.player).Send()  # 14109
+            else:
+                MyAlliance(self.device, self.player).Send()  # 14109
+                StartLoadingMessage(self.device, self.player).Send()
+                
+                self.settings = json.load(open('Settings.json'))
+                if self.settings["UseUDPServer"]:
+                    UDPConnectionInfoMessage(self.device, self.player).Send() # its broken so please keep tcp
+                else:
+                    battle = LogicBattle(self.device, self.player)
+                    battle.start()
         else:
             LoginFailedMessage(self.device, self.player, self.loginPayload, " ", 8).Send()

@@ -11,5 +11,4 @@ class LogicGameObjectServer(BitStream):
         stream.writePositiveInt(playerData["index"], 7)
         stream.writePositiveInt(playerData["z"], 12)
         stream.writePositiveInt(playerData["visibility"], 4)
-        stream.writePositiveInt(playerData["state"], 3)
         

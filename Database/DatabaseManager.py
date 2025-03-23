@@ -4,6 +4,8 @@ import time
 import random
 from Files.CsvLogic.Locations import Locations
 import datetime 
+from Files.CsvLogic.Cards import Cards
+import copy
 from datetime import datetime, timedelta
 class DataBase:
 
@@ -44,6 +46,18 @@ class DataBase:
         self.cursor.execute('''
         CREATE TABLE IF NOT EXISTS Events (
             state INTEGER PRIMARY KEY,
+            data TEXT
+        )
+        ''')
+        self.cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Battles (
+            id INTEGER PRIMARY KEY,
+            data TEXT
+        )
+        ''')
+        self.cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Matchmaking (
+            id INTEGER PRIMARY KEY,
             data TEXT
         )
         ''')
@@ -98,7 +112,8 @@ class DataBase:
             "tutorialState": 0,
             "region": self.player.region,
             "control_mode": self.player.control_mode,
-            "has_battle_hints": False
+            "has_battle_hints": False,
+            "battleID": 0
         }
 
         self.cursor.execute("INSERT INTO Players (token, data) VALUES (?, ?)", (self.player.token, json.dumps(data)))
@@ -162,8 +177,13 @@ class DataBase:
             self.connection.commit()
             
     def getRoomId(self):
-        self.cursor.execute("SELECT COUNT(*) FROM Gamerooms")
-        self.player.room_id = self.cursor.fetchone()[0] + 1
+        self.cursor.execute("SELECT MAX(id) FROM Gamerooms")
+        max_id = self.cursor.fetchone()[0]
+        
+        if max_id is None:  
+            self.player.room_id = 1
+        else:
+            self.player.room_id = max_id + 1
 
     def createGameroom(self, roomType, chatData):
         
@@ -374,7 +394,7 @@ class DataBase:
 
      for clubId, clubJson in allClubs:
         clubInfo = json.loads(clubJson)
-        totalMembers = len(clubInfo["info"]["memberCount"])  # Access "memberCount" directly
+        totalMembers = len(clubInfo["info"]["memberCount"])
         if minMembers <= totalMembers < maxMembers and clubInfo["info"]["clubType"] <= clubType:
             clubList.append(clubId)
             clubData.append(clubInfo)
@@ -384,8 +404,13 @@ class DataBase:
      return [clubList, clubData]
  
     def getClubId(self):
-        self.cursor.execute("SELECT COUNT(*) FROM Clubs")
-        self.player.club_id = self.cursor.fetchone()[0] + 1
+        self.cursor.execute("SELECT MAX(id) FROM Clubs")
+        max_id = self.cursor.fetchone()[0]
+        
+        if max_id is None:  
+            self.player.club_id = 1
+        else:
+            self.player.club_id = max_id + 1
 
 
     def loadClub(self, clubId):
@@ -546,7 +571,77 @@ class DataBase:
             self.cursor.execute("UPDATE ClubChats SET data = ? WHERE club_id = ?", (json.dumps(playerData), self.player.club_id))
             self.connection.commit()
             
-    
+    def createMatchmakingData(self):
+        self.cursor.execute("SELECT COUNT(*) FROM Matchmaking WHERE id = ?", (self.player.battleID,))
+        count = self.cursor.fetchone()[0]
+        if count > 0:
+            raise ValueError(f"match with id {self.player.battleID} already exists.")
+        data = {"battleTicks": 0, "maximumPlayers": 2, "startedTime": time.time(), "displayTime": 20, "mapID": self.player.map_id, "players": [self.player.low_id]}
+        self.cursor.execute("INSERT INTO Matchmaking (id, data) VALUES (?, ?)", (self.player.battleID, json.dumps(data)))
+        #self.createOffer(self.player.token)
+        self.connection.commit()
+    def updateMatchmake(self, id, battle):
+
+            updateQuery = "UPDATE Matchmaking SET data = ? WHERE id = ?"
+            self.executeQuery(updateQuery, [json.dumps(battle), id])
+    def loadMatchmakingData(self, battleID):
+        placeholders = ",".join(["?"] * len(battleID))
+        query = f"SELECT data FROM Matchmaking WHERE id IN ({placeholders})"
+        self.cursor.execute(query, battleID) 
+        results = self.cursor.fetchall()
+        return [json.loads(row[0]) for row in results]
+    def createBattle(self):
+        self.cursor.execute("SELECT COUNT(*) FROM Battles WHERE id = ?", (self.player.battleID,))
+        count = self.cursor.fetchone()[0]
+        if count > 0:
+            raise ValueError(f"battle with id {self.player.battleID} already exists.")
+        destructibleTiles = {}
+        defaultX = [1950, 2550, 3150, 1950, 2550, 3150]
+        defaultAngle = [270, 270, 270, 90, 90, 90]
+        defaultY = [9750, 9750, 9750, 150, 150 ,150]
+        csvid = [self.player.brawler_id]
+        BrawlersList = Cards().getBrawlers()
+        for x in range(5):
+            
+            csvid.append(random.choice(BrawlersList))
+        csvid.append(10)
+        ultiArray = {str(i): copy.deepcopy({"unknown": True, "hasUlti": True, "ultiCharge": 1000}) for i in range(1, 7)}
+        killArray = {str(i): copy.deepcopy({"score": 0, "entry": {}}) for i in range(1, 7)}
+        objectInfos = {"x": 0, "y": 0, "index": 0, "z": 0, "visibilty": 10}
+        heroes = {str(i): copy.deepcopy({"objectInfos": {"x": defaultX[i-1], "y": defaultY[i-1], "index": i-1 if i<=3 else i+15, "z": 0, "visibility": 10}, "teamRotation": defaultAngle[i-1], "ennemyRotation": defaultAngle[i-1], "state": 0, "slowed": False, "unknown": False, "playingAnAnimation": True, "playedAnimation": 63, "rotationRelated": False, "stunned": False, "unknown2": False, "isPoisonned": False, "unknown3": 0, "unknown4": 0, "currentHP": 800, "maximumHP": 800, "itemsAmount": 1, "unknown5": 0, "unknown6": 0, "unknown7": False, "hasImmunityShield": False, "rotationRelated2": False, "hasRage": False, "ultiAiming": False, "activedUlti": False, "invisible": False, "notFullyVisible": False, "unknown8": 0, "unknown9": True, "unknown10": 0, "damagesArray": {}, "skillsArray": {"Weapon": {"activeTicks": 0, "unknown": False, "unknown1": 0, "ammos": 3000}, "Ulti": {"activeTicks": 0, "unknown": False, "unknown1": 0, "ammos": 3000}}}) for i in range(1, 7)}
+        projectiles = {str(i): copy.deepcopy({"objectInfos": objectInfos, "state": 0, "path": 992, "unknown": False}) for i in range(0)}
+        characters = {str(i): copy.deepcopy({"objectInfos": objectInfos}) for i in range(0)}
+        items = {str(i): copy.deepcopy({"objectInfos": {"x": 2550, "y": 4950, "index": i+102, "z": 0, "visibility": 10}}) for i in range(1, 2)}
+        areaEffects = {str(i): copy.deepcopy({"objectInfos": objectInfos}) for i in range(0)}
+        gameObjectsArray = {"count": 7, "csvIDArray": {str(i): copy.deepcopy({"classID": 16 if i < 7 else 18, "instanceID": csvid[i-1]}) for i in range(1, 8)}, "indexArray": {str(i): copy.deepcopy({"classID": 2  if i < 7 else 4, "instanceID": i-1 if i < 7 else i-7}) for i in range(1, 8)}, "gameObjects": {"heroes": heroes, "projectiles": projectiles, "areaEffects": areaEffects, "characters": characters, "items": items}}
+        data = {"globalID": 2000000, "fadeCounter": 0, "isGameOver": False, "unknownBoolean": True, "unkMapSize": 0, "unkMapSize2": 0, "tileMapWidth": 0, "tileMapHeight": 0, "destructibleTiles": destructibleTiles, "ultiArray": ultiArray, "progressionSelf": 0, "progressionRival": 0, "killArray": killArray, "gameObjects": gameObjectsArray}
+        self.cursor.execute("INSERT INTO Battles (id, data) VALUES (?, ?)", (self.player.battleID, json.dumps(data)))
+        #self.createOffer(self.player.token)
+        self.connection.commit()
+    def getBattleInfo(self, id_list):
+        placeholders = ",".join(["?"] * len(id_list))
+        query = f"SELECT data FROM Battles WHERE id IN ({placeholders})"
+        self.cursor.execute(query, id_list)
+        results = self.cursor.fetchall()
+        return [json.loads(row[0]) for row in results]
+    def clearMatchmake(self, id):
+        deleteQuery = "DELETE FROM Matchmaking WHERE id = ?"
+        self.executeQuery(deleteQuery, [id])
+    def clearBattle(self, id):
+        deleteQuery = "DELETE FROM Battles WHERE id = ?"
+        self.executeQuery(deleteQuery, [id])
+    def updateBattle(self, id, battle):
+
+            updateQuery = "UPDATE Battles SET data = ? WHERE id = ?"
+            self.executeQuery(updateQuery, [json.dumps(battle), id])
+    def createBattleID(self):
+        self.cursor.execute("SELECT MAX(id) FROM Matchmaking")
+        max_id = self.cursor.fetchone()[0]
+        
+        if max_id is None:  
+            self.player.battleID = 1
+        else:
+            self.player.battleID = max_id + 1
 
 
     def __del__(self):

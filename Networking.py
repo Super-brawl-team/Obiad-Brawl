@@ -85,8 +85,8 @@ class ClientThread(Thread):
                 LobbyInfoMessage(self.device, self.player, connected_clients_count).Send()
                 if len(header) >= 7:
                     if length == len(data):
-                        print('[*] {} received'.format(packetid))
-
+                        if packetid!=10555:
+                            print('[*] {} received'.format(packetid))
                         try:
                             if self.usedCryptography == "RC4":
                                 decrypted = self.device.decrypt(data)
