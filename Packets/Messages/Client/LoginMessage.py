@@ -35,7 +35,10 @@ class LoginMessage(ByteStream):
         self.loginPayload["unknownString2"] = self.readString()
         self.loginPayload["device"] = self.readString()
         self.loginPayload["systemLanguage"] = self.readVInt()
-        self.loginPayload["region"] = self.loginPayload["systemLanguage"] = self.readString().split('-')[1]
+        try:
+            self.loginPayload["region"] = self.loginPayload["systemLanguage"] = self.readString().split('-')[1]
+        except:
+            self.loginPayload["region"] = self.loginPayload["systemLanguage"] = "EN"
         self.player.usedVersion = self.loginPayload["majorVersion"]
 
     def process(self):
@@ -68,7 +71,7 @@ class LoginMessage(ByteStream):
                 ClanStream(self.device, self.player).Send()
                 MyAlliance(self.device, self.player).Send()  # 14109
             else:
-                MyAlliance(self.device, self.player).Send()  # 14109
+                
                 StartLoadingMessage(self.device, self.player).Send()
                 
                 self.settings = json.load(open('Settings.json'))

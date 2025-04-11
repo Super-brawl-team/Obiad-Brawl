@@ -177,7 +177,7 @@ class DataBase:
             self.connection.commit()
             
     def getRoomId(self):
-        self.cursor.execute("SELECT MAX(id) FROM Gamerooms")
+        self.cursor.execute("SELECT MAX(room_id) FROM Gamerooms")
         max_id = self.cursor.fetchone()[0]
         
         if max_id is None:  
@@ -404,7 +404,7 @@ class DataBase:
      return [clubList, clubData]
  
     def getClubId(self):
-        self.cursor.execute("SELECT MAX(id) FROM Clubs")
+        self.cursor.execute("SELECT MAX(club_id) FROM Clubs")
         max_id = self.cursor.fetchone()[0]
         
         if max_id is None:  

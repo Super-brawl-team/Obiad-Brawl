@@ -18,5 +18,7 @@ class CancelMatchMakingMessage(ByteStream):
     def process(self):
         db = DataBase(self.player)
         matchmaking = db.loadMatchmakingData([self.player.battleID])[0]
+        self.player.battleID = 0
+        db.replaceValue("battleID", self.player.battleID)
         matchmaking["players"].remove(self.player.low_id)
         MatchMakingStatusMessage(self.device, self.player, False).Send()
