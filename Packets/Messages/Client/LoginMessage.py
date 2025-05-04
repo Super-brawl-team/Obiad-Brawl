@@ -11,7 +11,10 @@ from Packets.Messages.Server.UDPConnectionInfoMessage import UDPConnectionInfoMe
 from Database.DatabaseManager import DataBase
 from Utils.Helpers import Helpers
 import time
+from Packets.Messages.Server.TeamMessage import TeamMessage
 import json
+from Packets.Messages.Server.TeamStreamMessage import TeamStreamMessage
+
 class LoginMessage(ByteStream):
 
     def __init__(self, data, device, player):
@@ -19,7 +22,15 @@ class LoginMessage(ByteStream):
         self.device = device
         self.data = data
         self.settings = json.load(open('Settings.json'))
+        self.banned_acc = json.load(open('banned_acc.json'))
+        self.banned_ip =  json.load(open('banned_ip.json'))
         self.player = player
+
+    def save_ban_lists(self):
+        with open('banned_acc.json', 'w') as f:
+            json.dump(self.banned_acc, f, indent=4)
+        with open('banned_ip.json', 'w') as f:
+            json.dump(self.banned_ip, f, indent=4)
 
     def decode(self):
         self.loginPayload = {}
@@ -61,15 +72,42 @@ class LoginMessage(ByteStream):
             self.player.token = str(self.loginPayload["token"])
             self.player.region = self.loginPayload["region"]
             db.replaceValue("region", self.player.region)
-
+            db.loadAccount()
+            if str(self.player.low_id) in self.banned_acc:
+                LoginFailedMessage(self.device, self.player,self.loginPayload,self.banned_acc[str(self.player.low_id)]["reason"], 11).Send()
+                self.banned_ip[self.device.address[0]] = {"reason": self.banned_acc[str(self.player.low_id)]["reason"]}
+                self.save_ban_lists()
+                return
+            if self.device.address[0] in self.banned_ip:
+                LoginFailedMessage(self.device, self.player,self.loginPayload,self.banned_ip[self.device.address]["reason"], 11).Send()
+                self.banned_acc[str(self.player.low_id)] = {"reason": self.banned_ip[self.device.address[0]]["reason"]}
+                self.save_ban_lists()
+                return
             # Send success messages
             LoginOkMessage(self.device, self.player, self.loginPayload).Send()
             # 14109
-            db.loadAccount()
+            
+            try:
+                battleInfo = db.getBattleInfo([self.player.battleID])[0]
+            except:
+                self.player.battleID = 0
+                db.replaceValue("battleID", 0)
             if self.player.battleID == 0:
                 OwnHomeDataMessage(self.device, self.player).Send()
                 ClanStream(self.device, self.player).Send()
+                if self.player.club_id:
+                    db.onlineMembers(self.player.club_id, 1)
                 MyAlliance(self.device, self.player).Send()  # 14109
+                if self.player.teamID != 0:
+                    if db.getGameroomInfo("info") != None:
+                        playerInfo = db.getPlayerInfo(self.player.low_id)
+                        playerInfo['status'] = 3
+                        db.updateGameroomPlayerInfo(self.player.low_id, self.player.teamID, playerInfo)
+                        TeamMessage(self.device, self.player).Send()
+                        TeamStreamMessage(self.device,self.player).Send()
+                    else:
+                        self.player.teamID = 0
+                        db.replaceValue("teamID", self.player.teamID)
             else:
                 
                 StartLoadingMessage(self.device, self.player).Send()

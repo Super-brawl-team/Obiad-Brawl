@@ -39,6 +39,8 @@ class MatchmakeRequestMessage(ByteStream):
             matchmakingData["players"].append(self.player.low_id)
             db.updateMatchmake(self.player.battleID, matchmakingData)
         MatchMakingStatusMessage(self.device, self.player, True).Send()
+        """
+        stripped until i fix
         while True:
             elapsed_time = time.time() - matchmakingData["startedTime"] 
             remaining_time = 20 - elapsed_time 
@@ -49,7 +51,7 @@ class MatchmakeRequestMessage(ByteStream):
             display_time = math.floor(remaining_time)
             if display_time != math.floor(remaining_time + 0.1):  
                 matchmakingData["displayTIme"] = display_time
-        
+        """
         try:
             db.createBattle()
         except:

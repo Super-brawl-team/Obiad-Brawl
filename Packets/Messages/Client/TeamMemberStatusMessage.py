@@ -1,7 +1,7 @@
 from Packets.Messages.Server.TeamMessage import TeamMessage
 from Logic.Player import Player
 from Utils.Reader import ByteStream
-
+from Database.DatabaseManager import DataBase
 
 class TeamMemberStatusMessage(ByteStream):
     def __init__(self, data, device, player):
@@ -17,6 +17,11 @@ class TeamMemberStatusMessage(ByteStream):
 
 
     def process(self):
-       TeamMessage(self.device, self.player).Send()
+       db = DataBase(self.player)
+       playerInfo = db.getPlayerInfo(self.player.low_id)
+       playerInfo['status'] = self.player.teamStatus
+       db.updateGameroomPlayerInfo(self.player.low_id, self.player.teamID, playerInfo)
+       gameroomInfo = db.getGameroomInfo("info")
+       for player_key, values in gameroomInfo["players"].items():
+            TeamMessage(self.device, self.player).SendTo(player_key)
        
-

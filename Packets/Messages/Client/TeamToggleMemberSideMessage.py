@@ -12,6 +12,7 @@ class TeamToggleMemberSideMessage(ByteStream):
 
 
     def decode(self):
+        """This packet is unused in v1/4 so it is useless"""
         self.readVInt() # Where player used to be
         self.readVInt() # New place for the player
         

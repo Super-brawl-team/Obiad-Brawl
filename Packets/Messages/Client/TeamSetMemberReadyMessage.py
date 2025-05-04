@@ -19,14 +19,22 @@ class TeamSetMemberReadyMessage(ByteStream):
 
 
     def decode(self):
-        self.player.isReady = self.readBoolean()
+        self.isReady = self.readBoolean()
         self.readVInt() #idk
 
 
     def process(self):
-        TeamMessage(self.device, self.player).Send()
-        TeamGameStartingMessage(self.device, self.player).Send()
         db = DataBase(self.player)
+        playerInfo = db.getPlayerInfo(self.player.low_id)
+        playerInfo["ready"] = self.isReady
+        db.updateGameroomPlayerInfo(self.player.low_id, self.player.teamID, playerInfo)
+        gameroomInfo = db.getGameroomInfo("info")
+        for player_key, values in gameroomInfo["players"].items():
+            TeamMessage(self.device, self.player).SendTo(player_key)
+        for player, values in gameroomInfo["players"].items():
+            if not gameroomInfo["players"][player]["ready"]:
+                return "not yet"
+        TeamGameStartingMessage(self.device, self.player).Send()
         db.createBattleID()
         db.createMatchmakingData()
         db.replaceValue("battleID", self.player.battleID)
@@ -37,17 +45,17 @@ class TeamSetMemberReadyMessage(ByteStream):
             matchmakingData["players"].append(self.player.low_id)
             db.updateMatchmake(self.player.battleID, matchmakingData)
         MatchMakingStatusMessage(self.device, self.player, True).Send()
+        """
         while True:
             elapsed_time = time.time() - matchmakingData["startedTime"] 
-            remaining_time = 20 - elapsed_time 
-
+            remaining_time = 20 - elapsed_time
             if remaining_time <= 0:
                 break
 
             display_time = math.floor(remaining_time)
             if display_time != math.floor(remaining_time + 0.1):  
                 matchmakingData["displayTIme"] = display_time
-        
+        """
         try:
             db.createBattle()
         except:

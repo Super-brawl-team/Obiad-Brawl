@@ -125,7 +125,11 @@ class OwnHomeDataMessage(Writer):
 			#self.writeVInt(3) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp why did this even worked
 			self.writeBoolean(False) # double coins
 			self.writeBoolean(event == 4) # double exp
-			self.writeScID(15, random.randint(0, len(Locations().GetLocations()) - 1)) # map
+			while True:
+				map = random.randint(0, len(Locations().GetLocations()) - 1)
+				if map != 20:
+					break
+			self.writeScID(15, map) # map
 			self.writeVInt(0) #  coins already collected
 			self.writeVInt(2) #  coins collected statut
 			self.writeString("Server by PrimoDEVHacc") # text for event (TID) please keep it for credits
@@ -147,7 +151,11 @@ class OwnHomeDataMessage(Writer):
 			#self.writeVInt(2) # event type , 1= double coins (??) 2+ = double xp 3 = double coins + exp
 			self.writeBoolean(False) # double coins
 			self.writeBoolean(event == 4) # double exp
-			self.writeScID(15, random.randint(0, len(Locations().GetLocations()) - 1)) # map
+			while True:
+				map = random.randint(0, len(Locations().GetLocations()) - 1)
+				if map != 20:
+					break
+			self.writeScID(15, map) # map
 			self.writeVInt(0) #  coins already collected
 			self.writeVInt(2) #  coins collected statut
 			self.writeString("Server by PrimoDEVHacc") # text for event (TID) please keep it for credits

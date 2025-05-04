@@ -55,8 +55,15 @@ class GetLeaderboardMessage(ByteStream):
        elif self.fields["leaderboardType"] == 2:
             clubs = db.countClubs(1, 100, 2, 200)
             self.fields["entries"] = []
+            index = 0
             for club in clubs[1]:
                 self.fields["entries"].append(club["info"])
+                trophies = 0
+                for token in club["info"]["memberCount"]:
+                    memberData = db.getMemberData(token)
+                    trophies += memberData["trophies"]
+                self.fields["entries"][index]["trophies"] = trophies
+                index +=1
             def by_trophy(club):
                 return club["trophies"]
             self.fields["entries"].sort(key=by_trophy, reverse=True)

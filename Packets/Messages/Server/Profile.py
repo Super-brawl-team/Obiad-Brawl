@@ -57,18 +57,6 @@ class Profile(Writer):
                 self.writeVint(8) # Stats Index
                 self.writeVint(player["solo_wins"]) # Showdown Victories
 
-                self.writeVint(2) # Stats Index
-                self.writeVint(player["player_experience"]) # Player Experience Points
-                self.writeVint(3) # Stats Index
-                self.writeVint(player["trophies"]) # Player Trophies
-                self.writeVint(4) # Stats Index
-                self.writeVint(player["highest_trophies"]) # Highest Trophies
-                self.writeVint(5) # Stats Index
-                self.writeVint(len(player["unlocked_brawlers"])) # Unlocked Brawlers
-                self.writeVint(7) # Stats Index
-                self.writeVint(28000000 + player["profile_icon"]) # Player Profile Icon
-                self.writeVint(8) # Stats Index
-                self.writeVint(player["solo_wins"]) # Showdown Victories
 
                 # Stats Entry Array End
                 # Player Profile End
@@ -76,14 +64,15 @@ class Profile(Writer):
 
                 # Alliance Header Entry Array
                 
-                self.writeBool(True) # Joined in a Band
-                self.writeInt(0) # Band HighID
-                self.writeInt(1) # Band LowID
-                self.writeString("Primo Team") # Band Name
-                self.writeScId(8, 19) # Band Badge
-                self.writeVint(1) # Band Type
-                self.writeVint(1) # Band Members
-                self.writeVint(0) # Band Trophies
-                self.writeVint(0) # Band Required Trophies
-                self.writeScId(14, 249) # Unknown Data Reference
-                self.writeScID(25, 2) # Unknown
+                self.writeBool(player["club_id"] != 0) # Joined in a Band
+                if player["club_id"] != 0:
+                    club = db.loadClub(player["club_id"])
+                    self.writeLong(0, player["club_id"]) # Band ID
+                    self.writeString(club["info"]["name"]) # Band Name
+                    self.writeScId(8, club["info"]["clubBadge"]) # Band Badge
+                    self.writeVint(club["info"]["clubType"]) # Band Type
+                    self.writeVint(club["info"]["onlineMembers"]) # Band Members
+                    self.writeVint(club["info"]["trophies"]) # Band Trophies
+                    self.writeVint(club["info"]["requiredTrophies"]) # Band Required Trophies
+                    self.writeScId(0, 1) # Unknown Data Reference
+                    self.writeScID(25, player["club_role"]) # player club role

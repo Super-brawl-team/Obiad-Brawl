@@ -28,5 +28,5 @@ class AllianceChat(ByteStream):
         for token in club["info"]["memberCount"]:
             memberData = db.getMemberData(token)
             self.plrids.append(memberData["low_id"])
-        for i in self.plrids:
-            AllianceChatServer(self.device, self.player, self.player.club_id, nextKey+1).SendTo(i)
+        for low_id in self.plrids:
+            AllianceChatServer(self.device, self.player, self.player.club_id, nextKey+1).SendTo(low_id)

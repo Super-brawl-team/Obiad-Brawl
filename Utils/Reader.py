@@ -46,6 +46,12 @@ class ByteStream(BufferedReader):
 
     def readInt(self, length=4):
         return int.from_bytes(self.read(length), "big")
+        
+    def readLogicLong(self):
+        result = []
+        result.append(self.readVInt())
+        result.append(self.readVInt())
+        return result
 
     def readVariableInt(self, rotate: bool = True):
         result = 0

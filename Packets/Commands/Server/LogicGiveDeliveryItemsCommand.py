@@ -11,6 +11,8 @@ class LogicGiveDeliveryItemsCommand(ByteStream):
     def encode(self):
           db = DataBase(self.player)
           randomValue1 = random.randint(0, 1)
+          if len(self.player.unlocked_brawlers) == 1:
+                randomValue1 = 0
           if randomValue1 == 1:
 
           

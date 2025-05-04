@@ -25,7 +25,7 @@ class LogicSetPlayerThumbnailCommand(ByteStream):
             return "kek"
         requiredExpLevelForThumb = playerThumbnails.getRequiredExpForThumbnail(self, self.selected_icon[1])
         requiredExpForThumb = RequiredExps[requiredExpLevelForThumb-1]
-        if requiredExpForThumb > self.player.player_experience:
+        if requiredExpLevelForThumb != 0 and requiredExpForThumb > self.player.player_experience:
             return "kek"
         self.player.profile_icon = self.selected_icon[1]
         db.replaceValue('profile_icon', self.player.profile_icon)

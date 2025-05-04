@@ -104,7 +104,7 @@ class DataBase:
             "trophies": self.player.trophies,
             "highest_trophies": self.player.trophies,
             "profile_icon": 0,
-            "room_id": 0,
+            "teamID": 0,
             "unlocked_brawlers": self.player.unlocked_brawlers,
             "friends": {},
             "last_connection_time": 0,
@@ -188,13 +188,15 @@ class DataBase:
     def createGameroom(self, roomType, chatData):
         
         data = {
-            "room_id": self.player.room_id,
+            "room_id": self.player.teamID,
             "info": {
                 "room_type": roomType,
+                "practice": False,
                 "map_id": self.player.map_id,
                 "player_count": 1,
                 "advertiseToBand": False,
                 "alreadyAdvertisedToBand": False,
+                "advertisedClub": [0, 0],
                 "players": {
                  self.player.low_id: {
                     "host": True,
@@ -210,10 +212,10 @@ class DataBase:
             }
         }
 
-        self.cursor.execute("INSERT INTO Gamerooms (room_id, data) VALUES (?, ?)", (self.player.room_id, json.dumps(data)))
+        self.cursor.execute("INSERT INTO Gamerooms (room_id, data) VALUES (?, ?)", (self.player.teamID, json.dumps(data)))
         
         chatQuery = "INSERT INTO GameroomChats (room_id, data) VALUES (?, ?)"
-        self.executeQuery(chatQuery, [self.player.room_id, json.dumps(chatData)])
+        self.executeQuery(chatQuery, [self.player.teamID, json.dumps(chatData)])
         self.connection.commit()
     
     def joinGameroom(self, room_id):
@@ -241,7 +243,7 @@ class DataBase:
      return True
 
     def loadGameroom(self):
-     self.cursor.execute("SELECT data FROM Gamerooms WHERE room_id = ?", (self.player.room_id,))
+     self.cursor.execute("SELECT data FROM Gamerooms WHERE room_id = ?", (self.player.teamID,))
      result = self.cursor.fetchone()
      if result:
         gameroomData = json.loads(result[0])
@@ -269,7 +271,7 @@ class DataBase:
         return self.cursor.fetchall()
     
     def getPlayerInfo(self, lowId):
-     self.cursor.execute("SELECT data FROM Gamerooms WHERE room_id = ?", (self.player.room_id,))
+     self.cursor.execute("SELECT data FROM Gamerooms WHERE room_id = ?", (self.player.teamID,))
      result = self.cursor.fetchone()
      if result:
         gameroomData = json.loads(result[0])
@@ -297,7 +299,7 @@ class DataBase:
             updateQuery = "UPDATE Gamerooms SET data = ? WHERE room_id = ?"
             self.executeQuery(updateQuery, [json.dumps(gameroomData), roomId])
     def getGameroomInfo(self, index):
-        self.cursor.execute("SELECT data FROM Gamerooms WHERE room_id = ?", (self.player.room_id,))
+        self.cursor.execute("SELECT data FROM Gamerooms WHERE room_id = ?", (self.player.teamID,))
         result = self.cursor.fetchone()
         if result:
           gameroomData = json.loads(result[0])
@@ -308,29 +310,27 @@ class DataBase:
           return None
 
     def removeGameroomPlayer(self, lowId, roomId, token):
-     query = "SELECT data FROM Gamerooms WHERE room_id = ?"
-     data = self.fetchOne(query, [roomId])
-     #gameroomInfo = self.getGameroomInfo("info")
-     if data:
-        gameroomData = json.loads(data[0])
-        if str(lowId) in gameroomData["info"]["players"]:
-            del gameroomData["info"]["players"][str(lowId)] 
-            gameroomData["info"]["player_count"] -= 1
-            updateQuery = "UPDATE Gamerooms SET data = ? WHERE room_id = ?"
-            self.executeQuery(updateQuery, [json.dumps(gameroomData), roomId])
-            if gameroomData["info"]["player_count"] == 0:
-               self.removeGameroom(roomId)
-            else:
-               updateQuery = "UPDATE Gamerooms SET data = ? WHERE room_id = ?"
-               self.executeQuery(updateQuery, [json.dumps(gameroomData), roomId])
-            
-        else:
-            print(f"Player with LowID {lowId} not found in RoomID {roomId}.")
-        
-     else:
-        print(f"Room with ID {roomId} not found.")
-     self.replaceOtherValue('room_id', 0, token)
+        query = "SELECT data FROM Gamerooms WHERE room_id = ?"
+        data = self.fetchOne(query, [roomId])
 
+        if data:
+            gameroomData = json.loads(data[0])
+            if str(lowId) in gameroomData["info"]["players"]:
+                del gameroomData["info"]["players"][str(lowId)]
+                gameroomData["info"]["player_count"] -= 1
+
+                if gameroomData["info"]["player_count"] == 0:
+                    self.removeGameroom(roomId)  # udpate bc i suck
+                else:
+                    updateQuery = "UPDATE Gamerooms SET data = ? WHERE room_id = ?"
+                    self.executeQuery(updateQuery, [json.dumps(gameroomData), roomId])
+            else:
+                print(f"Player with LowID {lowId} not found in RoomID {roomId}.")
+        else:
+            print(f"Room with ID {roomId} not found.")
+
+        self.replaceOtherValue('teamID', 0, token)
+        
     def removeGameroom(self, lowId):
      deleteQuery = "DELETE FROM Gamerooms WHERE room_id = ?"
      self.executeQuery(deleteQuery, [lowId])
@@ -372,7 +372,7 @@ class DataBase:
                 "PlayerID": playerId,
                 "PlayerName": playerName,
                 "Message": msg,
-                "promotedTeam": self.player.room_id,
+                "promotedTeam": self.player.teamID,
                 "TimeStamp": time.time(),
                 "targetID": targetID,
                 "targetName": targetName
@@ -385,6 +385,15 @@ class DataBase:
         chatQuery = "INSERT INTO ClubChats (club_id, data) VALUES (?, ?)"
         self.executeQuery(clubQuery, [clubId, json.dumps(clubData)])
         self.executeQuery(chatQuery, [clubId, json.dumps(chatData)])
+        
+    def restartClubOnlineMembers(self):
+        query = "SELECT club_id, data FROM Clubs"
+        allClubs = self.fetchAll(query)
+        for clubId, clubJson in allClubs:
+            clubInfo = json.loads(clubJson)
+            clubInfo["info"]["onlineMembers"] = 0
+            updateQuery = "UPDATE CLubs SET data = ? WHERE club_id = ?"
+            self.executeQuery(updateQuery, [json.dumps(clubInfo), clubId])
 
     def countClubs(self, minMembers, maxMembers, clubType, maxListLength):
      query = "SELECT club_id, data FROM Clubs"
@@ -426,7 +435,16 @@ class DataBase:
         if data:
             return json.loads(data[0])
         return None
-
+    
+    def restartClubOnlineMembers(self):
+        query = "SELECT club_id, data FROM Clubs"
+        allClubs = self.fetchAll(query)
+        for clubId, clubJson in allClubs:
+            clubInfo = json.loads(clubJson)
+            clubInfo["info"]["onlineMembers"] = 0
+            updateQuery = "UPDATE CLubs SET data = ? WHERE club_id = ?"
+            self.executeQuery(updateQuery, [json.dumps(clubInfo), clubId])
+            
     def addMember(self, clubId, playerToken, action):
         query = "SELECT data FROM Clubs WHERE club_id = ?"
         data = self.fetchOne(query, [clubId])
@@ -437,10 +455,12 @@ class DataBase:
                 self.executeQuery(deleteQuery, [clubId])
             elif action == 1:
                 clubData["info"]["memberCount"].append(playerToken)
+                clubData["info"]["onlineMembers"] += 1
                 updateQuery = "UPDATE CLubs SET data = ? WHERE club_id = ?"
                 self.executeQuery(updateQuery, [json.dumps(clubData), clubId])
             elif action == 2:
                 clubData["info"]["memberCount"].remove(playerToken)
+                clubData["info"]["onlineMembers"] -= 1
                 updateQuery = "UPDATE Clubs SET data = ? WHERE club_id = ?"
                 self.executeQuery(updateQuery, [json.dumps(clubData), clubId])
 
@@ -554,7 +574,7 @@ class DataBase:
                 "PlayerName": playerName,
                 "PlayerRole": role,
                 "Message": msg,
-                "promotedTeam": self.player.room_id,
+                "promotedTeam": self.player.teamID,
                 "TimeStamp": time.time(),
                 "targetID": targetID,
                 "targetName": targetName

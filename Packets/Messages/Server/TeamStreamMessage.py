@@ -1,6 +1,6 @@
 from Utils.Writer import Writer
-import random
-
+from Database.DatabaseManager import DataBase
+from Entries.StreamEntryFactory import StreamEntryFactory
 
 class TeamStreamMessage(Writer):
     def __init__(self, device, player):
@@ -11,18 +11,22 @@ class TeamStreamMessage(Writer):
 
 
     def encode(self):
-            
-        if self.player.room_id != 0:
-            self.writeLogicLong(0, self.player.teamID) # team id
+        self.roomLowID = self.player.teamID
+        self.writeLogicLong(0, self.player.teamID)
+        db = DataBase(self.player)
+        msgCount = 0
+        if self.roomLowID != 0:
+            roomMessages = db.loadRoomMessages(self.roomLowID)
+            if roomMessages != None:
+                msgCount = len(roomMessages["info"]["messages"])
+            self.writeVInt(msgCount)  # Message count
+            #self.writeVInt(0)
 
-            # messages array
-            self.writeVInt(self.player.teamStreamMessageCount) # amount of messages in the chat
-            for msg in range(self.player.teamStreamMessageCount):
-                self.writeVInt(0) #type
-                self.writeLogicLong(0, 1)
-                self.writeLogicLong(0, 1)
-                self.writeString(self.player.name)
-                self.writeVInt(0)
-                self.writeVInt(0)
-                self.writeVInt(0)
-            # Players Array End
+            for index in range(msgCount):  # Loop through message indices
+            #for index in range(0):
+                messageKey = str(index)
+                message = roomMessages["info"]["messages"][messageKey]
+                self.writeVInt(message["EventType"])
+                StreamEntryFactory.createStreamEntryByType(self, message)
+        else:
+            self.writeVInt(0)  # No messages

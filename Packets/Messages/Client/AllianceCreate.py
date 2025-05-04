@@ -32,7 +32,7 @@ class AllianceCreate(ByteStream):
         self.player.club_role = 2
 
         # Club creation
-        db.createClub(self.player.club_id, {"info": {"clubID": self.player.club_id, "name": self.club_name, "description": self.desc, "region": self.player.region, "clubBadge": self.badge[1], "clubType": self.type, "requiredTrophies": self.trophiesRequired, "trophies": self.player.trophies, "memberCount": [self.player.token], "onlineMembers": 1}}, {"info": {"clubID": self.player.club_id, "messages": { "0": {"EventType": 4, "Event": 3, "Tick": 0, "PlayerID": self.player.low_id, "PlayerName": self.player.name, "PlayerRole": self.player.club_role, "Message": "", "promotedTeam": 0, "TimeStamp": time.time(), "targetID": self.player.low_id, "targetName": self.player.name}}}})
+        db.createClub(self.player.club_id, {"info": {"clubID": self.player.club_id, "name": self.club_name, "description": self.desc, "region": self.player.region, "clubBadge": self.badge[1], "clubType": self.type, "requiredTrophies": self.trophiesRequired, "memberCount": [self.player.token], "onlineMembers": 1}}, {"info": {"clubID": self.player.club_id, "messages": { "0": {"EventType": 4, "Event": 3, "Tick": 0, "PlayerID": self.player.low_id, "PlayerName": self.player.name, "PlayerRole": self.player.club_role, "Message": "", "promotedTeam": 0, "TimeStamp": time.time(), "targetID": self.player.low_id, "targetName": self.player.name}}}})
         AllianceEventMessage(self.device, self.player, 20).Send()
         MyAlliance(self.device, self.player).Send() # 14109
         ClanStream(self.device, self.player).Send()

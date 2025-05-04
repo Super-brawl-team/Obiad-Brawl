@@ -2,7 +2,7 @@
 
 from Packets.Messages.Server.KeepAliveOkMessage import KeepAliveOkMessage
 from Utils.Reader import ByteStream
-
+from Packets.Messages.Server.MyAlliance import MyAlliance
 
 class KeepAliveMessage(ByteStream):
 
@@ -17,3 +17,7 @@ class KeepAliveMessage(ByteStream):
 
     def process(self):
         KeepAliveOkMessage(self.device, self.player).Send()
+        try: 
+            MyAlliance(self.device, self.player).Send()
+        except:
+            pass

@@ -23,11 +23,18 @@ class AllianceEditSettings(ByteStream):
 
     def process(self):
         db = DataBase(self.player)
-        if self.player.club_id != 0:
+        if self.player.club_id == 0:
             return "nop"
         if self.player.club_role in [0, 1]:
             return "nop"
         db.replaceClubValue(self.player.club_id, self.desc, self.badge[1], self.type, self.trophiesRequired)
         AllianceEventMessage(self.device, self.player, 10).Send()
-        MyAlliance(self.device, self.player).Send() # 14109
+        club =  db.loadClub(self.player.club_id)
+        self.plrids = []
+        for token in club["info"]["memberCount"]:
+            memberData = db.getMemberData(token)
+            self.plrids.append(memberData["low_id"])
+        for id in self.plrids:
+            if id != self.targetID[1]:
+                MyAlliance(self.device, self.player).SendTo(id)
         

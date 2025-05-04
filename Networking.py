@@ -12,7 +12,7 @@ from Logic.Device import Device
 from Packets.Messages.Server.LobbyInfoMessage import LobbyInfoMessage
 from Packets.Messages.Server.TeamErrorMessage import TeamErrorMessage
 from Logic.Player import Player
-
+from Database.DatabaseManager import DataBase
 connected_clients_count = 0
 client_count_lock = Lock()
 
@@ -33,7 +33,8 @@ class Networking(Thread):
 
         global connected_clients_count
         self.server.bind((self.address, self.port))
-        
+        db = DataBase(None)
+        db.restartClubOnlineMembers()
         print('Server is listening on {}:{}'.format(self.address, self.port))
         #self.server.bind(("192.168.1.184", 5555))
         while True:
@@ -73,58 +74,70 @@ class ClientThread(Thread):
     def run(self):
 
         global connected_clients_count
-
+        db = DataBase(self.player)
         try:
             while True:
+                self.device.address = self.address
                 global connected_clients_count
-                header   = self.client.recv(7)
-                packetid = int.from_bytes(header[:2], 'big')
-                length   = int.from_bytes(header[2:5], 'big')
-                version  = int.from_bytes(header[5:], 'big')
-                data     = self.recvall(length)
-                LobbyInfoMessage(self.device, self.player, connected_clients_count).Send()
-                if len(header) >= 7:
-                    if length == len(data):
-                        if packetid!=10555:
-                            print('[*] {} received'.format(packetid))
-                        try:
-                            if self.usedCryptography == "RC4":
-                                decrypted = self.device.decrypt(data)
-                            elif self.usedCryptography == "NACL":
-                                decrypted = self.nacl.decrypt(packetid, data)
-                            else:
-                                decrypted = data
-                            if packetid in availablePackets:
-                                Message = availablePackets[packetid](decrypted, self.device, self.player)
-                                Message.decode()
-                                Message.process()
-                                if packetid == 10101:
-                                    Networking.Clients["Clients"][str(self.player.low_id)] = {"SocketInfo": self.client}
-                                    Networking.Clients["ClientCounts"] = connected_clients_count
-                                    self.device.ClientDict = Networking.Clients
-                            else:
+                try:
+                    header   = self.client.recv(7)
+                    packetid = int.from_bytes(header[:2], 'big')
+                    length   = int.from_bytes(header[2:5], 'big')
+                    version  = int.from_bytes(header[5:], 'big')
+                    data     = self.recvall(length)
+                    LobbyInfoMessage(self.device, self.player, connected_clients_count).Send()
+                    if len(header) >= 7:
+                        if length == len(data):
+                            if packetid!=10555:
+                                print('[*] {} received'.format(packetid))
+                            try:
+                                if self.usedCryptography == "RC4":
+                                    decrypted = self.device.decrypt(data)
+                                elif self.usedCryptography == "NACL":
+                                    decrypted = self.nacl.decrypt(packetid, data)
+                                else:
+                                    decrypted = data
+                                if packetid in availablePackets:
+                                    Message = availablePackets[packetid](decrypted, self.device, self.player)
+                                    Message.decode()
+                                    Message.process()
+                                    if packetid == 10101:
+                                        Networking.Clients["Clients"][str(self.player.low_id)] = {"SocketInfo": self.client}
+                                        Networking.Clients["ClientCounts"] = connected_clients_count
+                                        self.device.ClientDict = Networking.Clients
+                                else:
+                                    if self.debug:
+
+                                        TeamErrorMessage(self.device, self.player, 69).Send()
+                                        print('[*] {} not handled'.format(packetid))
+                            except:
                                 if self.debug:
-
                                     TeamErrorMessage(self.device, self.player, 69).Send()
-                                    print('[*] {} not handled'.format(packetid))
-                        except:
-                            if self.debug:
-                                TeamErrorMessage(self.device, self.player, 69).Send()
 
-                                print('[*] Error while decrypting / handling {}'.format(packetid))
-                                traceback.print_exc()
+                                    print('[*] Error while decrypting / handling {}'.format(packetid))
+                                    traceback.print_exc()
+                        else:
+                            print('[*] Incorrect Length for packet {} (header length: {}, data length: {})'.format(packetid, length, len(data)))
                     else:
-                        print('[*] Incorrect Length for packet {} (header length: {}, data length: {})'.format(packetid, length, len(data)))
-                else:
-                    if self.debug:
-                        print('[*] Received an invalid packet from client')
-                    self.client.close()
-                    break
+                        if self.debug:
+                            print('[*] Received an invalid packet from client')
+                        self.client.close()
+                        break
+                except:
+                        self.client.close()
+                        break
         finally:
 
             #global connected_clients_count
 
             with client_count_lock:
+                if self.player.club_id !=0:
+                    db.onlineMembers(self.player.club_id, -1)
+                if self.player.teamID != 0:
+                    playerInfo = db.getPlayerInfo(self.player.low_id)
+                    playerInfo['status'] = 0
+                    db.updateGameroomPlayerInfo(self.player.low_id, self.player.teamID, playerInfo)
+                print(f"{self.player.name} Disconnected")
                 connected_clients_count -= 1
                 try:
                     del Networking.Clients["Clients"][str(self.player.low_id)]
