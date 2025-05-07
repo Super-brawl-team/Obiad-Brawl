@@ -19,7 +19,9 @@ Enjoy tons of cool features, including:
 
 ## 🚀 Coming Soon  
 - Online battle logic  
-- Online rooms
+- Events logic  
+- Milestones rewards in battle end
+- Game assets site
 
 ---
 

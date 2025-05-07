@@ -72,7 +72,12 @@ class Profile(Writer):
                     self.writeScId(8, club["info"]["clubBadge"]) # Band Badge
                     self.writeVint(club["info"]["clubType"]) # Band Type
                     self.writeVint(club["info"]["onlineMembers"]) # Band Members
-                    self.writeVint(club["info"]["trophies"]) # Band Trophies
+                    self.writeVInt(len(club["info"]["memberCount"])) # players count
+                    trophies = 0
+                    for token in club["info"]["memberCount"]:
+                        memberData = db.getMemberData(token)
+                        trophies += memberData["trophies"]
+                    self.writeVInt(trophies) # club trophies
                     self.writeVint(club["info"]["requiredTrophies"]) # Band Required Trophies
                     self.writeScId(0, 1) # Unknown Data Reference
                     self.writeScID(25, player["club_role"]) # player club role
