@@ -508,42 +508,60 @@ class DataBase:
         return None
     
     def rerollEvents(self):
-        
-        self.cursor.execute("SELECT state, data FROM Events WHERE state = ?", [1])
-        results = self.cursor.fetchall()
-        for state, row in results:
-            event = json.loads(row)
-            updatedData = json.dumps(event)
-        updateQuery = "UPDATE Events SET data = ? WHERE state = ?"
-        self.cursor.execute(updateQuery, [updatedData, 2])
-        for state, row in results:
-            event = json.loads(row)
-            
-            eventData = event["info"]["events"]
+        now = datetime.now()
+        is_weekend = now.weekday() in (5, 6)
+        refresh_hours = {
+            "0": 2,
+            "1": 14,
+            "2": 8,
+            "3": 2
+        }
 
-            now = datetime.now()
-            tomorrow = now + timedelta(days=1)
-            timestamp = int(tomorrow.replace(hour=10, minute=0, second=0, microsecond=0).timestamp())
-            for key, data in eventData.items():
-                data["TimeStamp"] = timestamp
-                if int(key) == 0:
-                    gamemodes = Locations.getAllLocationsWithGamemode("CoinRush")
-                elif int(key) == 1:
-                    gamemodes = Locations.getAllLocationsWithGamemode("BattleRoyale")
-                elif int(key) == 2:
-                    gamemodes = Locations.getAllLocationsWithException(["CoinRush", "BattleRoyale", "Survival", "BossFight", "BattleRoyaleTeam"])
-                elif int(key) == 3:
-                    gamemodes = Locations.getAllLocationsWithException(["Survival", "BossFight"])
-                else:
-                    gamemodes = Locations.getAllLocationsWithGamemode("BattleRoyaleTeam")
-                data["ID"] = random.choice(gamemodes)
+        # --- Handle state 1 (active events)
+        self.cursor.execute("SELECT data FROM Events WHERE state = 1")
+        row = self.cursor.fetchone()
+        if row:
+            state1 = json.loads(row[0])
+            events1 = state1["info"]["events"]
 
-        # Convert the modified event back to JSON and update in DB
-            updatedData = json.dumps(event)
-            updateQuery = "UPDATE Events SET data = ? WHERE state = ?"
-            self.cursor.execute(updateQuery, [updatedData, state])
+            if "3" in events1 and not is_weekend:
+                event3 = events1.pop("3")
+
+                self.cursor.execute("SELECT data FROM Events WHERE state = 2")
+                row2 = self.cursor.fetchone()
+                state2 = json.loads(row2[0]) if row2 else {"info": {"events": {}}}
+                state2["info"]["events"]["3"] = event3
+                self.cursor.execute("UPDATE Events SET data = ? WHERE state = 2", [json.dumps(state2)])
+
+            for key, data in events1.items():
+                if key in refresh_hours:
+                    if "TimeStamp" in data and now.timestamp() >= data["TimeStamp"]:
+                        next_time = now + timedelta(hours=refresh_hours[key])
+                        data["TimeStamp"] = int(next_time.timestamp())
+                        data["ID"] = random.choice(Locations().GetLocations())
+
+
+            self.cursor.execute("UPDATE Events SET data = ? WHERE state = 1", [json.dumps(state1)])
+
+        # --- Handle state 2 (comming soon)
+        self.cursor.execute("SELECT data FROM Events WHERE state = 2")
+        row2 = self.cursor.fetchone()
+        if row2:
+            state2 = json.loads(row2[0])
+            events2 = state2["info"]["events"]
+
+            if is_weekend and "3" in events2:
+                event3 = events2.pop("3")
+
+                self.cursor.execute("SELECT data FROM Events WHERE state = 1")
+                row1 = self.cursor.fetchone()
+                state1 = json.loads(row1[0]) if row1 else {"info": {"events": {}}}
+                state1["info"]["events"]["3"] = event3
+                self.cursor.execute("UPDATE Events SET data = ? WHERE state = 1", [json.dumps(state1)])
+                self.cursor.execute("UPDATE Events SET data = ? WHERE state = 2", [json.dumps(state2)])
 
         self.connection.commit()
+    
     
     def getNextKey(self, clubId):
         query = "SELECT data FROM ClubChats WHERE club_id = ?"

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-
+import json
 
 class Player:
-
-
+    settings = json.load(open("Settings.json"))
+    tutorialState = settings["startingTutorialState"]
     high_id = 0
     low_id = 1
     token = None

@@ -6,5 +6,12 @@
 	"MaximumUpgradeLevel": 5,
 	"usedCryptography": "RC4",
 	"NACLServerPrivateKey" : "78BD03628030B86BCF17817DF13A3E9C0E8FD03F06F222A44C40CA70F3ECC748",
-    "UseUDPServer": false
+    "UseUDPServer": false,
+    "startingTutorialState": 2,
+    "seasonEndBonus": 0,
+    "gameAssetsPort": 8080,
+    "gameAssetsAddress": "0.0.0.0",
+    "UDPPort": 5555,
+    "UDPAddress": "0.0.0.0",
+    "gameAssetsServer": true
 }

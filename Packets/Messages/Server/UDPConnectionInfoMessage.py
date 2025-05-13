@@ -1,4 +1,5 @@
 from Utils.Writer import Writer
+import json
 
 class UDPConnectionInfoMessage(Writer):
 
@@ -10,8 +11,8 @@ class UDPConnectionInfoMessage(Writer):
 
 
     def encode(self):
-        self.writeVInt(5555) # Server Port
-        self.writeString("192.168.1.184") # Server IP
+        self.writeVInt(json.load(open("Settings.json"))["UDPPort"]) # Server Port
+        self.writeString(json.load(open("Settings.json"))["UDPAddress"]) # Server IP
         self.writeBytes(b"0123456789") # session token
         self.writeStringReference("nonce") # the string explains it
 

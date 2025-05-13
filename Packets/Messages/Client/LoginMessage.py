@@ -10,10 +10,11 @@ from Logic.Battle.LogicBattle import LogicBattle
 from Packets.Messages.Server.UDPConnectionInfoMessage import UDPConnectionInfoMessage
 from Database.DatabaseManager import DataBase
 from Utils.Helpers import Helpers
-import time
 from Packets.Messages.Server.TeamMessage import TeamMessage
 import json
 from Packets.Messages.Server.TeamStreamMessage import TeamStreamMessage
+from Utils.Utility import Utility
+from Packets.Messages.Server.FriendListMessage import FriendListMessage
 
 class LoginMessage(ByteStream):
 
@@ -63,9 +64,9 @@ class LoginMessage(ByteStream):
                     self.player.token = self.loginPayload["token"]
                 db.getPlayerId()
                 db.createAccount()
-                
-
-
+            content = open("AssetsServer/lastversion.txt", "r").read()
+            lastSHA = content.split("...")[1]
+            self.loginPayload["fingerprintData"] = Utility.getFingerprintData(lastSHA)
             # Process login information
             self.player.high_d = self.loginPayload["highID"]
             self.player.low_id = self.loginPayload["lowID"]
@@ -83,6 +84,9 @@ class LoginMessage(ByteStream):
                 self.banned_acc[str(self.player.low_id)] = {"reason": self.banned_ip[self.device.address[0]]["reason"]}
                 self.save_ban_lists()
                 return
+            if self.loginPayload["fingerprintSHA"] != lastSHA:
+                LoginFailedMessage(self.device, self.player,self.loginPayload,"slay", 7).Send()
+                return
             # Send success messages
             LoginOkMessage(self.device, self.player, self.loginPayload).Send()
             # 14109
@@ -98,6 +102,7 @@ class LoginMessage(ByteStream):
                 if self.player.club_id:
                     db.onlineMembers(self.player.club_id, 1)
                 MyAlliance(self.device, self.player).Send()  # 14109
+                FriendListMessage(self.device, self.player).Send()
                 if self.player.teamID != 0:
                     if db.getGameroomInfo("info") != None:
                         playerInfo = db.getPlayerInfo(self.player.low_id)

@@ -1,6 +1,5 @@
 from Utils.Writer import Writer
-from Utils.Fingerprint import Fingerprint
-
+import json
 
 class LoginFailedMessage(Writer):
 
@@ -16,12 +15,10 @@ class LoginFailedMessage(Writer):
 
     def encode(self):
         self.writeInt(self.errorCode)
-
-        self.writeString(self.loginPayload["fingerprintSHA"])
-
-        self.writeString("0.0.0.0:9339") # Server Host
-
-        self.writeString("https://game-assets.brawlstarsgame.com")
+        self.writeString(self.loginPayload["fingerprintData"])
+        self.writeString() # Server Host
+        settings = json.load(open("Settings.json"))
+        self.writeString(f"http://{settings['gameAssetsAddress']}:{settings['gameAssetsPort']}]/")
         self.writeString("https://github.com/Super-brawl-team/Obiad-Brawl")
         self.writeString(self.msg)
 

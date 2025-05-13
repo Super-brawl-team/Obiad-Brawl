@@ -1,8 +1,4 @@
 import socket
-import argparse
-import time
-import os
-import binascii
 import json
 import traceback
 from Cryptography.nacl import NaCl
@@ -10,7 +6,6 @@ from threading import Thread, Lock
 from Packets.Factory import *
 from Logic.Device import Device
 from Packets.Messages.Server.LobbyInfoMessage import LobbyInfoMessage
-from Packets.Messages.Server.TeamErrorMessage import TeamErrorMessage
 from Logic.Player import Player
 from Database.DatabaseManager import DataBase
 connected_clients_count = 0
@@ -107,13 +102,9 @@ class ClientThread(Thread):
                                         self.device.ClientDict = Networking.Clients
                                 else:
                                     if self.debug:
-
-                                        TeamErrorMessage(self.device, self.player, 69).Send()
                                         print('[*] {} not handled'.format(packetid))
                             except:
                                 if self.debug:
-                                    TeamErrorMessage(self.device, self.player, 69).Send()
-
                                     print('[*] Error while decrypting / handling {}'.format(packetid))
                                     traceback.print_exc()
                         else:

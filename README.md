@@ -18,11 +18,7 @@ Enjoy tons of cool features, including:
 ---
 
 ## 🚀 Coming Soon  
-- Online battle logic  
-- Events logic  
-- Milestones rewards in battle end
-- Game assets site
-
+- Online battle logic 
 ---
 
 ## 🔄 Frequent Updates  
@@ -74,9 +70,17 @@ The server will be updated regularly! Feel free to use it, but **please don't fo
 
 ## 🎁 Bonus Features  
 
+### 💪 Starting Tutorial state
+- You can change `"startingTutorialState"` to the state you want
+- **Note:** Id 0 is the tutorial with shelly, Id 1 is the first tutorial game, Id 2 is last tutorial state (main menu) , Id 3 and more will just act like Id 2
+
 ### ⚡ UDP Server  
 - You can enable `"UseUDPServer"` for battles if you have another free port.  
 - **Note:** It's currently broken, so it may not work properly.  
+
+### ⚡ Game Assets Server  
+- You can enable `"gameAssetsServer"` to get an assets server and update every clients without sending a new one if you have another free port.  
+- **Note:** You must run Updater.py to generate a new update.  
 
 ### 🔧 Debug Menu  
 - Toggle `"debugMenuEnabled"` to enable/disable the debug menu.  

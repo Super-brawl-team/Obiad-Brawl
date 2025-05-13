@@ -17,7 +17,7 @@ class BattleEndSD(Writer):
 		self.settings = json.load(open('Settings.json'))
 		self.maximumRank = self.settings["MaximumRank"]
 		self.maximumUpgradeLevel = self.settings["MaximumUpgradeLevel"]
-		self.requiredTrophiesForRank = ProgressStart = [0,10,20,30,40,60,80,100,120,140,160,180,220,260,300,340,380,420,460,500,550,600,650,700,750,800,850,900,950,1000,1050,1100,1150,1200]
+		self.requiredTrophiesForRank = Milestones.ProgressStartTrophies
 		if self.maximumRank <= 34:
 				self.brawlersTrophies = self.requiredTrophiesForRank[self.maximumRank-1]
 		else:
@@ -94,7 +94,7 @@ class BattleEndSD(Writer):
 				return 15
 
 		db = DataBase(self.player)
-		if not self.plrs["isInRealGame"]:
+		if not self.plrs["isInRealGame"] or self.player.tutorialState < 2:
 			trophies = 0
 			coins = 0
 			exp = 0
@@ -126,7 +126,7 @@ class BattleEndSD(Writer):
 		
 		self.writeVInt(trophies) # Trophies Result
 		self.writeScID(28, self.player.profile_icon)  # Player Profile Icon
-		self.writeBoolean(False) # is tutorial game
+		self.writeBoolean(self.player.tutorialState < 2) # is tutorial game
 		self.writeBoolean(self.plrs["isInRealGame"]) # is in real game
 		self.writeVInt(50) # Coin Booster %
 		self.writeVInt(boosted_coins) # Coin Booster Coins Gained
@@ -151,7 +151,50 @@ class BattleEndSD(Writer):
 		self.writeVInt(star_player_exp) # Star Player Experience Gained
 
 		# Rank Up and Level Up Bonus Array
-		self.writeVInt(0) # Count
+		milestonesTrophies = 0
+		self.settings = json.load(open('Settings.json'))
+		self.maximumRank = self.settings["MaximumRank"]
+		Goal0Index = self.maximumRank - 1
+		trophiesList = Milestones.ProgressStartTrophies
+		for MilestoneIndex in range(Goal0Index):
+			if MilestoneIndex >= 34:
+				trophiesList.append(trophiesList[33]+50*(MilestoneIndex - 33))
+		for x in range(len(trophiesList) - 1):
+			if trophiesList[x] <= self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] < trophiesList[x + 1]:
+				if trophiesList[x+1 ] <= self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"]+trophies < trophiesList[x + 2]:
+					milestonesTrophies += 1
+					coins+=10
+				break
+		milestonesExp = 0
+		expList = Milestones.ProgressStartExp
+		for x in range(len(expList) - 1):
+			if expList[x] <= self.player.player_experience < expList[x + 1]:
+				if expList[x+1 ] <= self.player.player_experience + exp+star_player_exp < expList[x + 2]:
+					milestonesExp += 1
+					coins+=20
+				break
+		self.writeVInt(milestonesExp + milestonesTrophies) # Count
+		for milestone in range(milestonesExp):
+			self.writeVInt(5) 
+			self.writeVInt(0) 
+			self.writeVInt(0) 
+			self.writeVInt(0)
+			self.writeVInt(0) 
+			self.writeVInt(1) 
+			self.writeVInt(12) 
+			self.writeVInt(20) 
+			self.writeScId(5, 1)
+		for milestone in range(milestonesTrophies):
+			self.writeVint(1)
+			self.writeVint(0)
+			self.writeVint(0) # Progress Start
+			self.writeVint(0) # Progress
+			self.writeVint(0)
+			self.writeVint(1)
+			self.writeVint(1)
+			self.writeVint(10)
+			self.writeVint(5)
+			self.writeVint(1)
 
 		# Trophies and Experience Bars Array
 		self.writeVInt(2) # Count
@@ -178,6 +221,11 @@ class BattleEndSD(Writer):
 		db.replaceValue("gold", self.player.gold)
 		self.player.coins_reward = coins + doubled_coins + boosted_coins 
 		db.replaceValue("coins_reward", self.player.coins_reward)
+		self.player.solo_wins += 1
+		db.replaceValue("solo_wins", self.player.solo_wins)
+		if self.player.trophies > self.player.highest_trophies:
+			self.player.highest_trophies = self.player.trophies
+			db.replaceValue("highest_trophies", self.player.highest_trophies)
 		
 		
 class BattleEndTrio(Writer):
@@ -190,7 +238,7 @@ class BattleEndTrio(Writer):
 		self.settings = json.load(open('Settings.json'))
 		self.maximumRank = self.settings["MaximumRank"]
 		self.maximumUpgradeLevel = self.settings["MaximumUpgradeLevel"]
-		self.requiredTrophiesForRank = ProgressStart = [0,10,20,30,40,60,80,100,120,140,160,180,220,260,300,340,380,420,460,500,550,600,650,700,750,800,850,900,950,1000,1050,1100,1150,1200]
+		self.requiredTrophiesForRank = Milestones.ProgressStartTrophies
 		if self.maximumRank <= 34:
 				self.brawlersTrophies = self.requiredTrophiesForRank[self.maximumRank-1]
 		else:
@@ -235,7 +283,7 @@ class BattleEndTrio(Writer):
 				return 0
 
 		db = DataBase(self.player)
-		if not self.plrs["isInRealGame"]:
+		if not self.plrs["isInRealGame"] or self.player.tutorialState < 2:
 			trophies = 0
 			coins = 0
 			exp = 0
@@ -270,7 +318,7 @@ class BattleEndTrio(Writer):
 		self.writeVInt(self.plrs["BattleEndType"]) # Result (Victory/Defeat/Draw/Rank Score)
 		self.writeVInt(trophies) # Trophies Result
 		self.writeScID(28, self.player.profile_icon)  # Player Profile Icon
-		self.writeBoolean(False) # is tutorial game
+		self.writeBoolean(self.player.tutorialState < 2) # is tutorial game
 		self.writeBoolean(self.plrs["isInRealGame"]) # is in real game
 		self.writeVInt(50) # Coin Booster %
 		self.writeVInt(boosted_coins) # Coin Booster Coins Gained
@@ -295,7 +343,51 @@ class BattleEndTrio(Writer):
 		self.writeVInt(star_player_exp) # Star Player Experience Gained
 
 		# Rank Up and Level Up Bonus Array
-		self.writeVInt(0) # Count
+		milestonesTrophies = 0
+		self.settings = json.load(open('Settings.json'))
+		self.maximumRank = self.settings["MaximumRank"]
+		Goal0Index = self.maximumRank - 1
+		trophiesList = Milestones.ProgressStartTrophies
+		for MilestoneIndex in range(Goal0Index):
+			if MilestoneIndex >= 34:
+				trophiesList.append(trophiesList[33]+50*(MilestoneIndex - 33))
+		for x in range(len(trophiesList) - 1):
+			if trophiesList[x] <= self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"] < trophiesList[x + 1]:
+				if trophiesList[x+1 ] <= self.player.unlocked_brawlers[str(self.plrs["Brawlers"][0]["CharacterID"][1])]["Trophies"]+trophies < trophiesList[x + 2]:
+					milestonesTrophies += 1
+					coins+=10
+				break
+		milestonesExp = 0
+		expList = Milestones.ProgressStartExp
+		for x in range(len(expList) - 1):
+			if expList[x] <= self.player.player_experience < expList[x + 1]:
+				if expList[x+1 ] <= self.player.player_experience + exp+star_player_exp < expList[x + 2]:
+					milestonesExp += 1
+					coins+=20
+				break
+		self.writeVInt(milestonesExp + milestonesTrophies) # Count
+		for milestone in range(milestonesExp):
+			self.writeVInt(5) 
+			self.writeVInt(0) 
+			self.writeVInt(0) 
+			self.writeVInt(0)
+			self.writeVInt(0) 
+			self.writeVInt(1) 
+			self.writeVInt(12) 
+			self.writeVInt(20) 
+			self.writeScId(5, 1)
+		for milestone in range(milestonesTrophies):
+			self.writeVint(1)
+			self.writeVint(0)
+			self.writeVint(0) # Progress Start
+			self.writeVint(0) # Progress
+			self.writeVint(0)
+			self.writeVint(1)
+			self.writeVint(1)
+			self.writeVint(10)
+			self.writeVint(5)
+			self.writeVint(1)
+
 
 		# Trophies and Experience Bars Array
 		self.writeVInt(2) # Count
@@ -318,6 +410,11 @@ class BattleEndTrio(Writer):
 		db.replaceValue("gold", self.player.gold)
 		self.player.coins_reward = coins+boosted_coins+doubled_coins
 		db.replaceValue("coins_reward", self.player.coins_reward)
+		self.player.three_vs_three_wins += 1
+		db.replaceValue("three_vs_three_wins", self.player.three_vs_three_wins)
+		if self.player.trophies > self.player.highest_trophies:
+			self.player.highest_trophies = self.player.trophies
+			db.replaceValue("highest_trophies", self.player.highest_trophies)
 		# Milestones Array
 		self.writeBool(True) # Bool
 		Milestones.MilestonesArray(self)

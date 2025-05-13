@@ -70,5 +70,4 @@ class LogicBuyCardCommand(ByteStream):
                   }
 
         db.replaceValue('unlocked_brawlers', self.player.unlocked_brawlers)
-        
-        #AvailableServerCommandMessage(self.device, self.player, 203).Send()
+        db.loadAccount()

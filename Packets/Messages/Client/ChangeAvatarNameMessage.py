@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from Utils.Reader import ByteStream
-from Packets.Commands.Server.LogicChangeAvatarNameCommand import LogicChangeAvatarNameCommand
+from Packets.Messages.Server.AvailableServerCommandMessage import AvailableServerCommandMessage
 from Logic.Player import Player
 from Database.DatabaseManager import DataBase
 
@@ -19,4 +19,4 @@ class ChangeAvatarNameMessage(ByteStream):
     def process(self):
         db = DataBase(self.player)
         db.replaceValue("name", self.player.name)
-        LogicChangeAvatarNameCommand(self.device, self.player, self.state).Send()
+        AvailableServerCommandMessage(self.device, self.player, 201 ,self.state).Send()
