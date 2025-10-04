@@ -142,7 +142,7 @@ class BattleEndSD(Writer):
 			self.writeBoolean(Players["IsPlayer"]) # is star player
 			self.writeScID(Players["CharacterID"][0], Players["CharacterID"][1]) # Player Brawler
 			self.writeScID(Players["SkinID"][0], Players["SkinID"][1]) # Player Brawler Skin!
-			self.writeVInt(0) # Brawler Trophies
+			self.writeVInt(-100) # Brawler Trophies
 		# Experience Array
 		self.writeVInt(2) # Count
 		self.writeVInt(0) # Normal Experience ID
@@ -334,7 +334,7 @@ class BattleEndTrio(Writer):
 			self.writeBoolean(Players["IsPlayer"]) # is star player
 			self.writeScID(Players["CharacterID"][0], Players["CharacterID"][1]) # Player Brawler
 			self.writeScID(Players["SkinID"][0], Players["SkinID"][1]) # Player Brawler Skin!
-			self.writeVInt(0) # Brawler Trophies
+			self.writeVInt(-100) # Brawler Trophies
 		# Experience Array
 		self.writeVInt(2) # Count
 		self.writeVInt(0) # Normal Experience ID

@@ -385,7 +385,14 @@ class DataBase:
         chatQuery = "INSERT INTO ClubChats (club_id, data) VALUES (?, ?)"
         self.executeQuery(clubQuery, [clubId, json.dumps(clubData)])
         self.executeQuery(chatQuery, [clubId, json.dumps(chatData)])
-        
+    def onlineMembers(self, clubId, amount):
+        query = "SELECT data FROM Clubs WHERE club_id = ?"
+        data = self.fetchOne(query, [clubId])
+        if data:
+            clubData = json.loads(data[0])
+            clubData["info"]["onlineMembers"] += amount
+            updateQuery = "UPDATE CLubs SET data = ? WHERE club_id = ?"
+            self.executeQuery(updateQuery, [json.dumps(clubData), clubId]) 
     def restartClubOnlineMembers(self):
         query = "SELECT club_id, data FROM Clubs"
         allClubs = self.fetchAll(query)

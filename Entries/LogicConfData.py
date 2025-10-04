@@ -2,11 +2,13 @@ from Utils.Writer import Writer
 from Database.DatabaseManager import DataBase
 from Logic.Milestones import Milestones
 from time import *
-
+import json
 class LogicConfData:
     def encode(self: Writer, player):
         db = DataBase(player)
         self.player = player
+        self.settings = json.load(open('Settings.json'))
+        self.maximumUpgradeLevel = self.settings["MaximumUpgradeLevel"]
         self.writeVInt(2017189)  # Shop Timestamp
         self.writeVInt(100) # box cost (gold)
         self.writeVInt(10) # box cost (gems)

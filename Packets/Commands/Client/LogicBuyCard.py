@@ -42,7 +42,7 @@ class LogicBuyCardCommand(ByteStream):
             brawler = Cards().getbrawlerID(unlock_card)
             Rarity = Cards().getBrawlerRarity(unlock_card)
             
-            if Characters.isDisabled(brawler):
+            if Characters().isDisabled(brawler):
                 return "no cheating"
             if Rarity == 'common':
                 price = 3

@@ -97,7 +97,7 @@ class ClientThread(Thread):
                                     Message.decode()
                                     Message.process()
                                     if packetid == 10101:
-                                        Networking.Clients["Clients"][str(self.player.low_id)] = {"SocketInfo": self.client}
+                                        Networking.Clients["Clients"][str(self.player.low_id)] = {"SocketInfo": self.client, "Device": self.device, "Player": self.player}
                                         Networking.Clients["ClientCounts"] = connected_clients_count
                                         self.device.ClientDict = Networking.Clients
                                 else:
